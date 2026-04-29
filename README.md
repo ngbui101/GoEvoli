@@ -9,6 +9,16 @@
 
 ---
 
+## Dokumentation
+
+Detaillierte Informationen findest du im [docs/](./docs/) Verzeichnis:
+- [Projektdokumentation & Konventionen](./docs/PROJEKT_DOKUMENTATION.md)
+- [Architektur-Überblick](./docs/architecture.md)
+- [Anforderungen & Spezifikation](./docs/requirements.md)
+- [Aktuelle TO-DO Liste](./docs/TODO.md)
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -98,7 +108,12 @@ GoEvoli/
 │   │   ├── context/      # AuthContext
 │   │   └── types/        # TypeScript types
 │   └── nginx.conf        # Production SPA routing
-├── local/                # Local-only docs (gitignored)
+├── docs/                 # Project documentation
+│   ├── PROJEKT_DOKUMENTATION.md
+│   ├── architecture.md
+│   ├── requirements.md
+│   └── TODO.md
+├── local/                # Local-only sensitive data (gitignored)
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
