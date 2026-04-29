@@ -67,8 +67,23 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
+	// Build allowed origins from environment
+	allowedOrigins := []string{"http://localhost:5173", "http://localhost:5178"}
+	if frontendURL := os.Getenv("FRONTEND_URL"); frontendURL != "" {
+		allowedOrigins = append(allowedOrigins, frontendURL)
+	}
+	if os.Getenv("APP_ENV") == "production" {
+		// In production only allow the configured FRONTEND_URL
+		if frontendURL := os.Getenv("FRONTEND_URL"); frontendURL != "" {
+			allowedOrigins = []string{frontendURL}
+		}
+		if os.Getenv("COOKIE_SECURE") != "true" {
+			log.Println("WARNING: COOKIE_SECURE is not 'true' in production mode. Cookies may not work over HTTPS.")
+		}
+	}
+
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "http://localhost:5178", os.Getenv("FRONTEND_URL")},
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		AllowCredentials: true,

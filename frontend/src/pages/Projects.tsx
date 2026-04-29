@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { projectsApi } from '../api/projects';
 import type { Project } from '../types';
-import { Layers, FolderKanban, Plus, Clock, ArrowRight, Layout } from 'lucide-react';
+import { Layers, FolderKanban, Plus, Clock, ArrowRight } from 'lucide-react';
 import { CardShell } from '../components/cards/CardShell';
 import { CardArtwork, FINAL_EVOLUTIONS } from '../components/cards/CardArtwork';
 import { Button } from '../components/ui/Button';

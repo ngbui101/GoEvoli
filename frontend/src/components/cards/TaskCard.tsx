@@ -6,13 +6,14 @@ import { CardArtwork, resolveTaskArtwork } from '../cards/CardArtwork';
 import type { CardSize } from '../cards/CardShell';
 import { Badge } from '../ui/Badge';
 import { cn } from '../../utils/cn';
-import { Bug, Cog, Paintbrush, ShieldCheck, User, Clock, Calendar, MessageCircle, MoreHorizontal } from 'lucide-react';
+import { Bug, Cog, Paintbrush, ShieldCheck } from 'lucide-react';
 import type { Task } from '../../types';
 
 interface TaskCardProps {
   task: Task;
   isMobile?: boolean;
   projectId: string;
+  onDelete?: (id: string) => void;
   className?: string;
   size?: CardSize;
 }
@@ -37,6 +38,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   task, 
   isMobile = false, 
   projectId, 
+  onDelete,
   className,
   size = "board"
 }) => {
@@ -106,7 +108,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     />
   );
 
-  const [activeTab, setActiveTab] = React.useState<'zusammenfassung' | 'beschreibung' | 'assigned'>('zusammenfassung');
+  const [activeTab, setActiveTab] = React.useState<'zusammenfassung' | 'beschreibung' | 'assigned' | 'löschen'>('zusammenfassung');
 
   return (
     <div ref={setNodeRef} style={style} {...(!isMobile && isBoard ? listeners : {})} {...(!isMobile && isBoard ? attributes : {})}>
@@ -238,7 +240,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                         </p>
                      </div>
                      <button 
-                       onClick={() => (window as any).onDeleteTask?.(task.id)}
+                       onClick={() => onDelete?.(task.id)}
                        className="w-full py-2 bg-red-500 hover:bg-red-600 text-white text-[9px] font-black uppercase rounded shadow-lg transition-colors border-b-4 border-red-800 active:border-b-0 active:translate-y-1"
                      >
                         Task löschen

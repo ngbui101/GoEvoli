@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Shield, Calendar, Trophy, Star } from 'lucide-react';
+import { Mail, Shield, Calendar, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { CardShell } from '../components/cards/CardShell';
 import { CardArtwork, FINAL_EVOLUTIONS } from '../components/cards/CardArtwork';

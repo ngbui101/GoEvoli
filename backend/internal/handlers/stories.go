@@ -54,7 +54,7 @@ func (h *StoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := auth.AssertProjectPermission(r.Context(), h.services.Repos, userID, projectID, models.RoleProductOwner); err != nil {
+	if err := auth.AssertProjectPermission(r.Context(), h.services.Repos, userID, projectID, models.RoleProductOwner, models.RoleAdmin, models.RoleDeveloper); err != nil {
 		response.Error(w, http.StatusForbidden, err.Error())
 		return
 	}
@@ -164,6 +164,7 @@ func (h *StoryHandler) Complete(w http.ResponseWriter, r *http.Request) {
 
 	response.JSON(w, http.StatusOK, map[string]string{"message": "Story completed"})
 }
+
 func (h *StoryHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(middleware.UserIDKey).(primitive.ObjectID)
 	storyID, err := primitive.ObjectIDFromHex(chi.URLParam(r, "storyId"))

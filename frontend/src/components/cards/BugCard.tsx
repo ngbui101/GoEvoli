@@ -5,7 +5,7 @@ import { CardArtwork } from './CardArtwork';
 import type { CardSize } from './CardShell';
 import { Badge } from '../ui/Badge';
 import { cn } from '../../utils/cn';
-import { AlertCircle, Bug as BugIcon, User, Shield, ShieldAlert, MessageCircle, MoreHorizontal, History } from 'lucide-react';
+import { Bug as BugIcon, User, Shield, ShieldAlert, MessageCircle, MoreHorizontal, History } from 'lucide-react';
 import type { Bug } from '../../types';
 
 interface BugCardProps {

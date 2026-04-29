@@ -1,70 +1,131 @@
-# GoEvoli
+# GoEvoli 🃏
 
-GoEvoli ist ein agiles Kanban-Board speziell entwickelt für die Verwaltung von Pokémon-Entwicklungsstufen und Aufgaben, inspiriert durch moderne Scrum- und Kanban-Prinzipien. Das Projekt demonstriert eine Full-Stack-Architektur mit Go, React, Vite und MongoDB.
+> A collectible card game-inspired agile Kanban board for managing software projects.
 
-## Technologie-Stack
+![Go](https://img.shields.io/badge/Backend-Go%201.22-00ADD8?logo=go)
+![React](https://img.shields.io/badge/Frontend-React%2018-61DAFB?logo=react)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb)
+![Docker](https://img.shields.io/badge/Deploy-Docker-2496ED?logo=docker)
 
-- **Backend:** Go (Golang), Chi Router, MongoDB Go Driver
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS, dnd-kit
-- **Datenbank:** MongoDB
-- **Styling:** Tailwind CSS (keine zusätzlichen UI-Bibliotheken)
-- **Authentifizierung:** JWT über httpOnly Cookies, bcrypt Passwort-Hashing
+---
 
-## Voraussetzungen
+## Tech Stack
 
-Stelle sicher, dass folgende Software auf deinem System installiert ist:
-- **Go** (Version 1.20+)
-- **Node.js** (Version 18+)
-- **MongoDB** (Lokal oder als Atlas-Cluster)
-- **Docker** & **Docker Compose** (optional, für Container-Deployment)
+| Layer | Technology |
+|-------|-----------|
+| **Backend** | Go 1.22, Chi Router, JWT (HttpOnly Cookies) |
+| **Frontend** | React 18, TypeScript, Vite, TailwindCSS |
+| **Database** | MongoDB (Atlas or self-hosted) |
+| **Deployment** | Docker + Docker Compose |
 
-## Installation & Start
+---
 
-1. **Repository klonen**
-   *(Repository muss lokal vorliegen)*
+## Quick Start (Local Development)
 
-2. **Umgebungsvariablen konfigurieren**
-   Kopiere die Datei `.env.example` und benenne sie in `.env` um.
-   Trage deinen `MONGO_URI` Connection-String ein.
-   ```bash
-   cp .env.example .env
-   ```
+### Prerequisites
+- Go 1.22+
+- Node.js 20+
+- MongoDB (local or Atlas)
 
-3. **Backend & Seed-Daten starten**
-   ```bash
-   cd backend
-   go run ./cmd/seed  # Erstellt Demo-Projekt und Benutzer
-   go run ./cmd/server
-   ```
-   *Das Backend läuft nun unter `http://localhost:8080`*
+### 1. Configure environment
+```bash
+cp .env.example .env
+# Edit .env: set MONGO_URI and JWT_SECRET
+```
 
-4. **Frontend starten**
-   ```bash
-   cd frontend
-   npm install
-   npm run build
-   npm run dev
-   ```
-   *Das Frontend ist erreichbar unter `http://localhost:5173`*
+### 2. Start backend
+```bash
+cd backend
+go run ./cmd/seed    # Seed demo data (run once)
+go run ./cmd/server
+# → http://localhost:8080
+```
 
-5. **Alternativ: Docker Compose**
-   ```bash
-   docker compose up -d
-   ```
+### 3. Start frontend
+```bash
+cd frontend
+npm install
+npm run dev
+# → http://localhost:5173
+```
 
-## Seed-Benutzer
+---
 
-Beim Ausführen des Seed-Scripts werden folgende Benutzer erstellt. Das Passwort für alle lautet **`password123`**:
-- `admin@example.com` (Admin / Product Owner im Demo Projekt)
-- `po@example.com` (Product Owner)
-- `scrum@example.com` (Scrum Master)
-- `dev@example.com` (Developer)
-- `tester@example.com` (Tester)
-- `viewer@example.com` (Viewer)
+## Docker Deployment
 
-## Bekannte Einschränkungen & Roadmap
-- **WebSocket Echtzeit-Updates:** Derzeit nicht implementiert. Das Frontend nutzt optimistisches Rendering und Refetching.
-- **Benutzerprofil-Ansicht:** Keine separate Ansicht zum Bearbeiten von Nutzerdaten.
-- **Projektverwaltung:** Projekte können über API, aber derzeit nur grundlegend über das UI erstellt werden.
-- **Subtask UI:** Subtasks werden in der Backend-API unterstützt (inkl. `required` Validierungen), haben aber noch kein dediziertes UI-Formular in der Story-Detailansicht.
-- **Auth Token Expiration:** Token-Refresh-Logik muss noch nachgerüstet werden.
+```bash
+cp .env.example .env
+# Edit .env: set MONGO_URI, JWT_SECRET, FRONTEND_URL, APP_ENV=production, COOKIE_SECURE=true
+
+docker compose up --build -d
+# Frontend → http://localhost:80
+# Backend  → http://localhost:8080
+```
+
+---
+
+## Demo Accounts
+
+After running `go run ./cmd/seed` (password for all: `password123`):
+
+| Email | Role |
+|-------|------|
+| `admin@example.com` | Admin / Product Owner |
+| `dev@example.com` | Developer |
+| `tester@example.com` | Tester |
+| `viewer@example.com` | Viewer |
+
+---
+
+## Project Structure
+
+```
+GoEvoli/
+├── backend/              # Go API server
+│   ├── cmd/
+│   │   ├── server/       # Entry point
+│   │   └── seed/         # Demo data seeder
+│   └── internal/
+│       ├── handlers/     # HTTP handlers
+│       ├── services/     # Business logic
+│       ├── models/       # Data models & enums
+│       └── repositories/ # MongoDB queries
+├── frontend/             # React SPA
+│   ├── src/
+│   │   ├── api/          # API client layer
+│   │   ├── components/   # Reusable components (cards, ui, board)
+│   │   ├── pages/        # Route-level pages
+│   │   ├── context/      # AuthContext
+│   │   └── types/        # TypeScript types
+│   └── nginx.conf        # Production SPA routing
+├── local/                # Local-only docs (gitignored)
+├── docker-compose.yml
+├── .env.example
+└── README.md
+```
+
+---
+
+## API Overview
+
+All routes under `/api/`. Auth via HttpOnly session cookie.
+
+| Resource | Endpoints |
+|----------|-----------|
+| Auth | `POST /auth/login`, `POST /auth/register`, `GET /auth/me` |
+| Projects | `GET/POST /projects/`, `PATCH /projects/:id/wip-limits` |
+| Stories | `GET/POST /projects/:id/stories`, `DELETE /stories/:id` |
+| Tasks | `GET/POST /stories/:id/tasks`, `POST /tasks/:id/move`, `DELETE /tasks/:id` |
+| Bugs | `GET/POST /projects/:id/bugs`, `POST /bugs/:id/close` |
+| Comments | `GET/POST /stories/:id/comments` |
+
+---
+
+## Known Limitations / Roadmap
+
+- [ ] Task assignment (Assigned tab – UI placeholder exists)
+- [ ] Real-time updates via WebSocket
+- [ ] Drag & Drop (dnd-kit integration pending)
+- [ ] Inline edit for stories/tasks
+- [ ] Bug management UI on board
+- [ ] Token refresh logic

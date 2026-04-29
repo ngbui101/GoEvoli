@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { projectsApi } from '../api/projects';
-import { Layout, Plus, Sparkles } from 'lucide-react';
+import { Plus, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { CardShell } from '../components/cards/CardShell';
 import { CardArtwork, FINAL_EVOLUTIONS } from '../components/cards/CardArtwork';
 import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
+
 import { CardOverlay } from '../components/cards/CardOverlay';
 
 export const CreateProject: React.FC = () => {

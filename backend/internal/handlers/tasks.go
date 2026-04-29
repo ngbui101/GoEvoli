@@ -175,7 +175,9 @@ func (h *TaskHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	response.JSON(w, http.StatusCreated, task)
 }
+
 func (h *TaskHandler) Delete(w http.ResponseWriter, r *http.Request) {
+
 	userID := r.Context().Value(middleware.UserIDKey).(primitive.ObjectID)
 	taskID, err := primitive.ObjectIDFromHex(chi.URLParam(r, "taskId"))
 	if err != nil {

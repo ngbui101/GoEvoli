@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardShell } from './CardShell';
-import { CardArtwork, FINAL_EVOLUTIONS, resolveTaskArtwork } from './CardArtwork';
+import { CardArtwork, resolveTaskArtwork } from './CardArtwork';
 import { Save, Sparkles } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
@@ -15,7 +15,8 @@ interface CardEditorProps {
 export const CardEditor: React.FC<CardEditorProps> = ({ 
   variant: initialVariant, 
   onSave, 
-  onCancel, 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onCancel: _onCancel,
   initialData = {},
   stories = []
 }) => {

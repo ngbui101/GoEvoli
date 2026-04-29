@@ -3,10 +3,11 @@ import { boardApi } from '../../api/board';
 import { StoryCard } from '../cards/StoryCard';
 import { CardOverlay } from '../cards/CardOverlay';
 import type { UserStory, Task } from '../../types';
+import toast from 'react-hot-toast';
 
 interface StoryDetailModalProps {
   story: UserStory;
-  tasks?: Task[]; // Make optional or handle properly
+  tasks?: Task[];
   onClose: () => void;
   onUpdate?: () => Promise<void>;
 }
@@ -14,23 +15,6 @@ interface StoryDetailModalProps {
 export const StoryDetailModal: React.FC<StoryDetailModalProps> = ({ story, tasks: initialTasks, onClose, onUpdate }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks || []);
   const [isLoading, setIsLoading] = useState(!initialTasks);
-
-  useEffect(() => {
-    (window as any).onDeleteStory = async (id: string) => {
-      if (confirm('Bist du sicher, dass du diese Story löschen möchtest?')) {
-        try {
-          await boardApi.deleteStory(id);
-          // @ts-ignore
-          import('react-hot-toast').then(({ default: toast }) => toast.success('Story gelöscht'));
-          onUpdate?.();
-          onClose();
-        } catch (error) {
-          console.error('Failed to delete story', error);
-        }
-      }
-    };
-    return () => { delete (window as any).onDeleteStory; };
-  }, [onUpdate, onClose]);
 
   useEffect(() => {
     if (initialTasks) return;
@@ -48,6 +32,19 @@ export const StoryDetailModal: React.FC<StoryDetailModalProps> = ({ story, tasks
     fetchData();
   }, [story.id, initialTasks]);
 
+  const handleDeleteStory = async (id: string) => {
+    if (!confirm('Bist du sicher, dass du diese Story löschen möchtest?')) return;
+    try {
+      await boardApi.deleteStory(id);
+      toast.success('Story gelöscht');
+      onUpdate?.();
+      onClose();
+    } catch (error) {
+      console.error('Failed to delete story', error);
+      toast.error('Story konnte nicht gelöscht werden');
+    }
+  };
+
   return (
     <CardOverlay
       isOpen={true}
@@ -59,6 +56,7 @@ export const StoryDetailModal: React.FC<StoryDetailModalProps> = ({ story, tasks
           tasks={tasks} 
           size="active" 
           onClick={() => {}}
+          onDelete={handleDeleteStory}
         />
       )}
     </CardOverlay>

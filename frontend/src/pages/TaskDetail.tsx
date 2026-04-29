@@ -6,6 +6,7 @@ import { AlertCircle } from 'lucide-react';
 import { CardOverlay } from '../components/cards/CardOverlay';
 import { TaskCard } from '../components/cards/TaskCard';
 import { Button } from '../components/ui/Button';
+import toast from 'react-hot-toast';
 
 export const TaskDetail: React.FC = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -41,21 +42,17 @@ export const TaskDetail: React.FC = () => {
 
   const handleClose = () => navigate(`/projects/${projectId}/board`);
 
-  useEffect(() => {
-    (window as any).onDeleteTask = async (id: string) => {
-      if (confirm('Bist du sicher, dass du diesen Task löschen möchtest?')) {
-        try {
-          await boardApi.deleteTask(id);
-          // @ts-ignore
-          import('react-hot-toast').then(({ default: toast }) => toast.success('Task gelöscht'));
-          handleClose();
-        } catch (error) {
-          console.error('Failed to delete task', error);
-        }
-      }
-    };
-    return () => { delete (window as any).onDeleteTask; };
-  }, [projectId]);
+  const handleDeleteTask = async (id: string) => {
+    if (!confirm('Bist du sicher, dass du diesen Task löschen möchtest?')) return;
+    try {
+      await boardApi.deleteTask(id);
+      toast.success('Task gelöscht');
+      handleClose();
+    } catch (error) {
+      console.error('Failed to delete task', error);
+      toast.error('Task konnte nicht gelöscht werden');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -87,7 +84,8 @@ export const TaskDetail: React.FC = () => {
         <TaskCard 
           task={task} 
           projectId={projectId || ''} 
-          size="active" 
+          size="active"
+          onDelete={handleDeleteTask}
         />
       )}
     </CardOverlay>

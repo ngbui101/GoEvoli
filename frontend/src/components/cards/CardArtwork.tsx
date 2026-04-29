@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import type { StoryStatus, TaskType } from '../../types';
 
 // ─── Image Assets ─────────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ export interface StoryArtworkInfo {
 }
 
 export function resolveStoryArtwork(
-  status: StoryStatus,
+  _status: StoryStatus,
   hasDoing: boolean,
   allDone: boolean,
   storyId: string,

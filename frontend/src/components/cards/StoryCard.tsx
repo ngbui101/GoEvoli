@@ -11,6 +11,7 @@ interface StoryCardProps {
   story: UserStory;
   tasks: Task[];
   onClick?: (story: UserStory) => void;
+  onDelete?: (id: string) => void;
   className?: string;
   size?: CardSize;
 }
@@ -48,7 +49,8 @@ const categoryLabels: Record<string, string> = {
 export const StoryCard: React.FC<StoryCardProps> = ({ 
   story, 
   tasks, 
-  onClick, 
+  onClick,
+  onDelete,
   className,
   size = "board"
 }) => {
@@ -223,7 +225,7 @@ export const StoryCard: React.FC<StoryCardProps> = ({
                       </p>
                    </div>
                    <button 
-                     onClick={() => (window as any).onDeleteStory?.(story.id)}
+                     onClick={() => onDelete?.(story.id)}
                      className="w-full py-2 bg-red-500 hover:bg-red-600 text-white text-[9px] font-black uppercase rounded shadow-lg transition-colors border-b-4 border-red-800 active:border-b-0 active:translate-y-1"
                    >
                       Story löschen

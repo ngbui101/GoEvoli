@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogIn, User as UserIcon, Lock, Eye, EyeOff, Loader2, Sparkles, UserPlus } from 'lucide-react';
+import { LogIn, User as UserIcon, Lock, Eye, EyeOff, Loader2, UserPlus } from 'lucide-react';
 import { CardShell } from '../components/cards/CardShell';
 import { authApi } from '../api/auth';
 import { CardArtwork, FINAL_EVOLUTIONS } from '../components/cards/CardArtwork';
