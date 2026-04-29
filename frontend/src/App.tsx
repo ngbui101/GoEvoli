@@ -13,6 +13,7 @@ import { TaskDetail } from './pages/TaskDetail';
 import { ProjectSettings } from './pages/ProjectSettings';
 import { DesignSystem } from './pages/DesignSystem';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         </Routes>
         <Toaster position="top-right" toastOptions={{ className: '!bg-evoli-secondary !text-evoli-text !border !border-evoli-primary/20' }} />
         <Analytics />
+        <SpeedInsights />
       </BrowserRouter>
     </AuthProvider>
   );
