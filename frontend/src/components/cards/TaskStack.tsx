@@ -5,11 +5,10 @@ import { clsx } from 'clsx';
 
 interface TaskStackProps {
   tasks: Task[];
-  isMobile?: boolean;
   projectId: string;
 }
 
-export const TaskStack: React.FC<TaskStackProps> = ({ tasks, isMobile, projectId }) => {
+export const TaskStack: React.FC<TaskStackProps> = ({ tasks, projectId }) => {
   if (tasks.length === 0) return null;
 
   // Offset ensures the card header (title) of the card above is fully visible.
@@ -54,7 +53,6 @@ export const TaskStack: React.FC<TaskStackProps> = ({ tasks, isMobile, projectId
           >
             <TaskCard 
               task={task} 
-              isMobile={isMobile} 
               projectId={projectId} 
             />
           </div>

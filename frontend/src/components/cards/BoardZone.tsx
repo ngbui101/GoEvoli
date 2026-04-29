@@ -12,13 +12,12 @@ interface BoardZoneProps {
   storyId: string;
   wipLimit?: number;
   wipCount?: number;
-  isMobile?: boolean;
   projectId: string;
   hideHeader?: boolean;
 }
 
 export const BoardZone: React.FC<BoardZoneProps> = ({ 
-  id, title, tasks, storyId, wipLimit, wipCount, isMobile = false, projectId, hideHeader = false 
+  id, title, tasks, storyId, wipLimit, wipCount, projectId, hideHeader = false 
 }) => {
   const droppableId = `${storyId}-${id}`;
   const { setNodeRef, isOver } = useDroppable({
@@ -100,7 +99,6 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
       >
         <TaskStack
           tasks={tasks}
-          isMobile={isMobile}
           projectId={projectId}
         />
         

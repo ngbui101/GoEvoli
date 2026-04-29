@@ -23,7 +23,6 @@ interface SwimlaneProps {
   wipLimits: { next: number; doing: number };
   onTaskMove: (taskId: string, targetStatus: TaskStatus) => void;
   onStoryClick: (story: UserStory) => void;
-  isMobile?: boolean;
   projectId: string;
 }
 
@@ -36,7 +35,7 @@ const COLUMNS: { id: TaskStatus; title: string }[] = [
 ];
 
 export const Swimlane: React.FC<SwimlaneProps> = ({
-  story, tasks, wipCounts, wipLimits, onTaskMove, onStoryClick, isMobile = false, projectId
+  story, tasks, wipCounts, wipLimits, onTaskMove, onStoryClick, projectId
 }) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   
@@ -113,7 +112,6 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
               tasks={tasks.filter(t => t.status === col.id)}
               wipLimit={col.id === 'NEXT' ? wipLimits.next : col.id === 'DOING' ? wipLimits.doing : undefined}
               wipCount={col.id === 'NEXT' ? wipCounts.next : col.id === 'DOING' ? wipCounts.doing : undefined}
-              isMobile={isMobile}
               projectId={projectId}
               hideHeader={true}
             />

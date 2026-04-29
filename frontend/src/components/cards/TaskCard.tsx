@@ -11,7 +11,6 @@ import type { Task } from '../../types';
 
 interface TaskCardProps {
   task: Task;
-  isMobile?: boolean;
   projectId: string;
   onDelete?: (id: string) => void;
   className?: string;
@@ -36,7 +35,6 @@ const typeStoneStyles: Record<string, string> = {
 
 export const TaskCard: React.FC<TaskCardProps> = ({ 
   task, 
-  isMobile = false, 
   projectId, 
   onDelete,
   className,

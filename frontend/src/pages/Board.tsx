@@ -29,14 +29,7 @@ export const Board: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedStory, setSelectedStory] = useState<UserStory | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const fetchData = async () => {
     if (!projectId) return;
@@ -215,7 +208,6 @@ export const Board: React.FC = () => {
                     wipLimits={project ? project.wipLimits : { next: 99, doing: 99 }}
                     onTaskMove={(taskId, targetStatus) => handleTaskMove(story.id, taskId, targetStatus)}
                     onStoryClick={handleStoryClick}
-                    isMobile={isMobile}
                     projectId={projectId!}
                   />
                 ))}
