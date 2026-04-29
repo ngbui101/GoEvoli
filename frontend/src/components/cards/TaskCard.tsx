@@ -47,7 +47,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: task.id,
     data: { type: 'Task', task },
-    disabled: isMobile || !isBoard,
+    disabled: !isBoard,
   });
 
   const style = transform ? {
@@ -90,7 +90,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
          <div className={cn("rounded-full", isBoard ? "w-[3.75cqw] h-[3.75cqw]" : "w-2.5 h-2.5", task.priority === 'CRITICAL' ? 'bg-red-500' : 'bg-evoli-primary/40')} />
          <span className={cn("font-black uppercase text-evoli-text/40", isBoard ? "text-[4.3cqw]" : "text-[10px]")}>{task.priority}</span>
       </div>
-      <Badge variant={statusVariants[task.status] ?? 'secondary'} size="sm" className={cn("uppercase font-black px-1 py-0", isBoard ? "text-[4.3cqw] h-[1.8cqh]" : "text-[10px] h-5")}>
+      <Badge variant={statusVariants[task.status] ?? 'secondary'} size="sm" className={cn("uppercase font-black px-1 py-0", isBoard ? "text-[4.3cqw] h-5" : "text-[10px] h-5")}>
         {task.status}
       </Badge>
     </div>
@@ -111,7 +111,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   const [activeTab, setActiveTab] = React.useState<'zusammenfassung' | 'beschreibung' | 'assigned' | 'löschen'>('zusammenfassung');
 
   return (
-    <div ref={setNodeRef} style={style} {...(!isMobile && isBoard ? listeners : {})} {...(!isMobile && isBoard ? attributes : {})}>
+    <div ref={setNodeRef} style={style} {...(isBoard ? listeners : {})} {...(isBoard ? attributes : {})}>
       <CardShell
         size={size}
         title={task.title}
@@ -126,7 +126,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         }}
         className={cn(
           isDragging && "opacity-50 rotate-3 z-[100]",
-          isBoard && !isMobile && "cursor-grab active:cursor-grabbing",
+          isBoard && "cursor-grab active:cursor-grabbing",
           className
         )}
         footer={
