@@ -52,7 +52,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     zIndex: isDragging ? 999 : 10,
     position: isDragging ? 'relative' : undefined,
-  } as React.CSSProperties : undefined;
+    touchAction: 'none',
+  } as React.CSSProperties : {
+    touchAction: 'none',
+  } as React.CSSProperties;
 
   const getTypeIcon = (iconSize = "w-3 h-3") => {
     switch (task.type) {

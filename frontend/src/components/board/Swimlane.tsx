@@ -44,7 +44,7 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
       activationConstraint: { distance: 10 },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: { delay: 250, tolerance: 5 },
+      activationConstraint: { delay: 200, tolerance: 10 },
     }),
     useSensor(PointerSensor)
   );
