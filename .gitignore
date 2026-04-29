@@ -1,0 +1,25 @@
+# Environments
+.env
+.env.*.local
+.env.local
+/local/
+
+# Go
+/backend/goevoli
+/backend/goevoli.exe
+/backend/bin/
+
+# Node
+/frontend/node_modules/
+/frontend/dist/
+/frontend/dist-ssr/
+
+# IDEs and OS
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

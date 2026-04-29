@@ -1,0 +1,269 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --goevoli-bg: #F7E6B2;
+    --goevoli-primary: #925D3B;
+    --goevoli-secondary: #EBD8B1;
+    --goevoli-text: #4D3122;
+    --goevoli-card-surface: #FFF6DD;
+    --goevoli-card-inner: #F3DFB8;
+    --goevoli-border: #7A4A2D;
+  }
+
+  body {
+    @apply bg-evoli-bg text-evoli-text antialiased selection:bg-evoli-primary/30;
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    background-image: radial-gradient(circle at 2px 2px, rgba(77, 49, 34, 0.05) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+
+  select, input, textarea, button {
+    font-family: inherit;
+  }
+
+  h1 {
+    @apply text-4xl font-black tracking-tighter mb-6 text-evoli-primary uppercase;
+  }
+
+  h2 {
+    @apply text-2xl font-black tracking-tight mb-4 text-evoli-primary uppercase;
+  }
+
+  h3 {
+    @apply text-xl font-bold mb-3 text-evoli-text;
+  }
+
+  p {
+    @apply leading-relaxed mb-4 text-evoli-text/90 font-medium;
+  }
+}
+
+@layer components {
+  .playmat-pattern {
+    background-image: 
+      linear-gradient(rgba(146, 93, 59, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(146, 93, 59, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 50px 50px, rgba(146, 93, 59, 0.05) 2px, transparent 0);
+    background-size: 100px 100px, 100px 100px, 100px 100px;
+  }
+
+  .holographic-shine {
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 60%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shine;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-evoli-primary/20 rounded-full hover:bg-evoli-primary/40 transition-colors;
+  }
+
+  .card-ornament {
+    @apply border-2 border-evoli-card-border/20 rounded-lg relative;
+  }
+
+  .evoli-select {
+    @apply bg-white/40 border border-evoli-primary/10 rounded-md px-3 py-2 text-[10px] font-black uppercase tracking-widest text-evoli-text outline-none focus:ring-2 focus:ring-evoli-primary/20 transition-all cursor-pointer appearance-none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234D3122'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 0.8rem;
+    padding-right: 2.5rem;
+  }
+
+  .evoli-select option {
+    @apply font-black uppercase tracking-tight bg-evoli-secondary text-evoli-text;
+    /* Note: some browsers limit option styling */
+  }
+}
+
+/* ── PNG Artwork floating animation ── */
+@keyframes artworkFloat {
+  0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
+  50%       { transform: translateY(-5px) scale(1.02); filter: drop-shadow(0 16px 24px rgba(0,0,0,0.6)); }
+}
+.card-artwork-img {
+  animation: artworkFloat 3.5s ease-in-out infinite;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   CARD ARTWORK ANIMATIONS  (Concept A + C)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Floating Particles (universal) ── */
+@keyframes floatUp {
+  0%   { transform: translateY(0px) scale(1);   opacity: 0.4; }
+  50%  { transform: translateY(-12px) scale(1.2); opacity: 0.7; }
+  100% { transform: translateY(0px) scale(1);   opacity: 0.4; }
+}
+.fp   { animation: floatUp 3s ease-in-out infinite; }
+.fp-0 { animation-delay: 0s;    animation-duration: 2.8s; }
+.fp-1 { animation-delay: 0.5s;  animation-duration: 3.2s; }
+.fp-2 { animation-delay: 1s;    animation-duration: 2.5s; }
+.fp-3 { animation-delay: 1.5s;  animation-duration: 3.6s; }
+.fp-4 { animation-delay: 0.3s;  animation-duration: 2.9s; }
+.fp-5 { animation-delay: 0.8s;  animation-duration: 3.1s; }
+.fp-6 { animation-delay: 1.2s;  animation-duration: 2.7s; }
+
+/* ── EGG: pulsing glow ── */
+@keyframes eggGlow {
+  0%, 100% { opacity: 0.1;  r: 18; }
+  50%       { opacity: 0.25; r: 21; }
+}
+.card-egg-glow { animation: eggGlow 2.4s ease-in-out infinite; }
+
+/* ── EVOLVING: bolt flicker ── */
+@keyframes boltFlicker {
+  0%, 100% { opacity: 0; }
+  10%       { opacity: 0.9; }
+  20%       { opacity: 0.3; }
+  30%       { opacity: 0.8; }
+  60%       { opacity: 0; }
+}
+@keyframes pulseBig {
+  0%, 100% { opacity: 0.2; r: 10; }
+  50%       { opacity: 0.4; r: 14; }
+}
+.card-bolt   { animation: boltFlicker 2s ease-in-out infinite; }
+.card-bolt-0 { animation-delay: 0s;    animation-duration: 1.8s; }
+.card-bolt-1 { animation-delay: 0.4s;  animation-duration: 2.2s; }
+.card-bolt-2 { animation-delay: 0.9s;  animation-duration: 1.6s; }
+.card-bolt-3 { animation-delay: 1.3s;  animation-duration: 2.0s; }
+.card-evolve-pulse { animation: pulseBig 1.5s ease-in-out infinite; }
+@keyframes ringExpand {
+  0%   { r: 18; opacity: 0.4; }
+  100% { r: 40; opacity: 0; }
+}
+.card-evolve-ring { animation: ringExpand 2s ease-out infinite; }
+
+/* ── READY_FOR_TEST: star rotation + sparkles ── */
+@keyframes slowSpin {
+  from { transform-origin: 50px 52px; transform: rotate(0deg); }
+  to   { transform-origin: 50px 52px; transform: rotate(360deg); }
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50%       { opacity: 1; transform: scale(1.2); }
+}
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.15; }
+  50%       { opacity: 0.35; }
+}
+.card-star-rotate  { animation: slowSpin 8s linear infinite; }
+.card-sparkle      { animation: sparkle 1.5s ease-in-out infinite; }
+.card-sparkle-0    { animation-delay: 0s; }
+.card-sparkle-1    { animation-delay: 0.25s; }
+.card-sparkle-2    { animation-delay: 0.5s; }
+.card-sparkle-3    { animation-delay: 0.75s; }
+.card-sparkle-4    { animation-delay: 1.0s; }
+.card-sparkle-5    { animation-delay: 1.25s; }
+.card-star-ring    { animation: ringPulse 2s ease-in-out infinite; }
+
+/* ── BLOCKED: flame flicker ── */
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1)   skewX(0deg);   opacity: 0.6; }
+  25%       { transform: scaleY(1.1) skewX(-3deg);  opacity: 0.8; }
+  50%       { transform: scaleY(0.9) skewX(2deg);   opacity: 0.5; }
+  75%       { transform: scaleY(1.05) skewX(-1deg); opacity: 0.7; }
+}
+.card-flame { animation: flicker 0.8s ease-in-out infinite; transform-origin: center bottom; }
+
+/* ── FINAL EVOLUTION: rainbow rays + gem spin + orbit ── */
+@keyframes rayPulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.6; }
+}
+@keyframes gemSpin {
+  from { transform-origin: 50px 46px; transform: rotate(0deg); }
+  to   { transform-origin: 50px 46px; transform: rotate(360deg); }
+}
+@keyframes orbit0 {
+  from { transform: rotate(0deg) translateX(22px); }
+  to   { transform: rotate(360deg) translateX(22px); }
+}
+@keyframes orbit1 {
+  from { transform: rotate(120deg) translateX(22px); }
+  to   { transform: rotate(480deg) translateX(22px); }
+}
+@keyframes orbit2 {
+  from { transform: rotate(240deg) translateX(22px); }
+  to   { transform: rotate(600deg) translateX(22px); }
+}
+.card-ray   { animation: rayPulse 1.8s ease-in-out infinite; }
+.card-ray-0 { animation-delay: 0s; }
+.card-ray-1 { animation-delay: 0.26s; }
+.card-ray-2 { animation-delay: 0.52s; }
+.card-ray-3 { animation-delay: 0.78s; }
+.card-ray-4 { animation-delay: 1.04s; }
+.card-ray-5 { animation-delay: 1.3s; }
+.card-ray-6 { animation-delay: 1.56s; }
+.card-gem-spin  { animation: gemSpin 6s linear infinite; }
+.card-orbit     { animation-duration: 4s; animation-timing-function: linear; animation-iteration-count: infinite; transform-origin: 50px 50px; }
+.card-orbit-0   { animation-name: orbit0; }
+.card-orbit-1   { animation-name: orbit1; }
+.card-orbit-2   { animation-name: orbit2; }
+
+/* ── DONE: heartbeat ── */
+@keyframes heartBeat {
+  0%, 100% { transform-origin: 50px 46px; transform: scale(1); }
+  14%       { transform-origin: 50px 46px; transform: scale(1.1); }
+  28%       { transform-origin: 50px 46px; transform: scale(1); }
+  42%       { transform-origin: 50px 46px; transform: scale(1.06); }
+  70%       { transform-origin: 50px 46px; transform: scale(1); }
+}
+.card-heart-beat { animation: heartBeat 1.6s ease-in-out infinite; }
+
+/* ═══════════════════════════════════════════════════════════
+   HOLOGRAPHIC FOIL  (Concept C)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Foil: slow hue rotation on the conic layer */
+@keyframes holoHue {
+  from { filter: hue-rotate(0deg) brightness(1); }
+  to   { filter: hue-rotate(360deg) brightness(1.1); }
+}
+.card-holo-foil {
+  animation: holoHue 6s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+/* Show foil on card hover */
+.group:hover .card-holo-foil,
+.card-artwork-root:hover .card-holo-foil {
+  opacity: 1;
+}
+
+/* Sweep: slides across on hover */
+@keyframes holoSweep {
+  from { background-position: -100% 0; }
+  to   { background-position: 200% 0; }
+}
+.card-holo-sweep {
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.group:hover .card-holo-sweep,
+.card-artwork-root:hover .card-holo-sweep {
+  opacity: 1;
+  animation: holoSweep 1.2s ease-in-out forwards;
+}
+
