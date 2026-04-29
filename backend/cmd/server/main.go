@@ -154,7 +154,11 @@ func main() {
 		})
 	})
 
-	port := os.Getenv("BACKEND_PORT")
+	// Render sets PORT automatically; BACKEND_PORT is our custom override
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = os.Getenv("BACKEND_PORT")
+	}
 	if port == "" {
 		port = "8080"
 	}
