@@ -276,3 +276,16 @@ Story- und Task-Löschung nutzt aktuell `window`-Callbacks:
 - [ ] **Drag & Drop**: dnd-kit Integration für Task-Verschiebung
 - [ ] **Bearbeiten-Funktion**: Stories/Tasks inline editieren
 - [ ] **Bug-Management UI**: Bug-Karten auf dem Board anzeigen
+
+---
+
+## Git-Workflow & Konventionen
+
+Um die Stabilität der Live-Umgebung (Render & Vercel) zu gewährleisten, gilt ab sofort:
+
+1. **Keine direkten Commits auf `master`**: Alle Entwicklungen müssen in separaten Feature-Branches erfolgen.
+2. **Branching-Modell**: 
+   - `feature/...` für neue Funktionen.
+   - `fix/...` für Bugfixes.
+   - `docs/...` für Dokumentationsänderungen.
+3. **Review**: Änderungen werden erst nach erfolgreichem Test in den `master` gemerged.
