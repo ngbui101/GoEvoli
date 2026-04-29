@@ -12,6 +12,7 @@ import { Profile } from './pages/Profile';
 import { TaskDetail } from './pages/TaskDetail';
 import { ProjectSettings } from './pages/ProjectSettings';
 import { DesignSystem } from './pages/DesignSystem';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="*" element={<Navigate to="/projects" replace />} />
         </Routes>
         <Toaster position="top-right" toastOptions={{ className: '!bg-evoli-secondary !text-evoli-text !border !border-evoli-primary/20' }} />
+        <Analytics />
       </BrowserRouter>
     </AuthProvider>
   );
