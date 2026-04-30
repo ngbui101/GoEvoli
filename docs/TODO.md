@@ -66,9 +66,3 @@
 - [ ] **Fehlende Security Headers**  
   Standard-Header wie `Content-Security-Policy`, `X-Content-Type-Options` oder `X-Frame-Options` werden vom Backend nicht explizit gesetzt.
 
-## Live QA Notes
-
-- Letzter manueller Live-Test: 2026-04-30
-- Fokus: Funktionalitaet und UI/UX, kein Debugging
-- Lokale QA-Artefakte liegen absichtlich nicht in Git-tracked Docs, sondern unter `.agents/skills/tester/live-qa/2026-04-30/`.
-- Tester-Account und lokale QA-Konfiguration liegen nur im ignorierten `.agents/` Bereich.
