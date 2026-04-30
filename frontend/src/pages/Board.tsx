@@ -138,12 +138,6 @@ export const Board: React.FC = () => {
           </>
         }
       />
-      <div className="sm:hidden px-4 pb-2">
-        <div className="rounded-evoli-card border border-evoli-primary/10 bg-white/50 px-3 py-2 text-[8px] font-black uppercase tracking-widest text-evoli-text/45 flex items-center justify-between gap-3">
-          <span>Horizontal scrollen</span>
-          <span>Lang druecken zum Ziehen</span>
-        </div>
-      </div>
       <div className="flex-1 overflow-auto pt-0 pb-2 custom-scrollbar overscroll-x-contain">
         <div className="min-w-max w-full flex sm:justify-center px-3 sm:px-10">
           <div className="w-max">
