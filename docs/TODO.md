@@ -26,7 +26,7 @@
 
 - [x] **Mobile Board-Karten sind schwer nutzbar**
   Live-QA 2026-04-30: Auf Mobile wirken Spalten und Trading Cards sehr eng. Karten ueberlagern bzw. verdecken sich optisch, rechte Spalten sind nur angeschnitten sichtbar, und es ist unklar, ob Nutzer ziehen, horizontal scrollen oder klicken sollen.  
-  Behoben 2026-04-30: Mobile Board-Spalten sind breiter, Story-Kontext bleibt sticky, Karten werden mobil als lesbare Liste statt ueberlappendem Stapel dargestellt und ein Touch-Hinweis erklaert Scrollen/Ziehen.
+  Behoben 2026-04-30: Mobile Board-Spalten sind breiter und besser horizontal scrollbar. Der zusaetzliche Touch-Hinweis, Sticky-Story-Kontext und die mobile Listenansicht wurden nach QA-Feedback wieder entfernt.
   Severity: Mittel. `blocksWork = false`.
 
 - [ ] **Login-Instabilitaet / Auth-Session Fehler**  

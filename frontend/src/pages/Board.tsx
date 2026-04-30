@@ -143,7 +143,7 @@ export const Board: React.FC = () => {
           <div className="w-max">
           <div className="pt-0 pb-2 mb-2 border-b border-evoli-card-border/5">
             <div className="flex gap-3 sm:gap-2">
-              <div className="w-[184px] sm:w-[168px] flex-shrink-0 sticky left-3 sm:static z-30 bg-evoli-bg/95 sm:bg-transparent pr-2 sm:pr-0">
+              <div className="w-[184px] sm:w-[168px] flex-shrink-0">
                 <div className="px-1 py-1 bg-evoli-primary/10 text-evoli-primary rounded-evoli-card border border-evoli-primary/20 shadow-sm flex items-center justify-center h-full">
                   <span className="text-[10px] font-black uppercase tracking-tight">User Story</span>
                 </div>
