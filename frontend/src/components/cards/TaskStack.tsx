@@ -11,17 +11,17 @@ interface TaskStackProps {
 export const TaskStack: React.FC<TaskStackProps> = ({ tasks, projectId }) => {
   if (tasks.length === 0) return null;
   const STACK_OFFSET_CQW = 17.5;
+  const stackPadding = `${(tasks.length - 1) * STACK_OFFSET_CQW}cqw`;
 
   return (
     <div 
-      className="relative w-full px-1 pt-3"
-      style={{ 
-        paddingBottom: `${(tasks.length - 1) * STACK_OFFSET_CQW}cqw` 
-      }}
+      className="relative w-full px-1 pt-3 pb-2 sm:[padding-bottom:var(--stack-padding)]"
+      style={{ '--stack-padding': stackPadding } as React.CSSProperties}
     >
       {tasks.map((task, index) => {
         const isFirst = index === 0;
         const zIndex = index + 10;
+        const stackTop = `${index * STACK_OFFSET_CQW}cqw`;
         const jitterClasses = [
           "rotate-[-1deg] -translate-x-[1%]",
           "rotate-[1deg] translate-x-[2%]",
@@ -34,15 +34,17 @@ export const TaskStack: React.FC<TaskStackProps> = ({ tasks, projectId }) => {
           <div 
             key={task.id}
             className={clsx(
-              "w-full transition-all duration-300 ease-out group/stackcard",
-              isFirst ? "relative" : "absolute left-1 right-1",
+              "w-full transition-all duration-300 ease-out group/stackcard mb-3 sm:mb-0 flex justify-center",
+              isFirst ? "relative" : "relative sm:absolute sm:left-1 sm:right-1",
+              !isFirst && "sm:top-[var(--stack-top)]",
+              "sm:block",
               jitterClasses,
-              "hover:!z-[100] hover:scale-[1.05] hover:-translate-y-2 hover:shadow-2xl"
+              "sm:hover:!z-[100] sm:hover:scale-[1.05] sm:hover:-translate-y-2 sm:hover:shadow-2xl"
             )}
             style={{ 
               zIndex,
-              top: isFirst ? undefined : `${index * STACK_OFFSET_CQW}cqw`,
-            }}
+              '--stack-top': stackTop,
+            } as React.CSSProperties}
           >
             <TaskCard 
               task={task} 

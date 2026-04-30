@@ -7,7 +7,7 @@
 - [ ] Drag & Drop
 - [ ] Inline editing
 - [ ] Bug management UI
-- [ ] Mobile-optimierte Board-Ansicht fuer Touch-Nutzung
+- [x] Mobile-optimierte Board-Ansicht fuer Touch-Nutzung
 
 ## Bugs
 
@@ -24,8 +24,9 @@
   Behoben 2026-04-30: PageHeader stapelt Header-Inhalt auf Mobile und erlaubt Titel/Untertitel bis zu zwei Zeilen.
   Severity: Niedrig bis Mittel. `blocksWork = false`.
 
-- [ ] **Mobile Board-Karten sind schwer nutzbar**  
+- [x] **Mobile Board-Karten sind schwer nutzbar**
   Live-QA 2026-04-30: Auf Mobile wirken Spalten und Trading Cards sehr eng. Karten ueberlagern bzw. verdecken sich optisch, rechte Spalten sind nur angeschnitten sichtbar, und es ist unklar, ob Nutzer ziehen, horizontal scrollen oder klicken sollen.  
+  Behoben 2026-04-30: Mobile Board-Spalten sind breiter, Story-Kontext bleibt sticky, Karten werden mobil als lesbare Liste statt ueberlappendem Stapel dargestellt und ein Touch-Hinweis erklaert Scrollen/Ziehen.
   Severity: Mittel. `blocksWork = false`.
 
 - [ ] **Login-Instabilitaet / Auth-Session Fehler**  

@@ -94,7 +94,7 @@ export const CardShell: React.FC<CardShellProps> = ({
         "rounded-sm overflow-hidden",
         "aspect-[63/88]",
         isBoard 
-          ? "w-[160px] h-[223px]" 
+          ? "w-[172px] sm:w-[160px]"
           : "w-[min(92vw,360px)] aspect-[63/88]",
         
         onClick && "cursor-pointer hover:-translate-y-2 active:translate-y-0",

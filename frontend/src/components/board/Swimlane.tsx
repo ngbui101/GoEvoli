@@ -70,9 +70,9 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
   };
 
   return (
-    <div className="flex gap-2 pb-10 last:pb-0 relative">
-      <div className="absolute left-[172px] top-0 bottom-10 w-1 bg-evoli-card-border/5 rounded-full" />
-      <div className="w-[168px] flex-shrink-0 flex flex-col relative pt-0">
+    <div className="flex gap-3 sm:gap-2 pb-8 sm:pb-10 last:pb-0 relative snap-start">
+      <div className="absolute left-[188px] sm:left-[172px] top-0 bottom-10 w-1 bg-evoli-card-border/5 rounded-full" />
+      <div className="w-[184px] sm:w-[168px] flex-shrink-0 flex flex-col sticky left-0 z-30 bg-evoli-bg/95 backdrop-blur-sm pr-2 sm:pr-0 sm:static sm:bg-transparent sm:backdrop-blur-none relative pt-0">
          <div className="absolute inset-x-0 top-0 bottom-0 -z-10 px-0.5">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
                <rect 
@@ -96,7 +96,7 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-2 flex-1 min-w-max pt-0">
+        <div className="flex gap-3 sm:gap-2 flex-1 min-w-max pt-0 snap-x snap-mandatory">
           {COLUMNS.map(col => (
             <BoardZone
               key={col.id}

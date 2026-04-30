@@ -30,7 +30,7 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
   return (
     <div
       className={twMerge(
-        "flex-shrink-0 w-[168px] flex flex-col transition-all duration-300 relative group/zone hover:z-50",
+        "flex-shrink-0 w-[190px] sm:w-[168px] flex flex-col transition-all duration-300 relative group/zone hover:z-50 snap-start",
         isOver && "scale-[1.01]"
       )}
       style={{ containerType: 'inline-size' }}

@@ -138,17 +138,23 @@ export const Board: React.FC = () => {
           </>
         }
       />
-      <div className="flex-1 overflow-auto pt-0 pb-2">
-        <div className="min-w-max w-full flex justify-center px-4 sm:px-10">
+      <div className="sm:hidden px-4 pb-2">
+        <div className="rounded-evoli-card border border-evoli-primary/10 bg-white/50 px-3 py-2 text-[8px] font-black uppercase tracking-widest text-evoli-text/45 flex items-center justify-between gap-3">
+          <span>Horizontal scrollen</span>
+          <span>Lang druecken zum Ziehen</span>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto pt-0 pb-2 custom-scrollbar overscroll-x-contain">
+        <div className="min-w-max w-full flex sm:justify-center px-3 sm:px-10">
           <div className="w-max">
           <div className="pt-0 pb-2 mb-2 border-b border-evoli-card-border/5">
-            <div className="flex gap-2">
-              <div className="w-[168px] flex-shrink-0">
+            <div className="flex gap-3 sm:gap-2">
+              <div className="w-[184px] sm:w-[168px] flex-shrink-0 sticky left-3 sm:static z-30 bg-evoli-bg/95 sm:bg-transparent pr-2 sm:pr-0">
                 <div className="px-1 py-1 bg-evoli-primary/10 text-evoli-primary rounded-evoli-card border border-evoli-primary/20 shadow-sm flex items-center justify-center h-full">
                   <span className="text-[10px] font-black uppercase tracking-tight">User Story</span>
                 </div>
               </div>
-              <div className="flex gap-2 flex-1">
+              <div className="flex gap-3 sm:gap-2 flex-1 snap-x snap-mandatory">
                 {COLUMNS.map(col => {
                   const wipLimit = col.id === 'NEXT' ? project?.wipLimits.next : col.id === 'DOING' ? project?.wipLimits.doing : undefined;
                   const wipCount = col.id === 'NEXT' ? nextCount : col.id === 'DOING' ? doingCount : undefined;
@@ -156,7 +162,7 @@ export const Board: React.FC = () => {
                   
                   return (
                     <div key={col.id} className={clsx(
-                      "w-[168px] flex-shrink-0 flex items-center justify-between px-2 py-2 rounded-evoli-card border-2 shadow-sm transition-all duration-300",
+                      "w-[190px] sm:w-[168px] flex-shrink-0 flex items-center justify-between px-2 py-2 rounded-evoli-card border-2 shadow-sm transition-all duration-300 snap-start",
                       isWipWarning ? "bg-red-50 border-red-400" : "bg-white/40 border-evoli-card-border/10"
                     )}>
                       <span className={clsx(
@@ -191,7 +197,7 @@ export const Board: React.FC = () => {
                 </Button>
               </Panel>
             ) : (
-              <div className="space-y-16">
+              <div className="space-y-10 sm:space-y-16">
                 {filteredStories.map(story => (
                   <Swimlane
                     key={story.id}
