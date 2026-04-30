@@ -19,6 +19,8 @@ import (
 	customMiddleware "goevoli/internal/middleware"
 	"goevoli/internal/repositories"
 	"goevoli/internal/services"
+
+	"golang.org/x/time/rate"
 )
 
 func main() {
@@ -64,6 +66,9 @@ func main() {
 	commentHandler := handlers.NewCommentHandler(svcs)
 	activityHandler := handlers.NewActivityHandler(svcs)
 
+	// Rate limiting: 1 req/min, burst 5
+	authLimiter := customMiddleware.NewLimiter(rate.Limit(1.0/60.0), 5)
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
@@ -105,16 +110,21 @@ func main() {
 		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"X-RateLimit-Limit", "X-RateLimit-Remaining"},
 		AllowCredentials: true,
 		MaxAge:           300,
 	}))
 
 	r.Route("/api", func(r chi.Router) {
 		r.Route("/auth", func(r chi.Router) {
-			r.Post("/login", authHandler.Login)
+			r.Group(func(r chi.Router) {
+				r.Use(customMiddleware.RateLimit(authLimiter))
+				r.Post("/login", authHandler.Login)
+				r.Post("/register", authHandler.Register)
+				r.Post("/check-email", authHandler.CheckEmail)
+			})
+
 			r.Post("/logout", authHandler.Logout)
-			r.Post("/register", authHandler.Register)
-			r.Post("/check-email", authHandler.CheckEmail)
 
 			r.Group(func(r chi.Router) {
 				r.Use(customMiddleware.AuthMiddleware)
