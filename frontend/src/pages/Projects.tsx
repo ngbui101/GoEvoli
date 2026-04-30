@@ -16,7 +16,6 @@ export const Projects: React.FC = () => {
   const navigate = useNavigate();
 
   const getProjectArtwork = (projectId: string) => {
-    // Generate a consistent index based on the ID string
     const hash = projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return FINAL_EVOLUTIONS[hash % FINAL_EVOLUTIONS.length];
   };

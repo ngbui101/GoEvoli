@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { boardApi } from '../api/board';
 import { projectsApi } from '../api/projects';
@@ -31,7 +31,7 @@ export const Board: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!projectId) return;
     setIsLoading(true);
     try {
@@ -57,11 +57,11 @@ export const Board: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [projectId]);
 
   useEffect(() => {
     fetchData();
-  }, [projectId]);
+  }, [fetchData]);
 
   const handleTaskMove = async (storyId: string, taskId: string, targetStatus: TaskStatus) => {
     try {
@@ -109,10 +109,8 @@ export const Board: React.FC = () => {
 
   return (
     <div className="h-screen bg-evoli-bg pt-24 flex flex-col overflow-hidden playmat-bg">
-      {/* Playmat Decorative Layer */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] playmat-pattern z-0" />
       <div className="fixed inset-0 pointer-events-none bg-gradient-to-tr from-evoli-primary/5 via-transparent to-evoli-primary/5 z-0" />
-      {/* Floating Header (Project Info) */}
       <PageHeader 
         title={project?.name || 'Spielfeld'}
         subtitle={project?.description}
@@ -140,12 +138,9 @@ export const Board: React.FC = () => {
           </>
         }
       />
-
-      {/* Scrollable Area (Headers + Body) */}
       <div className="flex-1 overflow-auto pt-0 pb-2">
         <div className="min-w-max w-full flex justify-center px-4 sm:px-10">
           <div className="w-max">
-          {/* Global Column Headers - Integrated into the Playmat */}
           <div className="pt-0 pb-2 mb-2 border-b border-evoli-card-border/5">
             <div className="flex gap-2">
               <div className="w-[168px] flex-shrink-0">
@@ -183,8 +178,6 @@ export const Board: React.FC = () => {
               </div>
             </div>
           </div>
-          
-          {/* Board Body */}
           <div className="space-y-6 pb-20">
             {filteredStories.length === 0 ? (
               <Panel className="flex flex-col items-center justify-center py-32 bg-white/20 border-dashed border-4 border-evoli-card-border/10 rounded-[2rem]">

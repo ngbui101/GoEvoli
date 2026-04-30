@@ -34,7 +34,7 @@ export const ProjectSettings: React.FC = () => {
           description: data.description,
           wipLimits: data.wipLimits
         });
-      } catch (e) {
+      } catch {
         toast.error('Projekt konnte nicht geladen werden');
       } finally {
         setIsLoading(false);
@@ -49,7 +49,7 @@ export const ProjectSettings: React.FC = () => {
     try {
       toast.success('Projekt-Konfiguration aktualisiert!');
       navigate(`/projects/${projectId}/board`);
-    } catch (e) {
+    } catch {
       toast.error('Fehler beim Speichern');
     }
   };

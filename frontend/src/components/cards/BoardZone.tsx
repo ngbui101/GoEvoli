@@ -35,9 +35,7 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
       )}
       style={{ containerType: 'inline-size' }}
     >
-      {/* Decorative Playmat SVG Frame */}
       <svg className="absolute inset-0 w-full h-full -z-10" preserveAspectRatio="none" viewBox="0 0 100 100">
-        {/* Main zone area */}
         <rect 
           x="2" y="2" width="96" height="96" rx="4" 
           fill="white" fillOpacity={isOver ? "0.15" : "0.05"} 
@@ -45,19 +43,14 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
           strokeWidth="0.5" 
           strokeDasharray="2 2"
         />
-        {/* Corner Ornaments */}
         <path d="M2 10V2H10" fill="none" stroke="#4D3122" strokeWidth="0.5" strokeOpacity="0.2" />
         <path d="M90 2H98V10" fill="none" stroke="#4D3122" strokeWidth="0.5" strokeOpacity="0.2" />
         <path d="M2 90V98H10" fill="none" stroke="#4D3122" strokeWidth="0.5" strokeOpacity="0.2" />
         <path d="M90 98H98V90" fill="none" stroke="#4D3122" strokeWidth="0.5" strokeOpacity="0.2" />
-        
-        {/* Active Glow */}
         {isOver && (
           <rect x="1" y="1" width="98" height="98" rx="5" fill="none" stroke="#925D3B" strokeWidth="2" strokeOpacity="0.3" className="animate-pulse" />
         )}
       </svg>
-
-      {/* Zone Header (if not hidden) */}
       {!hideHeader && (
         <div className="px-4 py-3 flex justify-between items-center border-b border-evoli-card-border/5">
           <div className="flex items-center gap-2">
@@ -76,8 +69,6 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
           </div>
         </div>
       )}
-
-      {/* WIP Progress Bar (Playmat Style) */}
       {wipLimit !== undefined && (
         <div className="absolute inset-x-4 top-12 flex gap-1.5 h-1 opacity-40">
           {Array.from({ length: wipLimit }).map((_, i) => (
@@ -88,8 +79,6 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
           ))}
         </div>
       )}
-
-      {/* Zone Body */}
       <div
         ref={setNodeRef}
         className={twMerge(
@@ -113,8 +102,6 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
           </div>
         )}
       </div>
-
-      {/* Center Label for empty zones when dragging */}
       {isOver && tasks.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="px-6 py-3 bg-evoli-primary text-white rounded-full border-2 border-white/20 shadow-2xl text-[11px] font-black uppercase tracking-[0.4em] animate-bounce">

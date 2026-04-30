@@ -24,7 +24,6 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Select a random evolution on mount to make the login screen feel special and collectible
     setRandomEvo(FINAL_EVOLUTIONS[Math.floor(Math.random() * FINAL_EVOLUTIONS.length)]);
   }, []);
 
@@ -35,7 +34,7 @@ export const Login: React.FC = () => {
   }, [user, navigate]);
 
   const validateEmail = (val: string): boolean => {
-    if (!val) return true; // Let HTML5 'required' handle empty strings
+    if (!val) return true;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(val)) {
       const msg = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
@@ -58,7 +57,6 @@ export const Login: React.FC = () => {
         setAuthMode('login');
       } else {
         setAuthMode('register');
-        // Default name from email if not set
         if (!name) {
           const prefix = email.split('@')[0];
           setName(prefix.charAt(0).toUpperCase() + prefix.slice(1));
@@ -91,7 +89,6 @@ export const Login: React.FC = () => {
       navigate('/projects');
     } catch (err: any) {
       let msg = err.message || 'Anmeldung fehlgeschlagen.';
-      // Check if it's a 401 error or contains the invalid credentials message
       if (msg.includes('401') || msg.toLowerCase().includes('invalid credentials')) {
         msg = 'Zugriff verweigert: Email oder Passwort falsch.';
       }
@@ -204,7 +201,6 @@ export const Login: React.FC = () => {
                       <Eye className="w-3.5 h-3.5" />
                     )}
                   </button>
-                  {/* Reserved space for error message to prevent jumping */}
                   <div className="h-4 mt-1">
                     {error && (
                       <p className="text-[7px] font-black uppercase tracking-widest text-red-600 animate-in fade-in slide-in-from-top-1 duration-300">
@@ -218,8 +214,6 @@ export const Login: React.FC = () => {
           </div>
         </CardShell>
       </div>
-      
-      {/* Decorative ornaments for the login screen background */}
       <div className="fixed top-20 left-20 w-40 h-40 bg-evoli-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed bottom-20 right-20 w-60 h-60 bg-evoli-secondary/10 rounded-full blur-3xl pointer-events-none" />
     </div>

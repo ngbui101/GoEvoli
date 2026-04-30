@@ -72,7 +72,6 @@ func (s *ProjectService) CreateProject(ctx context.Context, name, desc string, a
 		return nil, err
 	}
 
-	// Add creator as ADMIN
 	member := &models.ProjectMembership{
 		BaseModel: models.BaseModel{
 			ID:        primitive.NewObjectID(),
@@ -87,9 +86,5 @@ func (s *ProjectService) CreateProject(ctx context.Context, name, desc string, a
 		return nil, err
 	}
 
-	// Log
-	// No explicit entity for project creation logging, using user_story as placeholder or general task
-	// But let's add EntityTypeProject to models if needed, or use a workaround. The requirements say entityType: USER_STORY, TASK, SUBTASK.
-	// Wait, requirements say: "entityType: TASK". If there's no project type, we just omit it or use an empty one.
 	return proj, nil
 }

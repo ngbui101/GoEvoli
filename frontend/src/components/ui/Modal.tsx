@@ -57,7 +57,6 @@ export const Modal: React.FC<ModalProps> = ({
           maxWidths[maxWidth]
         )}
       >
-        {/* Header */}
         <div className="px-6 py-5 border-b border-evoli-primary/10 flex justify-between items-center bg-evoli-secondary/20">
           <h2 className="text-xl font-black text-evoli-primary mb-0">{title}</h2>
           <button 
@@ -67,8 +66,6 @@ export const Modal: React.FC<ModalProps> = ({
             <X className="w-5 h-5" />
           </button>
         </div>
-
-        {/* Content */}
         <div className="overflow-y-auto max-h-[80vh]">
           {children}
         </div>

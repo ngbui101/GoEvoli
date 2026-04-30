@@ -83,7 +83,6 @@ func (h *ProjectHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// We assume every logged in user can create a project, becoming its ADMIN.
 	proj, err := h.services.Project.CreateProject(r.Context(), req.Name, req.Description, userID)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, err.Error())

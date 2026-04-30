@@ -1,146 +1,134 @@
-# GoEvoli 🃏
+# GoEvoli
 
-> A collectible card game-inspired agile Kanban board for managing software projects.
+Collectible-card inspired project management for agile teams.
 
-![Go](https://img.shields.io/badge/Backend-Go%201.22-00ADD8?logo=go)
-![React](https://img.shields.io/badge/Frontend-React%2018-61DAFB?logo=react)
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb)
-![Docker](https://img.shields.io/badge/Deploy-Docker-2496ED?logo=docker)
+GoEvoli combines a Kanban workflow with trading-card visuals for stories, tasks, bugs, and project progress. The application is split into a Go API, a React frontend, and MongoDB persistence.
 
----
+## Documentation
 
-## Dokumentation
-
-Detaillierte Informationen findest du im [docs/](./docs/) Verzeichnis:
-- [Projektdokumentation & Konventionen](./docs/PROJEKT_DOKUMENTATION.md)
-- [Architektur-Überblick](./docs/architecture.md)
-- [Anforderungen & Spezifikation](./docs/requirements.md)
-- [Aktuelle TO-DO Liste](./docs/TODO.md)
-
----
+- [Project Documentation](./docs/PROJEKT_DOKUMENTATION.md)
+- [Architecture](./docs/architecture.md)
+- [Requirements](./docs/requirements.md)
+- [Roadmap and Known Issues](./docs/TODO.md)
 
 ## Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
-| **Backend** | Go 1.22, Chi Router, JWT (HttpOnly Cookies) |
-| **Frontend** | React 18, TypeScript, Vite, TailwindCSS |
-| **Database** | MongoDB (Atlas or self-hosted) |
-| **Deployment** | Docker + Docker Compose |
+| --- | --- |
+| Backend | Go, Chi, MongoDB driver, JWT session cookies |
+| Frontend | React, TypeScript, Vite, Tailwind CSS |
+| Database | MongoDB |
+| Deployment | Docker, Docker Compose, Render, Vercel |
 
----
-
-## Quick Start (Local Development)
+## Local Development
 
 ### Prerequisites
-- Go 1.22+
-- Node.js 20+
-- MongoDB (local or Atlas)
 
-### 1. Configure environment
+- Go 1.22 or newer
+- Node.js 20 or newer
+- MongoDB, local or hosted
+
+### Environment
+
 ```bash
 cp .env.example .env
-# Edit .env: set MONGO_URI and JWT_SECRET
 ```
 
-### 2. Start backend
+Configure at least:
+
+- `MONGO_URI`
+- `JWT_SECRET`
+- `FRONTEND_URL`
+
+### Backend
+
 ```bash
 cd backend
-go run ./cmd/seed    # Seed demo data (run once)
+go run ./cmd/seed
 go run ./cmd/server
-# → http://localhost:8080
 ```
 
-### 3. Start frontend
+The API runs on `http://localhost:8080` by default.
+
+### Frontend
+
 ```bash
 cd frontend
 npm install
 npm run dev
-# → http://localhost:5173
 ```
 
----
+The frontend runs on `http://localhost:5173` by default.
 
-## Docker Deployment
+## Docker
 
 ```bash
 cp .env.example .env
-# Edit .env: set MONGO_URI, JWT_SECRET, FRONTEND_URL, APP_ENV=production, COOKIE_SECURE=true
-
 docker compose up --build -d
-# Frontend → http://localhost:80
-# Backend  → http://localhost:8080
 ```
 
----
+Default local endpoints:
 
-## Demo Accounts
+- Frontend: `http://localhost`
+- Backend: `http://localhost:8080`
 
-After running `go run ./cmd/seed` (password for all: `password123`):
+## Seed Data
 
-| Email | Role |
-|-------|------|
-| `admin@example.com` | Admin / Product Owner |
-| `dev@example.com` | Developer |
-| `tester@example.com` | Tester |
-| `viewer@example.com` | Viewer |
-
----
+The seed command creates a demo project with representative users, stories, tasks, bugs, memberships, WIP limits, and board states. It is intended for local development and QA environments.
 
 ## Project Structure
 
-```
+```text
 GoEvoli/
-├── backend/              # Go API server
+├── backend/
 │   ├── cmd/
-│   │   ├── server/       # Entry point
-│   │   └── seed/         # Demo data seeder
+│   │   ├── server/
+│   │   └── seed/
 │   └── internal/
-│       ├── handlers/     # HTTP handlers
-│       ├── services/     # Business logic
-│       ├── models/       # Data models & enums
-│       └── repositories/ # MongoDB queries
-├── frontend/             # React SPA
-│   ├── src/
-│   │   ├── api/          # API client layer
-│   │   ├── components/   # Reusable components (cards, ui, board)
-│   │   ├── pages/        # Route-level pages
-│   │   ├── context/      # AuthContext
-│   │   └── types/        # TypeScript types
-│   └── nginx.conf        # Production SPA routing
-├── docs/                 # Project documentation
-│   ├── PROJEKT_DOKUMENTATION.md
-│   ├── architecture.md
-│   ├── requirements.md
-│   └── TODO.md
-├── local/                # Local-only sensitive data (gitignored)
+│       ├── auth/
+│       ├── handlers/
+│       ├── middleware/
+│       ├── models/
+│       ├── repositories/
+│       ├── response/
+│       ├── services/
+│       └── validation/
+├── frontend/
+│   ├── public/
+│   └── src/
+│       ├── api/
+│       ├── components/
+│       ├── context/
+│       ├── pages/
+│       ├── routes/
+│       ├── types/
+│       └── utils/
+├── docs/
 ├── docker-compose.yml
-├── .env.example
+├── render.yaml
 └── README.md
 ```
 
----
+Local-only operational files belong in `local/` or `.agents/`; both directories are ignored by Git.
 
 ## API Overview
 
-All routes under `/api/`. Auth via HttpOnly session cookie.
+All routes are served under `/api` and authenticated routes use an HttpOnly session cookie.
 
 | Resource | Endpoints |
-|----------|-----------|
-| Auth | `POST /auth/login`, `POST /auth/register`, `GET /auth/me` |
-| Projects | `GET/POST /projects/`, `PATCH /projects/:id/wip-limits` |
-| Stories | `GET/POST /projects/:id/stories`, `DELETE /stories/:id` |
-| Tasks | `GET/POST /stories/:id/tasks`, `POST /tasks/:id/move`, `DELETE /tasks/:id` |
-| Bugs | `GET/POST /projects/:id/bugs`, `POST /bugs/:id/close` |
-| Comments | `GET/POST /stories/:id/comments` |
+| --- | --- |
+| Auth | `POST /auth/login`, `POST /auth/register`, `GET /auth/me`, `POST /auth/logout` |
+| Projects | `GET /projects`, `POST /projects`, `GET /projects/:id`, `PATCH /projects/:id/wip-limits` |
+| Stories | `GET /projects/:id/stories`, `POST /projects/:id/stories`, `DELETE /stories/:id` |
+| Tasks | `GET /stories/:id/tasks`, `POST /stories/:id/tasks`, `POST /tasks/:id/move`, `DELETE /tasks/:id` |
+| Bugs | `GET /projects/:id/bugs`, `POST /projects/:id/bugs`, `POST /bugs/:id/close` |
+| Comments | `GET /stories/:id/comments`, `POST /stories/:id/comments` |
 
----
+## Current Roadmap
 
-## Known Limitations / Roadmap
-
-- [ ] Task assignment (Assigned tab – UI placeholder exists)
-- [ ] Real-time updates via WebSocket
-- [ ] Drag & Drop (dnd-kit integration pending)
-- [ ] Inline edit for stories/tasks
-- [ ] Bug management UI on board
-- [ ] Token refresh logic
+- Task assignment workflow
+- Real-time board updates
+- Drag and touch movement hardening
+- Inline story and task editing
+- Board-level bug management
+- Session refresh handling

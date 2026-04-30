@@ -178,7 +178,7 @@ func (s *StoryService) CalculateFinalEvolution(ctx context.Context, storyID prim
 		return nil, err
 	}
 	if domType == nil {
-		return nil, nil // Tie
+		return nil, nil
 	}
 
 	var evo models.FinalEvolution

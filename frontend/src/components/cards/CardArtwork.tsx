@@ -1,9 +1,5 @@
 import React from 'react';
 import type { StoryStatus, TaskType } from '../../types';
-
-// ─── Image Assets ─────────────────────────────────────────────────────────────
-
-// Evoli-Entwicklungen für DONE — deterministisch per ID gewählt
 export const FINAL_EVOLUTIONS = [
   { file: 'flamara',   label: 'Flamara',   holo: { from: '#f97316', via: '#ef4444', to: '#dc2626' } },
   { file: 'aquana',    label: 'Aquana',    holo: { from: '#3b82f6', via: '#06b6d4', to: '#0ea5e9' } },
@@ -13,43 +9,35 @@ export const FINAL_EVOLUTIONS = [
   { file: 'glaziola',  label: 'Glaziola',  holo: { from: '#bae6fd', via: '#a5f3fc', to: '#c7d2fe' } },
   { file: 'folopurba', label: 'Folipurba', holo: { from: '#4ade80', via: '#10b981', to: '#34d399' } },
 ];
-
-// ─── Holo-Farben je Typ ────────────────────────────────────────────────────────
 const typeHoloColors: Record<string, { from: string; via: string; to: string }> = {
-  UI_UX:         { from: '#f97316', via: '#ea580c', to: '#dc2626' }, // Feuerstein → Orange/Rot
-  FUNCTIONALITY: { from: '#facc15', via: '#eab308', to: '#a16207' }, // Donnerstein → Gelb
-  STABILITY:     { from: '#38bdf8', via: '#0ea5e9', to: '#0369a1' }, // Wasserstein → Blau
-  BUG:           { from: '#ef4444', via: '#b91c1c', to: '#7f1d1d' }, // Bug → Dunkelrot
+  UI_UX:         { from: '#f97316', via: '#ea580c', to: '#dc2626' },
+  FUNCTIONALITY: { from: '#facc15', via: '#eab308', to: '#a16207' },
+  STABILITY:     { from: '#38bdf8', via: '#0ea5e9', to: '#0369a1' },
+  BUG:           { from: '#ef4444', via: '#b91c1c', to: '#7f1d1d' },
   DEFAULT:       { from: '#f59e0b', via: '#ea580c', to: '#925D3B' },
 };
-
-// ─── Hintergrund-Konfigurationen je Status (Wiesen-Grün) ──────────────────────
 const sceneBg: Record<string, { from: string; to: string }> = {
-  EGG:             { from: '#2d5a1b', to: '#4a8c2a' }, // helles Wiesengrün
-  EVOLVING:        { from: '#1a4a2e', to: '#2d7a4a' }, // satteres Dunkelgrün
-  READY_FOR_TEST:  { from: '#3d6b1a', to: '#5c9e28' }, // helleres Grasgrün
-  BLOCKED:         { from: '#4a2a1a', to: '#6b3d22' }, // Herbstwiese / erdiger Ton
-  FINAL_EVOLUTION: { from: '#1a5a1a', to: '#2e8b2e' }, // leuchtendes Smaragdgrün
-  DONE:            { from: '#1a5c2e', to: '#28a045' }, // frisches Frühlingsgrün
-  TASK:            { from: '#2d5a1b', to: '#4a8c2a' }, // Wiese für Task-Steine
-  BUG:             { from: '#4a2a1a', to: '#6b3d22' }, // Herbstton für Bugs
-  NEUTRAL:         { from: '#d6d3d1', to: '#78716c' }, // Neutrale Steinfarben
+  EGG:             { from: '#2d5a1b', to: '#4a8c2a' },
+  EVOLVING:        { from: '#1a4a2e', to: '#2d7a4a' },
+  READY_FOR_TEST:  { from: '#3d6b1a', to: '#5c9e28' },
+  BLOCKED:         { from: '#4a2a1a', to: '#6b3d22' },
+  FINAL_EVOLUTION: { from: '#1a5a1a', to: '#2e8b2e' },
+  DONE:            { from: '#1a5c2e', to: '#28a045' },
+  TASK:            { from: '#2d5a1b', to: '#4a8c2a' },
+  BUG:             { from: '#4a2a1a', to: '#6b3d22' },
+  NEUTRAL:         { from: '#d6d3d1', to: '#78716c' },
 };
-
-// ─── Partikel-Farben je Status ────────────────────────────────────────────────
 const particleColors: Record<string, string[]> = {
-  EGG:             ['#d4edda', '#a8d5b5', '#7ec8a0'],  // helle Wiesenblüten
-  EVOLVING:        ['#86efac', '#4ade80', '#facc15'],   // grün + Blitze
-  READY_FOR_TEST:  ['#fef08a', '#fde047', '#bef264'],   // Gänseblümchen / Sonne
-  BLOCKED:         ['#fca5a5', '#ef4444', '#d97706'],   // Warnung auf Gras
-  FINAL_EVOLUTION: ['#f9a8d4', '#c084fc', '#86efac', '#7dd3fc'], // Regenbogen-Blüten
-  DONE:            ['#bbf7d0', '#6ee7b7', '#fef9c3'],   // Frühlingsblüten
-  TASK:            ['#d4edda', '#bef264', '#fef08a'],   // Blüten auf Wiese
-  BUG:             ['#fca5a5', '#ef4444', '#d97706'],   // Warnung
-  NEUTRAL:         ['#f5f5f4', '#e7e5e4', '#d6d3d1'],   // Sanfte Steinelemente
+  EGG:             ['#d4edda', '#a8d5b5', '#7ec8a0'],
+  EVOLVING:        ['#86efac', '#4ade80', '#facc15'],
+  READY_FOR_TEST:  ['#fef08a', '#fde047', '#bef264'],
+  BLOCKED:         ['#fca5a5', '#ef4444', '#d97706'],
+  FINAL_EVOLUTION: ['#f9a8d4', '#c084fc', '#86efac', '#7dd3fc'],
+  DONE:            ['#bbf7d0', '#6ee7b7', '#fef9c3'],
+  TASK:            ['#d4edda', '#bef264', '#fef08a'],
+  BUG:             ['#fca5a5', '#ef4444', '#d97706'],
+  NEUTRAL:         ['#f5f5f4', '#e7e5e4', '#d6d3d1'],
 };
-
-// ─── Deterministische Zufallszahl aus String ──────────────────────────────────
 function deterministicIndex(id: string, length: number): number {
   let hash = 0;
   for (let i = 0; i < id.length; i++) {
@@ -58,8 +46,6 @@ function deterministicIndex(id: string, length: number): number {
   }
   return Math.abs(hash) % length;
 }
-
-// ─── Story Image Resolver ─────────────────────────────────────────────────────
 export interface StoryArtworkInfo {
   file: string;
   label: string;
@@ -81,8 +67,6 @@ export function resolveStoryArtwork(
   }
   return { file: 'egg', label: 'Ei', holo: { from: '#c084fc', via: '#7c3aed', to: '#4f46e5' } };
 }
-
-// ─── Task Image Resolver ──────────────────────────────────────────────────────
 export interface TaskArtworkInfo {
   file: string;
   label: string;
@@ -98,8 +82,6 @@ export function resolveTaskArtwork(type: TaskType): TaskArtworkInfo {
     default:              return { file: 'thunderstone', label: 'Donnerstein', holo: typeHoloColors.DEFAULT };
   }
 }
-
-// ─── Floating Particles (pure SVG) ───────────────────────────────────────────
 const FloatingParticles: React.FC<{ colors: string[] }> = ({ colors }) => (
   <g>
     {Array.from({ length: 12 }).map((_, i) => {
@@ -117,18 +99,11 @@ const FloatingParticles: React.FC<{ colors: string[] }> = ({ colors }) => (
     })}
   </g>
 );
-
-// ─── Hauptkomponente ──────────────────────────────────────────────────────────
 interface CardArtworkProps {
-  /** Pfad zum Bild, z.B. "egg" → /img/egg.png */
   imageName: string;
-  /** Anzeigename im Viewport */
   imageLabel: string;
-  /** Holo-Farben */
   holo: { from: string; via: string; to: string };
-  /** Status (für Hintergrundszene) */
   status: StoryStatus | 'BUG' | 'TASK';
-  /** Board-Modus (kleinere Karte) */
   isBoard?: boolean;
 }
 
@@ -144,16 +119,12 @@ export const CardArtwork: React.FC<CardArtworkProps> = ({
 
   return (
     <div className="relative w-full h-full overflow-hidden card-artwork-root select-none">
-
-      {/* ── Layer 1: Hintergrund-Gradient ── */}
       <div
         className="absolute inset-0"
         style={{
           background: `radial-gradient(ellipse at 50% 110%, ${bg.to} 0%, ${bg.from} 100%)`,
         }}
       />
-
-      {/* ── Layer 2: Partikel-SVG ── */}
       <svg
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid slice"
@@ -161,8 +132,6 @@ export const CardArtwork: React.FC<CardArtworkProps> = ({
       >
         <FloatingParticles colors={pColors} />
       </svg>
-
-      {/* ── Layer 3: PNG Artwork (schwebend) ── */}
       <div className="absolute inset-0 flex items-center justify-center">
         <img
           src={`/img/${imageName}.png`}
@@ -175,8 +144,6 @@ export const CardArtwork: React.FC<CardArtworkProps> = ({
           draggable={false}
         />
       </div>
-
-      {/* ── Layer 4: Holo-Foil (Concept C) ── */}
       <div
         className="absolute inset-0 card-holo-foil pointer-events-none"
         style={{
@@ -199,8 +166,6 @@ export const CardArtwork: React.FC<CardArtworkProps> = ({
           mixBlendMode: 'screen',
         }}
       />
-
-      {/* ── Layer 5: Prismatischer Sweep (Hover) ── */}
       <div
         className="absolute inset-0 card-holo-sweep pointer-events-none"
         style={{
@@ -214,16 +179,12 @@ export const CardArtwork: React.FC<CardArtworkProps> = ({
           )`,
         }}
       />
-
-      {/* ── Layer 6: Vignette (Tiefe) ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 35%, rgba(0,0,0,0.25) 100%)',
         }}
       />
-
-      {/* ── Bildname-Label im Viewport ── */}
       <div
         className="absolute bottom-0 inset-x-0 flex items-end justify-center pb-1 pointer-events-none"
         style={{

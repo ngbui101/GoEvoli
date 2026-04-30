@@ -90,11 +90,11 @@
 
   .evoli-select option {
     @apply font-black uppercase tracking-tight bg-evoli-secondary text-evoli-text;
-    /* Note: some browsers limit option styling */
+    
   }
 }
 
-/* ── PNG Artwork floating animation ── */
+
 @keyframes artworkFloat {
   0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
   50%       { transform: translateY(-5px) scale(1.02); filter: drop-shadow(0 16px 24px rgba(0,0,0,0.6)); }
@@ -104,11 +104,9 @@
 }
 
 
-/* ═══════════════════════════════════════════════════════════
-   CARD ARTWORK ANIMATIONS  (Concept A + C)
-   ═══════════════════════════════════════════════════════════ */
 
-/* ── Floating Particles (universal) ── */
+
+
 @keyframes floatUp {
   0%   { transform: translateY(0px) scale(1);   opacity: 0.4; }
   50%  { transform: translateY(-12px) scale(1.2); opacity: 0.7; }
@@ -123,14 +121,14 @@
 .fp-5 { animation-delay: 0.8s;  animation-duration: 3.1s; }
 .fp-6 { animation-delay: 1.2s;  animation-duration: 2.7s; }
 
-/* ── EGG: pulsing glow ── */
+
 @keyframes eggGlow {
   0%, 100% { opacity: 0.1;  r: 18; }
   50%       { opacity: 0.25; r: 21; }
 }
 .card-egg-glow { animation: eggGlow 2.4s ease-in-out infinite; }
 
-/* ── EVOLVING: bolt flicker ── */
+
 @keyframes boltFlicker {
   0%, 100% { opacity: 0; }
   10%       { opacity: 0.9; }
@@ -154,7 +152,7 @@
 }
 .card-evolve-ring { animation: ringExpand 2s ease-out infinite; }
 
-/* ── READY_FOR_TEST: star rotation + sparkles ── */
+
 @keyframes slowSpin {
   from { transform-origin: 50px 52px; transform: rotate(0deg); }
   to   { transform-origin: 50px 52px; transform: rotate(360deg); }
@@ -177,7 +175,7 @@
 .card-sparkle-5    { animation-delay: 1.25s; }
 .card-star-ring    { animation: ringPulse 2s ease-in-out infinite; }
 
-/* ── BLOCKED: flame flicker ── */
+
 @keyframes flicker {
   0%, 100% { transform: scaleY(1)   skewX(0deg);   opacity: 0.6; }
   25%       { transform: scaleY(1.1) skewX(-3deg);  opacity: 0.8; }
@@ -186,7 +184,7 @@
 }
 .card-flame { animation: flicker 0.8s ease-in-out infinite; transform-origin: center bottom; }
 
-/* ── FINAL EVOLUTION: rainbow rays + gem spin + orbit ── */
+
 @keyframes rayPulse {
   0%, 100% { opacity: 0.3; }
   50%       { opacity: 0.6; }
@@ -221,7 +219,7 @@
 .card-orbit-1   { animation-name: orbit1; }
 .card-orbit-2   { animation-name: orbit2; }
 
-/* ── DONE: heartbeat ── */
+
 @keyframes heartBeat {
   0%, 100% { transform-origin: 50px 46px; transform: scale(1); }
   14%       { transform-origin: 50px 46px; transform: scale(1.1); }
@@ -231,11 +229,9 @@
 }
 .card-heart-beat { animation: heartBeat 1.6s ease-in-out infinite; }
 
-/* ═══════════════════════════════════════════════════════════
-   HOLOGRAPHIC FOIL  (Concept C)
-   ═══════════════════════════════════════════════════════════ */
 
-/* Foil: slow hue rotation on the conic layer */
+
+
 @keyframes holoHue {
   from { filter: hue-rotate(0deg) brightness(1); }
   to   { filter: hue-rotate(360deg) brightness(1.1); }
@@ -245,13 +241,13 @@
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-/* Show foil on card hover */
+
 .group:hover .card-holo-foil,
 .card-artwork-root:hover .card-holo-foil {
   opacity: 1;
 }
 
-/* Sweep: slides across on hover */
+
 @keyframes holoSweep {
   from { background-position: -100% 0; }
   to   { background-position: 200% 0; }

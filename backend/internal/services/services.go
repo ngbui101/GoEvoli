@@ -38,7 +38,6 @@ func NewServices(repos *repositories.Repositories) *Services {
 	}
 }
 
-// Helper struct to log activities quickly
 type ActivityService struct {
 	repos *repositories.Repositories
 }

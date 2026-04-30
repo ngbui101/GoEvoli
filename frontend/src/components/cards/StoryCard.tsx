@@ -68,8 +68,6 @@ export const StoryCard: React.FC<StoryCardProps> = ({
 
   const dominantCategory = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1])[0]?.[0];
   const hasBug = tasks.some(t => t.type === 'BUG');
-
-  // Artwork-Logik: Ei → Evoli (bei Doing) → Entwicklung (alle fertig)
   const hasDoing = tasks.some(t => t.status === 'DOING');
   const allDone  = totalTasks > 0 && doneTasks === totalTasks;
   const artworkInfo = resolveStoryArtwork(story.status, hasDoing, allDone, story.id);

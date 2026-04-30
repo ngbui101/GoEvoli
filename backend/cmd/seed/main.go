@@ -43,8 +43,6 @@ func main() {
 
 	repos := repositories.NewRepositories(db.DB)
 	ctx := context.Background()
-
-	// Wipe Database
 	fmt.Println("Wiping database...")
 	err = db.DB.Drop(ctx)
 	if err != nil {
@@ -90,8 +88,6 @@ func main() {
 		fmt.Printf("Created user: %s\n", u.Email)
 		userMap[u.Email] = newUser.ID
 	}
-
-	// Create Demo Project
 	project := &models.Project{
 		BaseModel: models.BaseModel{
 			ID:        primitive.NewObjectID(),
@@ -107,8 +103,6 @@ func main() {
 	}
 	repos.Projects.Create(ctx, project)
 	fmt.Println("Created default project: Pokémon GoEvoli (Full Demo)")
-
-	// Assign ALL roles to project
 	for _, u := range users {
 		membership := &models.ProjectMembership{
 			BaseModel: models.BaseModel{
@@ -122,9 +116,6 @@ func main() {
 		}
 		repos.ProjectMemberships.Create(ctx, membership)
 	}
-
-	// Seed Stories & Tasks
-	// 1. EGG
 	s1 := &models.UserStory{
 		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		ProjectId: project.ID,
@@ -146,8 +137,6 @@ func main() {
 		CreatedBy: userMap["admin@example.com"],
 		Assigned:  []primitive.ObjectID{userMap["dev@example.com"]},
 	})
-
-	// 2. EVOLVING
 	s2 := &models.UserStory{
 		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		ProjectId: project.ID,
@@ -180,8 +169,6 @@ func main() {
 		CreatedBy: userMap["scrum@example.com"],
 		Assigned:  []primitive.ObjectID{userMap["dev@example.com"]},
 	})
-
-	// 3. BLOCKED
 	s3 := &models.UserStory{
 		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		ProjectId: project.ID,
@@ -213,8 +200,6 @@ func main() {
 		AffectedEntityType: models.EntityTypeTask,
 		AffectedEntityId:   t3.ID,
 	})
-
-	// 4. READY_FOR_TEST
 	s4 := &models.UserStory{
 		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		ProjectId: project.ID,
