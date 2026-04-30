@@ -71,12 +71,8 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
 
   return (
     <div className="flex gap-2 pb-10 last:pb-0 relative">
-      {/* Visual lane indicator - Game Playmat Style */}
       <div className="absolute left-[172px] top-0 bottom-10 w-1 bg-evoli-card-border/5 rounded-full" />
-
-      {/* Story card section - The "User Story Zone" */}
       <div className="w-[168px] flex-shrink-0 flex flex-col relative pt-0">
-         {/* User Story Zone Frame (Matches BoardZone aesthetic) */}
          <div className="absolute inset-x-0 top-0 bottom-0 -z-10 px-0.5">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
                <rect 
@@ -94,8 +90,6 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
             <StoryCard size="board" story={story} tasks={tasks} onClick={() => onStoryClick(story)} />
          </div>
       </div>
-
-      {/* Kanban columns - The "Action Zones" */}
       <DndContext 
         sensors={sensors} 
         collisionDetection={closestCorners} 

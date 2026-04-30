@@ -89,7 +89,7 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Secure:   secure,
 		SameSite: sameSite,
-		MaxAge:   86400, // 24 hours
+		MaxAge:   86400,
 	})
 
 	response.JSON(w, http.StatusOK, map[string]string{"message": "Login successful"})
@@ -131,7 +131,6 @@ func (h *AuthHandler) Me(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Password hash is omitted because it has `json:"-"` in the models.User struct
 	response.JSON(w, http.StatusOK, user)
 }
 
@@ -147,7 +146,6 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if user already exists
 	existing, err := h.repos.Users.FindOne(r.Context(), bson.M{"email": req.Email})
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "Database error")

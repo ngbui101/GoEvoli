@@ -67,13 +67,11 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	// Build allowed origins from environment
 	allowedOrigins := []string{"http://localhost:5173", "http://localhost:5178"}
 	if frontendURL := os.Getenv("FRONTEND_URL"); frontendURL != "" {
 		allowedOrigins = append(allowedOrigins, frontendURL)
 	}
 	if os.Getenv("APP_ENV") == "production" {
-		// In production only allow the configured FRONTEND_URL
 		if frontendURL := os.Getenv("FRONTEND_URL"); frontendURL != "" {
 			allowedOrigins = []string{frontendURL}
 		}
@@ -154,7 +152,6 @@ func main() {
 		})
 	})
 
-	// Render sets PORT automatically; BACKEND_PORT is our custom override
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = os.Getenv("BACKEND_PORT")

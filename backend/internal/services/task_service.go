@@ -26,8 +26,6 @@ func NewTaskService(repos *repositories.Repositories, activity *ActivityService,
 }
 
 func (s *TaskService) CanTaskBeDone(ctx context.Context, taskID primitive.ObjectID) error {
-	// A bug service is actually needed to check bugs, but to prevent circular dependencies
-	// we just query the DB directly here for bugs.
 	hasBlockingBug := func(eType models.EntityType, eID primitive.ObjectID) (bool, error) {
 		filter := bson.M{
 			"affectedEntityType": eType,

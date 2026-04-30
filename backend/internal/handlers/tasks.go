@@ -79,7 +79,6 @@ func (h *TaskHandler) Move(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Rule 4 & 5: Check if task can be done
 	if req.TargetStatus == models.TaskStatusDone {
 		if err := h.services.Task.CanTaskBeDone(r.Context(), taskID); err != nil {
 			response.Error(w, http.StatusConflict, err.Error())
@@ -87,7 +86,6 @@ func (h *TaskHandler) Move(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Rule 2 & 3: Validate WIP Limit
 	if req.TargetStatus == models.TaskStatusNext || req.TargetStatus == models.TaskStatusDoing {
 		if err := h.services.Project.ValidateWipLimit(r.Context(), task.ProjectId, req.TargetStatus); err != nil {
 			response.Error(w, http.StatusConflict, "WIP Limit Exceeded")

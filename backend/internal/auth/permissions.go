@@ -31,11 +31,11 @@ func AssertProjectPermission(ctx context.Context, repos *repositories.Repositori
 	}
 
 	if membership.Role == models.RoleAdmin {
-		return nil // Admin can do everything
+		return nil
 	}
 
 	if len(allowedRoles) == 0 {
-		return nil // Just being a member is enough
+		return nil
 	}
 
 	for _, role := range allowedRoles {

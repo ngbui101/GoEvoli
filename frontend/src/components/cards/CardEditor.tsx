@@ -15,8 +15,6 @@ interface CardEditorProps {
 export const CardEditor: React.FC<CardEditorProps> = ({ 
   variant: initialVariant, 
   onSave, 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onCancel: _onCancel,
   initialData = {},
   stories = []
 }) => {
@@ -101,7 +99,6 @@ export const CardEditor: React.FC<CardEditorProps> = ({
           }
         >
           <div className="flex flex-col h-full gap-3">
-             {/* Tab Navigation */}
              <div className="flex gap-1 border-b border-evoli-primary/10 mb-1">
                 {['beschreibung', 'details', 'assigned'].map(tab => (
                   <button

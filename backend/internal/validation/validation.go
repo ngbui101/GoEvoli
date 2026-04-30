@@ -26,11 +26,10 @@ func ValidateStory(title, desc string, priority models.Priority) error {
 	}
 	switch priority {
 	case models.PriorityLow, models.PriorityMedium, models.PriorityHigh, models.PriorityCritical:
-		// ok
+		return nil
 	default:
 		return ErrInvalidPriority
 	}
-	return nil
 }
 
 func ValidateTask(title, desc string, workload float64, taskType models.TaskType) error {
@@ -45,11 +44,10 @@ func ValidateTask(title, desc string, workload float64, taskType models.TaskType
 	}
 	switch taskType {
 	case models.TaskTypeFunctionality, models.TaskTypeUIUX, models.TaskTypeStability, models.TaskTypeBug:
-		// ok
+		return nil
 	default:
 		return ErrInvalidTaskType
 	}
-	return nil
 }
 
 func ValidateBug(title, desc string, severity models.Severity, affectedType models.EntityType) error {
@@ -61,15 +59,13 @@ func ValidateBug(title, desc string, severity models.Severity, affectedType mode
 	}
 	switch severity {
 	case models.SeverityLow, models.SeverityMedium, models.SeverityHigh, models.SeverityCritical:
-		// ok
 	default:
 		return ErrInvalidSeverity
 	}
 	switch affectedType {
 	case models.EntityTypeUserStory, models.EntityTypeTask, models.EntityTypeSubtask:
-		// ok
+		return nil
 	default:
 		return ErrInvalidEntityType
 	}
-	return nil
 }

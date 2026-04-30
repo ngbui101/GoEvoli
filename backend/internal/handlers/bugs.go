@@ -79,7 +79,6 @@ func (h *BugHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	h.services.Activity.Log(r.Context(), projectID, userID, models.EntityTypeTask, bug.ID, models.ActivityActionBugCreated, "", "")
 
-	// Must trigger recalculation for the affected story
 	if req.AffectedEntityType == models.EntityTypeUserStory {
 		h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), req.AffectedEntityId)
 	} else if req.AffectedEntityType == models.EntityTypeTask {
@@ -149,7 +148,6 @@ func (h *BugHandler) Close(w http.ResponseWriter, r *http.Request) {
 
 	h.services.Activity.Log(r.Context(), bug.ProjectId, userID, models.EntityTypeTask, bug.ID, models.ActivityActionBugClosed, string(bug.Status), string(models.BugStatusClosed))
 
-	// Recalculate
 	if bug.AffectedEntityType == models.EntityTypeUserStory {
 		h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), bug.AffectedEntityId)
 	} else if bug.AffectedEntityType == models.EntityTypeTask {

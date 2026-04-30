@@ -20,7 +20,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const userData = await authApi.getMe();
       setUser(userData);
-    } catch (error) {
+    } catch {
       setUser(null);
     } finally {
       setIsLoading(false);

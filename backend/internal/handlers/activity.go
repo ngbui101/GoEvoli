@@ -42,10 +42,7 @@ func (h *ActivityHandler) GetForStory(w http.ResponseWriter, r *http.Request) {
 
 	activities, err := h.services.Repos.ActivityLogs.Find(r.Context(), bson.M{
 		"projectId": story.ProjectId,
-		// Actually, requirements say GET /api/stories/{storyId}/activity
-		// We might just return all activity for that story's entities.
-		// For simplicity, we just filter by projectId or storyId. Let's filter by entityId=storyID.
-		"entityId": storyID,
+		"entityId":  storyID,
 	})
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, err.Error())

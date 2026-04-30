@@ -9,13 +9,13 @@ services:
       - key: APP_ENV
         value: production
       - key: MONGO_URI
-        sync: false  # set manually in Render Dashboard
+        sync: false
       - key: MONGO_DATABASE
         value: goevoli
       - key: JWT_SECRET
-        generateValue: true  # Render generates a random secret
+        generateValue: true
       - key: FRONTEND_URL
-        sync: false  # set to your Vercel URL after deploying frontend
+        sync: false
       - key: COOKIE_NAME
         value: goevoli_session
       - key: COOKIE_SECURE

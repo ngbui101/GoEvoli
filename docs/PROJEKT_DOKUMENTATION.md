@@ -136,7 +136,7 @@ Fullscreen-Overlay mit Backdrop-Blur. Schließbar per X-Button oben rechts.
 
 - Links: `StoryCard` als "User Story"-Zone
 - Rechts: 5 Spalten mit `TaskStack` pro Status
-- Drag & Drop: Buttons zum Verschieben (kein dnd-kit aktiv)
+- Drag & Drop: Tasks werden per Halten-und-Schieben zwischen Spalten verschoben; separate Move-Buttons sind nicht vorgesehen.
 
 #### Story-Card (`StoryCard.tsx`)
 
@@ -273,7 +273,7 @@ Story- und Task-Löschung nutzt aktuell `window`-Callbacks:
 
 - [ ] **Assigned-Tab im CardEditor**: Trainer einem Task zuweisen
 - [ ] **Dynamische Profildaten**: Projekte/Tasks/XP aus der Datenbank
-- [ ] **Drag & Drop**: dnd-kit Integration für Task-Verschiebung
+- [ ] **Drag & Drop / Touch Dragging**: Task-Verschiebung per Halten-und-Schieben robust fuer Desktop und Mobile absichern
 - [ ] **Bearbeiten-Funktion**: Stories/Tasks inline editieren
 - [ ] **Bug-Management UI**: Bug-Karten auf dem Board anzeigen
 
