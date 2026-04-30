@@ -27,6 +27,7 @@ apiClient.interceptors.response.use(
       const err = new Error(message) as any;
       err.status = error.response.status;
       err.data = data;
+      err.headers = error.response.headers;
       return Promise.reject(err);
     }
     return Promise.reject(error);

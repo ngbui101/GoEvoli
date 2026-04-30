@@ -20,6 +20,7 @@ export const Login: React.FC = () => {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [randomEvo, setRandomEvo] = useState(FINAL_EVOLUTIONS[0]);
+  const [attempts, setAttempts] = useState<number | null>(null);
   const { login, user } = useAuth();
   const navigate = useNavigate();
 
@@ -219,6 +220,11 @@ export const Login: React.FC = () => {
                     {error && (
                       <p className="text-[7px] font-black uppercase tracking-widest text-red-600 animate-in fade-in slide-in-from-top-1 duration-300">
                         {error}
+                      </p>
+                    )}
+                    {attempts !== null && attempts < 5 && (
+                      <p className="text-[6px] font-black uppercase tracking-widest text-evoli-primary mt-1 animate-in fade-in duration-300">
+                        Noch {attempts} Versuche verbleibend
                       </p>
                     )}
                   </div>
