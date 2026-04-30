@@ -100,11 +100,21 @@ func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 		cookieName = "goevoli_session"
 	}
 
+	secure := os.Getenv("COOKIE_SECURE") == "true"
+	sameSite := http.SameSiteLaxMode
+	if os.Getenv("COOKIE_SAME_SITE") == "None" {
+		sameSite = http.SameSiteNoneMode
+	} else if os.Getenv("COOKIE_SAME_SITE") == "Strict" {
+		sameSite = http.SameSiteStrictMode
+	}
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     cookieName,
 		Value:    "",
 		Path:     "/",
 		HttpOnly: true,
+		Secure:   secure,
+		SameSite: sameSite,
 		MaxAge:   -1,
 	})
 
