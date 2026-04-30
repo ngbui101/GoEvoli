@@ -8,7 +8,6 @@
 - [ ] Inline editing
 - [ ] Bug management UI
 - [ ] Mobile-optimierte Board-Ansicht fuer Touch-Nutzung
-- [ ] Klarer Empty-/Loading-State fuer Projektlisten
 
 ## Bugs
 
@@ -46,8 +45,6 @@
 - [ ] **Profil-Statistiken wirken statisch**  
   Live-QA 2026-04-30: Profilseite zeigt Projekte/Tasks/XP als feste Werte wirkend. Falls die Werte dynamisch sein sollen, sollte klar sein, wann sie aktualisiert werden. Falls sie Platzhalter sind, sollte das nicht wie echte Produktmetrik wirken.
 
-- [ ] **CORS Port Sensitivity**  
-  Der Backend-Server erlaubt nur `localhost:5173` und `localhost:5178`. Wenn das Frontend auf einem anderen Port, z.B. 5174, startet, schlagen API-Anfragen fehl.
 
 ## Cyber Security
 
