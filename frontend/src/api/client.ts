@@ -17,6 +17,10 @@ apiClient.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (error.response?.status === 401) {
+      window.dispatchEvent(new Event('goevoli:unauthorized'));
+    }
+
     if (error.response && error.response.data) {
       const data = error.response.data;
       const message = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);

@@ -31,6 +31,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     fetchMe();
   }, []);
 
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      setUser(null);
+    };
+
+    window.addEventListener('goevoli:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('goevoli:unauthorized', handleUnauthorized);
+  }, []);
+
   const login = async (credentials: LoginCredentials) => {
     await authApi.login(credentials);
     await fetchMe();

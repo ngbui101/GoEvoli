@@ -111,6 +111,7 @@ Fullscreen-Overlay mit Backdrop-Blur. Schließbar per X-Button oben rechts.
 - **Felder**: Email (mit Blur-Check) + Passwort (mit Toggle-Sichtbarkeit)
 - **API**: `POST /api/auth/login`, `POST /api/auth/register`, `POST /api/auth/check-email`
 - **Auth-State**: `AuthContext` speichert User, JWT via HttpOnly Cookie
+- **Session**: JWT-Ablauf wird serverseitig geprueft (`SESSION_DURATION`, default `24h`); Cookie ist ein Browser-Session-Cookie ohne `Max-Age`
 
 ### 2. Projekte (`/projects`)
 
