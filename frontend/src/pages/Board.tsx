@@ -152,7 +152,7 @@ export const Board: React.FC = () => {
                 {COLUMNS.map(col => {
                   const wipLimit = col.id === 'NEXT' ? project?.wipLimits.next : col.id === 'DOING' ? project?.wipLimits.doing : undefined;
                   const wipCount = col.id === 'NEXT' ? nextCount : col.id === 'DOING' ? doingCount : undefined;
-                  const isWipWarning = wipLimit !== undefined && wipCount !== undefined && wipCount >= wipLimit;
+                  const isWipWarning = wipLimit !== undefined && wipCount !== undefined && wipCount > wipLimit;
                   
                   return (
                     <div key={col.id} className={clsx(

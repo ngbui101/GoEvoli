@@ -25,7 +25,7 @@ export const BoardZone: React.FC<BoardZoneProps> = ({
     data: { type: 'Column', status: id },
   });
 
-  const isWipWarning = wipLimit !== undefined && wipCount !== undefined && wipCount >= wipLimit;
+  const isWipWarning = wipLimit !== undefined && wipCount !== undefined && wipCount > wipLimit;
 
   return (
     <div

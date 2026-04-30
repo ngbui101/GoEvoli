@@ -19,8 +19,9 @@
   Live-QA 2026-04-30 bestaetigt: Beim Oeffnen des Demo-Projekts bleibt die Ansicht lange bei "LADE SPIELFELD...". In einem Test war das Board erst nach ca. 30 Sekunden sichtbar. Bereits vorher war bekannt, dass das Board nach Refresh oder Navigation von Settings/Profil haengen kann.  
   Severity: Mittel bis Hoch. `blocksWork = teilweise`.
 
-- [ ] **Mobile Board Header schneidet Titel und Untertitel ab**  
+- [x] **Mobile Board Header schneidet Titel und Untertitel ab**
   Live-QA 2026-04-30: Auf einem mobilen Viewport ca. 390x844 werden Projektname und Untertitel im Board-Header stark gekuerzt, z.B. "POKE..." und "A...". Der Kontext geht verloren.  
+  Behoben 2026-04-30: PageHeader stapelt Header-Inhalt auf Mobile und erlaubt Titel/Untertitel bis zu zwei Zeilen.
   Severity: Niedrig bis Mittel. `blocksWork = false`.
 
 - [ ] **Mobile Board-Karten sind schwer nutzbar**  
@@ -30,8 +31,9 @@
 - [ ] **Login-Instabilitaet / Auth-Session Fehler**  
   Aelterer Befund: Der erste Login-Versuch mit korrekten Daten schlaegt gelegentlich mit "Access Denied" fehl oder zeigt faelschlicherweise eine E-Mail-Validierungsmeldung. Live-QA 2026-04-30: Login mit Testaccount funktionierte, aber beim ausgeloggten Start ist ein erwartbarer `401` auf `/api/auth/me` sichtbar. Weitere Session-Stabilitaet sollte nach Deployment-Aenderungen erneut getestet werden.
 
-- [ ] **WIP-Limit Visualisierung**  
+- [x] **WIP-Limit Visualisierung**
   Die Spalte "DOING" faerbt sich bereits rot, wenn das Limit genau erreicht ist, z.B. `2/2`. Ueblicherweise signalisiert Rot eine Ueberschreitung des Limits, nicht nur das Erreichen.
+  Behoben 2026-04-30: WIP-Warnung wird erst bei `count > limit` angezeigt.
 
 - [ ] **Projekt-Erstellung vollstaendig erneut testen**  
   Aelterer Befund: Im "Neues Projekt" Modal blieb der "Projekt Erstellen" Button permanent deaktiviert. Live-QA 2026-04-30: Der Button ist mit leerem Projektnamen deaktiviert, was korrekt ist. Ein echtes Speichern wurde bewusst nicht ausgefuehrt, um keine Live-Daten zu erzeugen. Bitte mit dediziertem QA-Projekt erneut pruefen.
@@ -42,8 +44,9 @@
 - [ ] **Board-Suche Ergebnisdarstellung verbessern**  
   Live-QA 2026-04-30: Suche nach `particle` filtert grundsaetzlich. Story-Karten bleiben sichtbar, wenn darunter passende Tasks liegen. Das ist funktional nachvollziehbar, aber visuell nicht eindeutig erklaert.
 
-- [ ] **Profil-Statistiken wirken statisch**  
+- [x] **Profil-Statistiken wirken statisch**
   Live-QA 2026-04-30: Profilseite zeigt Projekte/Tasks/XP als feste Werte wirkend. Falls die Werte dynamisch sein sollen, sollte klar sein, wann sie aktualisiert werden. Falls sie Platzhalter sind, sollte das nicht wie echte Produktmetrik wirken.
+  Behoben 2026-04-30: Profilwerte werden aus Projekten, Stories und Tasks geladen; XP wird aus erledigtem Workload abgeleitet.
 
 
 ## Cyber Security

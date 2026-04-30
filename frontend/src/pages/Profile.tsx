@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Shield, Calendar, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -6,10 +6,61 @@ import { CardShell } from '../components/cards/CardShell';
 import { CardArtwork, FINAL_EVOLUTIONS } from '../components/cards/CardArtwork';
 import { Badge } from '../components/ui/Badge';
 import { CardOverlay } from '../components/cards/CardOverlay';
+import { boardApi } from '../api/board';
+import { projectsApi } from '../api/projects';
+
+interface ProfileStats {
+  projects: number;
+  tasks: number;
+  xp: number;
+}
 
 export const Profile: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [stats, setStats] = useState<ProfileStats | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+
+    let isMounted = true;
+
+    const fetchStats = async () => {
+      try {
+        const projects = await projectsApi.getAll() || [];
+        const storyGroups = await Promise.all(
+          projects.map(project => boardApi.getStories(project.id).then(stories => stories || []))
+        );
+        const stories = storyGroups.flat();
+        const taskGroups = await Promise.all(
+          stories.map(story => boardApi.getTasks(story.id).then(tasks => tasks || []))
+        );
+        const tasks = taskGroups.flat();
+        const completedWorkload = tasks
+          .filter(task => task.status === 'DONE')
+          .reduce((sum, task) => sum + task.workload, 0);
+
+        if (isMounted) {
+          setStats({
+            projects: projects.length,
+            tasks: tasks.length,
+            xp: completedWorkload * 10,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load profile stats', error);
+        if (isMounted) {
+          setStats({ projects: 0, tasks: 0, xp: 0 });
+        }
+      }
+    };
+
+    fetchStats();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   if (!user) return null;
 
@@ -30,6 +81,11 @@ export const Profile: React.FC = () => {
   };
 
   const profileData = getProfileArtwork(user.id);
+  const memberSince = new Date(user.createdAt).toLocaleDateString('de-DE', {
+    month: 'long',
+    year: 'numeric',
+  });
+  const formatStat = (value?: number) => value === undefined ? '-' : new Intl.NumberFormat('de-DE').format(value);
 
   return (
     <CardOverlay isOpen={true} onClose={handleClose}>
@@ -65,23 +121,23 @@ export const Profile: React.FC = () => {
                 <div className="flex justify-around w-full opacity-60">
                    <div className="flex flex-col items-center">
                       <span className="text-[6px] font-black uppercase text-evoli-text/40">Projekte</span>
-                      <span className="text-[10px] font-black text-evoli-primary">12</span>
+                      <span className="text-[10px] font-black text-evoli-primary">{formatStat(stats?.projects)}</span>
                    </div>
                    <div className="w-px h-6 bg-evoli-primary/10" />
                    <div className="flex flex-col items-center">
                       <span className="text-[6px] font-black uppercase text-evoli-text/40">Tasks</span>
-                      <span className="text-[10px] font-black text-evoli-primary">148</span>
+                      <span className="text-[10px] font-black text-evoli-primary">{formatStat(stats?.tasks)}</span>
                    </div>
                    <div className="w-px h-6 bg-evoli-primary/10" />
                    <div className="flex flex-col items-center">
                       <span className="text-[6px] font-black uppercase text-evoli-text/40">XP</span>
-                      <span className="text-[10px] font-black text-evoli-primary">2.4k</span>
+                      <span className="text-[10px] font-black text-evoli-primary">{formatStat(stats?.xp)}</span>
                    </div>
                 </div>
                 <div className="w-full h-1 bg-evoli-primary/5 rounded-full overflow-hidden">
-                   <div className="w-3/4 h-full bg-evoli-primary" />
+                   <div className="h-full bg-evoli-primary transition-all duration-500" style={{ width: `${Math.min((stats?.xp || 0) % 100, 100)}%` }} />
                 </div>
-                <p className="text-[7px] font-black uppercase tracking-widest text-evoli-text/20">GoEvoli Trainer Pass v2.0</p>
+                <p className="text-[7px] font-black uppercase tracking-widest text-evoli-text/20">Live Stats aus deinen Boards</p>
              </div>
           }
           className="shadow-2xl"
@@ -107,7 +163,7 @@ export const Profile: React.FC = () => {
               <Calendar className="w-3 h-3 text-evoli-primary/60" />
               <div className="flex-1">
                 <p className="text-[6px] font-black text-evoli-text/30 uppercase tracking-widest">Mitglied seit</p>
-                <p className="text-[10px] text-evoli-text font-bold">April 2026</p>
+                <p className="text-[10px] text-evoli-text font-bold">{memberSince}</p>
               </div>
             </div>
           </div>
