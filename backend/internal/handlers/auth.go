@@ -89,7 +89,6 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Secure:   secure,
 		SameSite: sameSite,
-		MaxAge:   86400,
 	})
 
 	response.JSON(w, http.StatusOK, map[string]string{"message": "Login successful"})

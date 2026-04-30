@@ -14,17 +14,34 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+const DefaultSessionDuration = 24 * time.Hour
+
+func SessionDuration() time.Duration {
+	duration := os.Getenv("SESSION_DURATION")
+	if duration == "" {
+		return DefaultSessionDuration
+	}
+
+	parsed, err := time.ParseDuration(duration)
+	if err != nil || parsed <= 0 {
+		return DefaultSessionDuration
+	}
+
+	return parsed
+}
+
 func GenerateToken(userID primitive.ObjectID) (string, error) {
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
 		return "", errors.New("JWT_SECRET is not set")
 	}
 
+	now := time.Now()
 	claims := &Claims{
 		UserID: userID.Hex(),
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			ExpiresAt: jwt.NewNumericDate(now.Add(SessionDuration())),
+			IssuedAt:  jwt.NewNumericDate(now),
 		},
 	}
 
@@ -34,6 +51,10 @@ func GenerateToken(userID primitive.ObjectID) (string, error) {
 
 func ParseToken(tokenStr string) (primitive.ObjectID, error) {
 	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		return primitive.NilObjectID, errors.New("JWT_SECRET is not set")
+	}
+
 	token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
