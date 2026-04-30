@@ -88,8 +88,22 @@ export const Login: React.FC = () => {
       await login({ email, password });
       navigate('/projects');
     } catch (err: any) {
+      const remaining = err.headers?.['x-ratelimit-remaining'];
+      if (remaining !== undefined) setAttempts(parseInt(remaining));
+      
       let msg = err.message || 'Anmeldung fehlgeschlagen.';
-      if (msg.includes('401') || msg.toLowerCase().includes('invalid credentials')) {
+      
+      // If msg is a JSON string of the error object, try to parse it
+      try {
+        const parsed = JSON.parse(msg);
+        if (parsed.message) msg = parsed.message;
+      } catch (e) {
+        // Not a JSON string, keep as is
+      }
+
+      if (err.status === 429) {
+        msg = 'Account gesperrt. Zu viele Fehlversuche. Bitte warten Sie eine Minute.';
+      } else if (msg.includes('401') || msg.toLowerCase().includes('invalid credentials')) {
         msg = 'Zugriff verweigert: Email oder Passwort falsch.';
       }
       setError(msg);
