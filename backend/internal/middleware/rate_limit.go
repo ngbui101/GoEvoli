@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"strings"
 	"sync"
 
 	"golang.org/x/time/rate"
@@ -46,7 +47,7 @@ func RateLimit(l *Limiter) func(http.Handler) http.Handler {
 			}
 
 			if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-				ip = xff
+				ip = strings.TrimSpace(strings.Split(xff, ",")[0])
 			}
 
 			lim := l.get(ip)
