@@ -11,6 +11,12 @@ GoEvoli combines a Kanban workflow with trading-card visuals for stories, tasks,
 - [Requirements](./docs/requirements.md)
 - [Roadmap and Known Issues](./docs/TODO.md)
 
+## Architecture Overview
+
+<p align="center">
+  <img src="docs/architecture.jpg" alt="GoEvoli Architecture Diagram" width="100%">
+</p>
+
 ## Tech Stack
 
 | Layer | Technology |
