@@ -45,8 +45,9 @@
 - [ ] **Board-Suche Ergebnisdarstellung verbessern**  
   Live-QA 2026-04-30: Suche nach `particle` filtert grundsaetzlich. Story-Karten bleiben sichtbar, wenn darunter passende Tasks liegen. Das ist funktional nachvollziehbar, aber visuell nicht eindeutig erklaert.
 
-- [ ] **Rate-Limit Remaining Header wird vor Token-Verbrauch berechnet**  
+- [x] **Rate-Limit Remaining Header wird vor Token-Verbrauch berechnet**  
   GitHub Issue #3: `X-RateLimit-Remaining` zeigt bei erfolgreichen Requests aktuell den Tokenstand vor `Allow()` und ueberzeichnet dadurch die verbleibende Quote um 1. Erwartet ist der Wert nach Verbrauch des aktuellen Requests.  
+  Behoben: `901b8bc` / Merge `382a131`. Regressionstest `TestRateLimit_RemainingHeaderReflectsConsumedToken`.
   Quelle: https://github.com/ngbui101/GoEvoli/issues/3
 
 - [x] **Profil-Statistiken wirken statisch**
@@ -71,15 +72,18 @@
 - [ ] **Fehlende Security Headers**  
   Standard-Header wie `Content-Security-Policy`, `X-Content-Type-Options` oder `X-Frame-Options` werden vom Backend nicht explizit gesetzt.
 
-- [ ] **Auth Rate Limit vertraut spoofbarem X-Forwarded-For Header**  
+- [x] **Auth Rate Limit vertraut spoofbarem X-Forwarded-For Header**  
   GitHub Issue #4: Das Rate-Limit nutzt `X-Forwarded-For` ohne Trusted-Proxy-Pruefung. Direkte Clients koennen den Header rotieren und Login/Register/Check-Email Limits umgehen.  
+  Behoben: `bd03b5a` / Merge `ec0bbc8`. Forwarded IPs werden nur bei `TRUSTED_PROXIES` genutzt.
   Quelle: https://github.com/ngbui101/GoEvoli/issues/4
 
-- [ ] **Bug-Erstellung kann projektfremde Entitaeten referenzieren/blockieren**  
+- [x] **Bug-Erstellung kann projektfremde Entitaeten referenzieren/blockieren**  
   GitHub Issue #5: `POST /api/projects/{projectId}/bugs` validiert nicht, dass `affectedEntityId` zum selben Projekt gehoert. Dadurch kann ein Bug aus Projekt A Status-/Blocking-Logik in Projekt B beeinflussen.  
+  Behoben: `aae2785` / Merge `d5ba2b9`. Bug-Referenzen und Blocking-Abfragen sind projektbezogen.
   Quelle: https://github.com/ngbui101/GoEvoli/issues/5
 
-- [ ] **HTTP Server ohne Read/Write/Header Timeouts**  
+- [x] **HTTP Server ohne Read/Write/Header Timeouts**  
   GitHub Issue #6: Der Backend-Server startet mit `http.ListenAndServe` und damit ohne explizite Timeouts. Das erhoeht das Risiko fuer Slowloris-aehnliche Ressourcenbindung.  
+  Behoben: `e371bba` / Merge `765e96e`. Backend nutzt expliziten `http.Server` mit Timeouts.
   Quelle: https://github.com/ngbui101/GoEvoli/issues/6
 
