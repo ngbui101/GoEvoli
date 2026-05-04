@@ -51,9 +51,8 @@ func RateLimit(l *Limiter) func(http.Handler) http.Handler {
 			}
 
 			lim := l.get(ip)
-			
+
 			w.Header().Set("X-RateLimit-Limit", fmt.Sprintf("%d", l.b))
-			w.Header().Set("X-RateLimit-Remaining", fmt.Sprintf("%d", int(lim.Tokens())))
 
 			if !lim.Allow() {
 				w.Header().Set("X-RateLimit-Remaining", "0")
@@ -61,6 +60,7 @@ func RateLimit(l *Limiter) func(http.Handler) http.Handler {
 				return
 			}
 
+			w.Header().Set("X-RateLimit-Remaining", fmt.Sprintf("%d", int(lim.Tokens())))
 			next.ServeHTTP(w, r)
 		})
 	}
