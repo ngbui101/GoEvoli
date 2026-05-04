@@ -69,9 +69,10 @@ func main() {
 
 	// Login/register stay strict; email checks need their own budget so UI mode detection
 	// cannot consume password-attempt tokens.
-	authLimiter := customMiddleware.NewLimiter(rate.Limit(1.0/60.0), 5)
+	loginFailureLimiter := customMiddleware.NewLimiter(rate.Limit(1.0/60.0), 5)
+	registerLimiter := customMiddleware.NewLimiter(rate.Limit(5.0/60.0), 10)
 	checkEmailLimiter := customMiddleware.NewLimiter(rate.Limit(30.0/60.0), 30)
-	configureTrustedProxies(authLimiter, checkEmailLimiter)
+	configureTrustedProxies(loginFailureLimiter, registerLimiter, checkEmailLimiter)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -122,8 +123,12 @@ func main() {
 	r.Route("/api", func(r chi.Router) {
 		r.Route("/auth", func(r chi.Router) {
 			r.Group(func(r chi.Router) {
-				r.Use(customMiddleware.RateLimit(authLimiter))
+				r.Use(customMiddleware.RateLimitFailures(loginFailureLimiter, http.StatusUnauthorized))
 				r.Post("/login", authHandler.Login)
+			})
+
+			r.Group(func(r chi.Router) {
+				r.Use(customMiddleware.RateLimit(registerLimiter))
 				r.Post("/register", authHandler.Register)
 			})
 
