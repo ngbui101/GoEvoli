@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -197,7 +198,18 @@ func main() {
 	}
 
 	fmt.Printf("Server listening on :%s\n", port)
-	if err := http.ListenAndServe(":"+port, r); err != nil {
+	if err := newHTTPServer(port, r).ListenAndServe(); err != nil {
 		log.Fatalf("FATAL: Server failed: %v", err)
+	}
+}
+
+func newHTTPServer(port string, handler http.Handler) *http.Server {
+	return &http.Server{
+		Addr:              ":" + port,
+		Handler:           handler,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
 }
