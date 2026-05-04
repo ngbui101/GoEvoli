@@ -67,13 +67,11 @@ func main() {
 	commentHandler := handlers.NewCommentHandler(svcs)
 	activityHandler := handlers.NewActivityHandler(svcs)
 
-	// Rate limiting: 1 req/min, burst 5
+	// Login/register stay strict; email checks need their own budget so UI mode detection
+	// cannot consume password-attempt tokens.
 	authLimiter := customMiddleware.NewLimiter(rate.Limit(1.0/60.0), 5)
-	if trustedProxies := os.Getenv("TRUSTED_PROXIES"); trustedProxies != "" {
-		if err := authLimiter.SetTrustedProxies(strings.Split(trustedProxies, ",")); err != nil {
-			log.Fatalf("FATAL: Invalid TRUSTED_PROXIES: %v", err)
-		}
-	}
+	checkEmailLimiter := customMiddleware.NewLimiter(rate.Limit(30.0/60.0), 30)
+	configureTrustedProxies(authLimiter, checkEmailLimiter)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -127,6 +125,10 @@ func main() {
 				r.Use(customMiddleware.RateLimit(authLimiter))
 				r.Post("/login", authHandler.Login)
 				r.Post("/register", authHandler.Register)
+			})
+
+			r.Group(func(r chi.Router) {
+				r.Use(customMiddleware.RateLimit(checkEmailLimiter))
 				r.Post("/check-email", authHandler.CheckEmail)
 			})
 
@@ -211,5 +213,19 @@ func newHTTPServer(port string, handler http.Handler) *http.Server {
 		ReadTimeout:       15 * time.Second,
 		WriteTimeout:      30 * time.Second,
 		IdleTimeout:       60 * time.Second,
+	}
+}
+
+func configureTrustedProxies(limiters ...*customMiddleware.Limiter) {
+	trustedProxies := os.Getenv("TRUSTED_PROXIES")
+	if trustedProxies == "" {
+		return
+	}
+
+	proxies := strings.Split(trustedProxies, ",")
+	for _, limiter := range limiters {
+		if err := limiter.SetTrustedProxies(proxies); err != nil {
+			log.Fatalf("FATAL: Invalid TRUSTED_PROXIES: %v", err)
+		}
 	}
 }

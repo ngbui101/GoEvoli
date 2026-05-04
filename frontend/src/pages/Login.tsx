@@ -18,6 +18,7 @@ export const Login: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [checkedEmail, setCheckedEmail] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [randomEvo, setRandomEvo] = useState(FINAL_EVOLUTIONS[0]);
   const [attempts, setAttempts] = useState<number | null>(null);
@@ -48,26 +49,50 @@ export const Login: React.FC = () => {
     return true;
   };
 
-  const handleEmailBlur = async () => {
-    if (!validateEmail(email) || !email) return;
-    
+  const checkEmailMode = async (): Promise<'login' | 'register' | null> => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!validateEmail(normalizedEmail) || !normalizedEmail) return null;
+
     setIsCheckingEmail(true);
     try {
-      const { exists } = await authApi.checkEmail(email);
+      const { exists } = await authApi.checkEmail(normalizedEmail);
+      const nextMode = exists ? 'login' : 'register';
+      setAuthMode(nextMode);
+      setCheckedEmail(normalizedEmail);
+      setError(null);
+
       if (exists) {
-        setAuthMode('login');
-      } else {
-        setAuthMode('register');
-        if (!name) {
-          const prefix = email.split('@')[0];
-          setName(prefix.charAt(0).toUpperCase() + prefix.slice(1));
-        }
+        return nextMode;
       }
-    } catch (err) {
+
+      if (!name) {
+        const prefix = normalizedEmail.split('@')[0];
+        setName(prefix.charAt(0).toUpperCase() + prefix.slice(1));
+      }
+      return nextMode;
+    } catch (err: any) {
       console.error("Email check failed:", err);
+      const msg = err.status === 429
+        ? 'E-Mail-Pruefung kurz blockiert. Bitte warten Sie einen Moment.'
+        : 'E-Mail-Pruefung fehlgeschlagen. Bitte erneut versuchen.';
+      setError(msg);
+      return null;
     } finally {
       setIsCheckingEmail(false);
     }
+  };
+
+  const handleEmailBlur = async () => {
+    await checkEmailMode();
+  };
+
+  const resolveAuthModeForSubmit = async (): Promise<'login' | 'register' | null> => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (checkedEmail === normalizedEmail) {
+      return authMode;
+    }
+
+    return checkEmailMode();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,11 +107,15 @@ export const Login: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      if (authMode === 'register') {
-        await authApi.register({ name, email, password });
+      const mode = await resolveAuthModeForSubmit();
+      if (!mode) return;
+
+      const normalizedEmail = email.trim().toLowerCase();
+      if (mode === 'register') {
+        await authApi.register({ name, email: normalizedEmail, password });
         toast.success('Beschwörer-Konto erstellt!');
       }
-      await login({ email, password });
+      await login({ email: normalizedEmail, password });
       navigate('/projects');
     } catch (err: any) {
       const remaining = err.headers?.['x-ratelimit-remaining'];
@@ -177,6 +206,7 @@ export const Login: React.FC = () => {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
+                      setCheckedEmail('');
                       if (error && error.includes('E-Mail')) setError(null);
                     }}
                     onBlur={handleEmailBlur}

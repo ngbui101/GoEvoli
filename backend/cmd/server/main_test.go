@@ -29,3 +29,9 @@ func TestNewHTTPServerSetsTimeouts(t *testing.T) {
 		t.Fatalf("IdleTimeout = %v, want 60s", server.IdleTimeout)
 	}
 }
+
+func TestConfigureTrustedProxiesAllowsEmptyEnv(t *testing.T) {
+	t.Setenv("TRUSTED_PROXIES", "")
+
+	configureTrustedProxies()
+}
