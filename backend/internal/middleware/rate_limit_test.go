@@ -86,3 +86,25 @@ func TestRateLimit_DifferentIPs(t *testing.T) {
 		t.Errorf("expected status OK for IP 2, got %v", rr2.Code)
 	}
 }
+
+func TestRateLimit_RemainingHeaderReflectsConsumedToken(t *testing.T) {
+	limiter := NewLimiter(rate.Limit(1), 2)
+	middleware := RateLimit(limiter)
+
+	handler := middleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+
+	req := httptest.NewRequest("GET", "http://example.com", nil)
+	req.RemoteAddr = "1.2.3.4"
+
+	rr := httptest.NewRecorder()
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected status OK, got %v", rr.Code)
+	}
+	if got := rr.Header().Get("X-RateLimit-Remaining"); got != "1" {
+		t.Fatalf("X-RateLimit-Remaining = %q, want 1", got)
+	}
+}
