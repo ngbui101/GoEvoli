@@ -19,8 +19,9 @@ func NewBugService(repos *repositories.Repositories, activity *ActivityService, 
 	return &BugService{repos: repos, activity: activity, story: story, task: task}
 }
 
-func (s *BugService) HasOpenBlockingBug(ctx context.Context, entityType models.EntityType, entityID primitive.ObjectID) (bool, error) {
+func (s *BugService) HasOpenBlockingBug(ctx context.Context, projectID primitive.ObjectID, entityType models.EntityType, entityID primitive.ObjectID) (bool, error) {
 	filter := bson.M{
+		"projectId":          projectID,
 		"affectedEntityType": entityType,
 		"affectedEntityId":   entityID,
 		"blocksWork":         true,

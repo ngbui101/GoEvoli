@@ -113,6 +113,39 @@ func TestCalculateStoryStatus_Blocked(t *testing.T) {
 	}
 }
 
+func TestCalculateStoryStatus_IgnoresBlockingBugFromOtherProject(t *testing.T) {
+	clearCollections(t)
+	ctx := context.Background()
+
+	projectID := primitive.NewObjectID()
+	otherProjectID := primitive.NewObjectID()
+	story := &models.UserStory{
+		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		ProjectId: projectID,
+		Title:     "Scoped Story",
+	}
+	testRepos.Stories.Create(ctx, story)
+
+	bug := &models.Bug{
+		BaseModel:          models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		ProjectId:          otherProjectID,
+		AffectedEntityType: models.EntityTypeUserStory,
+		AffectedEntityId:   story.ID,
+		Status:             models.BugStatusOpen,
+		BlocksWork:         true,
+	}
+	testRepos.Bugs.Create(ctx, bug)
+
+	status, err := testSvcs.Story.CalculateStoryStatus(ctx, story)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+
+	if status == models.StoryStatusBlocked {
+		t.Errorf("Expected cross-project bug not to block story")
+	}
+}
+
 func TestCalculateDominantTaskType_Workload(t *testing.T) {
 	clearCollections(t)
 	ctx := context.Background()
