@@ -159,3 +159,48 @@ func TestRateLimit_TrustsForwardedForFromConfiguredProxy(t *testing.T) {
 		}
 	}
 }
+
+func TestRateLimitFailures_DoesNotConsumeSuccessfulRequests(t *testing.T) {
+	limiter := NewLimiter(rate.Limit(1), 1)
+	middleware := RateLimitFailures(limiter, http.StatusUnauthorized)
+
+	handler := middleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+
+	req := httptest.NewRequest("POST", "http://example.com/auth/login", nil)
+	req.RemoteAddr = "1.2.3.4"
+
+	for i := 0; i < 3; i++ {
+		rr := httptest.NewRecorder()
+		handler.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusOK {
+			t.Fatalf("expected successful request %d to stay allowed, got %v", i+1, rr.Code)
+		}
+	}
+}
+
+func TestRateLimitFailures_ConsumesOnlyConfiguredFailureStatus(t *testing.T) {
+	limiter := NewLimiter(rate.Limit(1), 1)
+	middleware := RateLimitFailures(limiter, http.StatusUnauthorized)
+
+	handler := middleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusUnauthorized)
+	}))
+
+	req := httptest.NewRequest("POST", "http://example.com/auth/login", nil)
+	req.RemoteAddr = "1.2.3.4"
+
+	rr1 := httptest.NewRecorder()
+	handler.ServeHTTP(rr1, req)
+	if rr1.Code != http.StatusUnauthorized {
+		t.Fatalf("expected first failed login to reach handler, got %v", rr1.Code)
+	}
+
+	rr2 := httptest.NewRecorder()
+	handler.ServeHTTP(rr2, req)
+	if rr2.Code != http.StatusTooManyRequests {
+		t.Fatalf("expected exhausted failure limiter to block, got %v", rr2.Code)
+	}
+}

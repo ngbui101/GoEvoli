@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"bytes"
 	"fmt"
 	"net"
 	"net/http"
@@ -20,12 +21,29 @@ type Limiter struct {
 	trustedProxies []netip.Prefix
 }
 
+type statusRecorder struct {
+	http.ResponseWriter
+	status int
+	body   bytes.Buffer
+}
+
 func NewLimiter(r rate.Limit, b int) *Limiter {
 	return &Limiter{
 		ips: make(map[string]*rate.Limiter),
 		r:   r,
 		b:   b,
 	}
+}
+
+func (r *statusRecorder) WriteHeader(status int) {
+	r.status = status
+}
+
+func (r *statusRecorder) Write(body []byte) (int, error) {
+	if r.status == 0 {
+		r.status = http.StatusOK
+	}
+	return r.body.Write(body)
 }
 
 func (l *Limiter) SetTrustedProxies(proxies []string) error {
@@ -112,6 +130,37 @@ func RateLimit(l *Limiter) func(http.Handler) http.Handler {
 
 			w.Header().Set("X-RateLimit-Remaining", fmt.Sprintf("%d", int(lim.Tokens())))
 			next.ServeHTTP(w, r)
+		})
+	}
+}
+
+func RateLimitFailures(l *Limiter, failureStatuses ...int) func(http.Handler) http.Handler {
+	failures := make(map[int]struct{}, len(failureStatuses))
+	for _, status := range failureStatuses {
+		failures[status] = struct{}{}
+	}
+
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			ip := l.clientIP(r)
+			lim := l.get(ip)
+
+			w.Header().Set("X-RateLimit-Limit", fmt.Sprintf("%d", l.b))
+			if int(lim.Tokens()) <= 0 {
+				w.Header().Set("X-RateLimit-Remaining", "0")
+				response.Error(w, http.StatusTooManyRequests, "Account gesperrt. Zu viele Fehlversuche.")
+				return
+			}
+
+			recorder := &statusRecorder{ResponseWriter: w, status: http.StatusOK}
+			next.ServeHTTP(recorder, r)
+
+			if _, failed := failures[recorder.status]; failed {
+				lim.Allow()
+			}
+			w.Header().Set("X-RateLimit-Remaining", fmt.Sprintf("%d", int(lim.Tokens())))
+			w.WriteHeader(recorder.status)
+			recorder.body.WriteTo(w)
 		})
 	}
 }
