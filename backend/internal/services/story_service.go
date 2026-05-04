@@ -19,8 +19,9 @@ func NewStoryService(repos *repositories.Repositories, activity *ActivityService
 	return &StoryService{repos: repos, activity: activity}
 }
 
-func (s *StoryService) HasOpenBlockingBug(ctx context.Context, entityType models.EntityType, entityID primitive.ObjectID) (bool, error) {
+func (s *StoryService) HasOpenBlockingBug(ctx context.Context, projectID primitive.ObjectID, entityType models.EntityType, entityID primitive.ObjectID) (bool, error) {
 	filter := bson.M{
+		"projectId":          projectID,
 		"affectedEntityType": entityType,
 		"affectedEntityId":   entityID,
 		"blocksWork":         true,
@@ -40,7 +41,7 @@ func (s *StoryService) HasOpenBlockingBug(ctx context.Context, entityType models
 }
 
 func (s *StoryService) CalculateStoryStatus(ctx context.Context, story *models.UserStory) (models.StoryStatus, error) {
-	blocked, err := s.HasOpenBlockingBug(ctx, models.EntityTypeUserStory, story.ID)
+	blocked, err := s.HasOpenBlockingBug(ctx, story.ProjectId, models.EntityTypeUserStory, story.ID)
 	if err != nil {
 		return "", err
 	}
@@ -54,7 +55,7 @@ func (s *StoryService) CalculateStoryStatus(ctx context.Context, story *models.U
 		if blocked {
 			break
 		}
-		tBlocked, err := s.HasOpenBlockingBug(ctx, models.EntityTypeTask, t.ID)
+		tBlocked, err := s.HasOpenBlockingBug(ctx, story.ProjectId, models.EntityTypeTask, t.ID)
 		if err != nil {
 			return "", err
 		}
@@ -68,7 +69,7 @@ func (s *StoryService) CalculateStoryStatus(ctx context.Context, story *models.U
 			return "", err
 		}
 		for _, st := range subtasks {
-			stBlocked, err := s.HasOpenBlockingBug(ctx, models.EntityTypeSubtask, st.ID)
+			stBlocked, err := s.HasOpenBlockingBug(ctx, story.ProjectId, models.EntityTypeSubtask, st.ID)
 			if err != nil {
 				return "", err
 			}

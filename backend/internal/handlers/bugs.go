@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -56,6 +57,16 @@ func (h *BugHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	affectedStoryID, ok, err := h.affectedStoryID(r.Context(), projectID, req.AffectedEntityType, req.AffectedEntityId)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if !ok {
+		response.Error(w, http.StatusBadRequest, "Affected entity does not belong to project")
+		return
+	}
+
 	bug := &models.Bug{
 		BaseModel: models.BaseModel{
 			ID:        primitive.NewObjectID(),
@@ -79,22 +90,7 @@ func (h *BugHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	h.services.Activity.Log(r.Context(), projectID, userID, models.EntityTypeTask, bug.ID, models.ActivityActionBugCreated, "", "")
 
-	if req.AffectedEntityType == models.EntityTypeUserStory {
-		h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), req.AffectedEntityId)
-	} else if req.AffectedEntityType == models.EntityTypeTask {
-		t, _ := h.services.Repos.Tasks.FindByID(r.Context(), req.AffectedEntityId)
-		if t != nil {
-			h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), t.StoryId)
-		}
-	} else if req.AffectedEntityType == models.EntityTypeSubtask {
-		st, _ := h.services.Repos.Subtasks.FindByID(r.Context(), req.AffectedEntityId)
-		if st != nil {
-			t, _ := h.services.Repos.Tasks.FindByID(r.Context(), st.TaskId)
-			if t != nil {
-				h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), t.StoryId)
-			}
-		}
-	}
+	h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), affectedStoryID)
 
 	response.JSON(w, http.StatusCreated, bug)
 }
@@ -148,22 +144,54 @@ func (h *BugHandler) Close(w http.ResponseWriter, r *http.Request) {
 
 	h.services.Activity.Log(r.Context(), bug.ProjectId, userID, models.EntityTypeTask, bug.ID, models.ActivityActionBugClosed, string(bug.Status), string(models.BugStatusClosed))
 
-	if bug.AffectedEntityType == models.EntityTypeUserStory {
-		h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), bug.AffectedEntityId)
-	} else if bug.AffectedEntityType == models.EntityTypeTask {
-		t, _ := h.services.Repos.Tasks.FindByID(r.Context(), bug.AffectedEntityId)
-		if t != nil {
-			h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), t.StoryId)
-		}
-	} else if bug.AffectedEntityType == models.EntityTypeSubtask {
-		st, _ := h.services.Repos.Subtasks.FindByID(r.Context(), bug.AffectedEntityId)
-		if st != nil {
-			t, _ := h.services.Repos.Tasks.FindByID(r.Context(), st.TaskId)
-			if t != nil {
-				h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), t.StoryId)
-			}
-		}
+	if affectedStoryID, ok, _ := h.affectedStoryID(r.Context(), bug.ProjectId, bug.AffectedEntityType, bug.AffectedEntityId); ok {
+		h.services.Story.RecalculateAndSaveStoryStatus(r.Context(), affectedStoryID)
 	}
 
 	response.JSON(w, http.StatusOK, map[string]string{"message": "Bug closed"})
+}
+
+func (h *BugHandler) affectedStoryID(ctx context.Context, projectID primitive.ObjectID, entityType models.EntityType, entityID primitive.ObjectID) (primitive.ObjectID, bool, error) {
+	switch entityType {
+	case models.EntityTypeUserStory:
+		story, err := h.services.Repos.Stories.FindByID(ctx, entityID)
+		if err != nil || story == nil {
+			return primitive.NilObjectID, false, err
+		}
+		if story.ProjectId != projectID {
+			return primitive.NilObjectID, false, nil
+		}
+		return story.ID, true, nil
+
+	case models.EntityTypeTask:
+		task, err := h.services.Repos.Tasks.FindByID(ctx, entityID)
+		if err != nil || task == nil {
+			return primitive.NilObjectID, false, err
+		}
+		if task.ProjectId != projectID {
+			return primitive.NilObjectID, false, nil
+		}
+		return task.StoryId, true, nil
+
+	case models.EntityTypeSubtask:
+		subtask, err := h.services.Repos.Subtasks.FindByID(ctx, entityID)
+		if err != nil || subtask == nil {
+			return primitive.NilObjectID, false, err
+		}
+		if subtask.ProjectId != projectID {
+			return primitive.NilObjectID, false, nil
+		}
+
+		task, err := h.services.Repos.Tasks.FindByID(ctx, subtask.TaskId)
+		if err != nil || task == nil {
+			return primitive.NilObjectID, false, err
+		}
+		if task.ProjectId != projectID {
+			return primitive.NilObjectID, false, nil
+		}
+		return task.StoryId, true, nil
+
+	default:
+		return primitive.NilObjectID, false, nil
+	}
 }
