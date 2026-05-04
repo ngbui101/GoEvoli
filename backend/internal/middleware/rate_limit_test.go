@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -106,5 +107,55 @@ func TestRateLimit_RemainingHeaderReflectsConsumedToken(t *testing.T) {
 	}
 	if got := rr.Header().Get("X-RateLimit-Remaining"); got != "1" {
 		t.Fatalf("X-RateLimit-Remaining = %q, want 1", got)
+	}
+}
+
+func TestRateLimit_DoesNotTrustForwardedForFromUntrustedRemote(t *testing.T) {
+	limiter := NewLimiter(rate.Limit(1), 1)
+	middleware := RateLimit(limiter)
+
+	handler := middleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+
+	for i := 0; i < 2; i++ {
+		req := httptest.NewRequest("GET", "http://example.com", nil)
+		req.RemoteAddr = "1.2.3.4:12345"
+		req.Header.Set("X-Forwarded-For", fmt.Sprintf("203.0.113.%d", i+1))
+
+		rr := httptest.NewRecorder()
+		handler.ServeHTTP(rr, req)
+
+		if i == 0 && rr.Code != http.StatusOK {
+			t.Fatalf("expected first request OK, got %v", rr.Code)
+		}
+		if i == 1 && rr.Code != http.StatusTooManyRequests {
+			t.Fatalf("expected second spoofed request to be limited, got %v", rr.Code)
+		}
+	}
+}
+
+func TestRateLimit_TrustsForwardedForFromConfiguredProxy(t *testing.T) {
+	limiter := NewLimiter(rate.Limit(1), 1)
+	if err := limiter.SetTrustedProxies([]string{"10.0.0.0/8"}); err != nil {
+		t.Fatalf("SetTrustedProxies returned error: %v", err)
+	}
+	middleware := RateLimit(limiter)
+
+	handler := middleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+
+	for i := 0; i < 2; i++ {
+		req := httptest.NewRequest("GET", "http://example.com", nil)
+		req.RemoteAddr = "10.0.0.10:12345"
+		req.Header.Set("X-Forwarded-For", fmt.Sprintf("203.0.113.%d", i+1))
+
+		rr := httptest.NewRecorder()
+		handler.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusOK {
+			t.Fatalf("expected trusted forwarded request %d to be OK, got %v", i+1, rr.Code)
+		}
 	}
 }

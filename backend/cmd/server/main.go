@@ -68,6 +68,11 @@ func main() {
 
 	// Rate limiting: 1 req/min, burst 5
 	authLimiter := customMiddleware.NewLimiter(rate.Limit(1.0/60.0), 5)
+	if trustedProxies := os.Getenv("TRUSTED_PROXIES"); trustedProxies != "" {
+		if err := authLimiter.SetTrustedProxies(strings.Split(trustedProxies, ",")); err != nil {
+			log.Fatalf("FATAL: Invalid TRUSTED_PROXIES: %v", err)
+		}
+	}
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
