@@ -35,6 +35,7 @@ export const Board: React.FC = () => {
   const [selectedStory, setSelectedStory] = useState<UserStory | null>(null);
   const [selectedBug, setSelectedBug] = useState<Bug | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isBugBoardOpen, setIsBugBoardOpen] = useState(false);
   const [isBugModalOpen, setIsBugModalOpen] = useState(false);
   const [isSubmittingBug, setIsSubmittingBug] = useState(false);
   const [closingBugId, setClosingBugId] = useState<string | null>(null);
@@ -257,9 +258,17 @@ export const Board: React.FC = () => {
               <Button variant="ghost" size="sm" onClick={() => navigate(`/projects/${projectId}/settings`)} className="p-2 sm:p-3">
                 <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
-              <Button variant="danger" size="sm" onClick={openBugModal} disabled={entityOptions.length === 0} className="flex items-center justify-center p-2 sm:px-4 sm:py-3">
+              <Button
+                variant={activeBugs.length > 0 ? 'danger' : 'ghost'}
+                size="sm"
+                onClick={() => setIsBugBoardOpen(prev => !prev)}
+                className="flex items-center justify-center p-2 sm:px-4 sm:py-3"
+              >
                 <BugIcon className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Bug melden</span>
+                <span className="hidden sm:inline">Bug</span>
+                <Badge variant={activeBugs.length > 0 ? 'danger' : 'secondary'} size="sm" className="ml-1.5 text-[8px]">
+                  {activeBugs.length}
+                </Badge>
               </Button>
               <Button size="sm" onClick={() => navigate(`/projects/${projectId}/stories/new`)} className="flex items-center justify-center p-2 sm:px-6 sm:py-3">
                 <Plus className="w-4 h-4 sm:mr-3" />
@@ -279,9 +288,9 @@ export const Board: React.FC = () => {
           </div>
         </div>
       )}
-      {activeBugs.length > 0 && (
-        <div className="relative z-10 px-3 sm:px-10 pb-3">
-          <div className="mx-auto max-w-[1400px] rounded-evoli-card border-2 border-red-300/50 bg-red-50/70 px-3 py-3 shadow-sm">
+      {isBugBoardOpen && (
+        <div className="relative z-10 flex w-full justify-center px-2 sm:px-0 pb-3">
+          <div className="w-full sm:w-[95%] max-w-7xl rounded-evoli-card border-2 border-red-300/50 bg-red-50/70 px-3 py-3 shadow-sm">
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-red-800">
                 <ShieldAlert className="w-4 h-4" />
@@ -301,13 +310,19 @@ export const Board: React.FC = () => {
                 <Plus className="w-3 h-3 mr-1" /> Bug melden
               </Button>
             </div>
-            <div className="flex gap-3 overflow-x-auto custom-scrollbar pb-1">
-              {activeBugs.map(bug => (
-                <div key={bug.id} className="w-[150px] flex-shrink-0">
-                  <BugCard bug={bug} onClick={() => setSelectedBug(bug)} />
-                </div>
-              ))}
-            </div>
+            {activeBugs.length > 0 ? (
+              <div className="flex gap-3 overflow-x-auto custom-scrollbar pb-1">
+                {activeBugs.map(bug => (
+                  <div key={bug.id} className="w-[150px] flex-shrink-0">
+                    <BugCard bug={bug} onClick={() => setSelectedBug(bug)} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex min-h-24 items-center justify-center rounded-evoli-card border border-dashed border-red-300/60 bg-white/40 text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-red-800/40">Keine offenen Bugs</p>
+              </div>
+            )}
           </div>
         </div>
       )}

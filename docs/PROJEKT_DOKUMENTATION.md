@@ -132,7 +132,7 @@ Fullscreen-Overlay mit Backdrop-Blur. Schließbar per X-Button oben rechts.
 - **WIP-Limits**: Visuelles Warnsystem (rot) bei Überschreitung
 - **Suche**: Filtert Stories & Tasks live
 - **Header**: Suchfeld + Settings-Button + "Neue Karte"-Button
-- **Bug-Board**: Offene Bugs werden oberhalb des Spielfelds als rote Bug-Karten angezeigt. Ein "Bug melden"-Button erstellt Bugs fuer Story- oder Task-Ziele; Bug-Details erlauben das Schliessen offener Bugs.
+- **Bug-Board**: Der Header zeigt einen kompakten "Bug"-Button mit Anzahl offener Bugs. Ein Klick blendet das Bug-Board in Header-Breite ein; dort koennen Bugs fuer Story- oder Task-Ziele gemeldet und offene Bugs geschlossen werden.
 - **Ladeverhalten**: Projekt, Stories und Bugs rendern zuerst; Task-Stapel werden danach im Hintergrund synchronisiert, damit ein langsamer Task-Request nicht das gesamte Spielfeld im Fullscreen-Loader blockiert.
 
 #### Swimlane (`Swimlane.tsx`)
