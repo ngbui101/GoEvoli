@@ -13,6 +13,7 @@ import { PageHeader } from '../components/layout/PageHeader';
 export const Projects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSlowLoading, setIsSlowLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -23,6 +24,7 @@ export const Projects: React.FC = () => {
 
   const fetchProjects = useCallback(async () => {
     setIsLoading(true);
+    setIsSlowLoading(false);
     setErrorMessage(null);
 
     try {
@@ -40,6 +42,16 @@ export const Projects: React.FC = () => {
   useEffect(() => {
     fetchProjects();
   }, [fetchProjects]);
+
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const timer = window.setTimeout(() => {
+      setIsSlowLoading(true);
+    }, 5000);
+
+    return () => window.clearTimeout(timer);
+  }, [isLoading]);
 
   return (
     <div className="min-h-screen bg-evoli-bg pt-24 pb-12 playmat-grid">
@@ -61,19 +73,22 @@ export const Projects: React.FC = () => {
 
       <div className="w-full sm:w-[95%] max-w-7xl mx-auto px-4 sm:px-0">
         {isLoading ? (
-          <div className="space-y-8">
-            <Panel className="bg-white/50 border-evoli-primary/10 shadow-sm rounded-evoli p-8 text-center">
+          <div className="flex justify-center">
+            <Panel className="w-full max-w-2xl bg-white/50 border-evoli-primary/10 shadow-sm rounded-evoli p-8 text-center">
               <Loader2 className="w-10 h-10 text-evoli-primary animate-spin mx-auto mb-5" />
               <h2 className="text-lg sm:text-xl font-black uppercase tracking-widest text-evoli-primary mb-3">Projekte werden geladen</h2>
               <p className="max-w-md mx-auto font-black text-[10px] sm:text-[11px] uppercase tracking-widest text-evoli-text/40 leading-relaxed">
-                Einen Moment, wir synchronisieren deine Projektliste.
+                {isSlowLoading
+                  ? 'Die Synchronisation dauert laenger als erwartet. Du kannst den Abruf neu starten.'
+                  : 'Einen Moment, wir synchronisieren deine Projektliste.'}
               </p>
+              {isSlowLoading && (
+                <Button onClick={fetchProjects} variant="secondary" className="mt-6 px-8 py-4">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Erneut versuchen
+                </Button>
+              )}
             </Panel>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 sm:gap-12">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="bg-evoli-card-surface/40 border-4 border-evoli-card-border/10 rounded-evoli-card aspect-card animate-pulse w-full max-w-[320px] mx-auto sm:max-w-none" />
-              ))}
-            </div>
           </div>
         ) : errorMessage ? (
           <Panel className="bg-white/50 border-red-200 shadow-sm rounded-evoli p-10 text-center">

@@ -11,8 +11,9 @@
 
 ## Bugs
 
-- [ ] **Projektuebersicht zeigt nach Login zunaechst nur Platzhalter**  
+- [x] **Projektuebersicht zeigt nach Login zunaechst nur Platzhalter**
   Live-QA 2026-04-30: Nach erfolgreichem Login auf `https://go-evoli.vercel.app` zeigt `/projects` zuerst drei grosse leere Platzhalterkarten. Es gibt keinen erklaerenden Lade-, Empty- oder Fehlerzustand. Nach Navigation zu "Neues Projekt" und Abbrechen erscheint das Demo-Projekt ploetzlich.  
+  Behoben 2026-05-07: Die Projektuebersicht zeigt beim Laden keine leeren Kartenplatzhalter mehr, sondern einen fokussierten Ladezustand mit Slow-Load-Hinweis und Retry-Aktion.
   Severity: Mittel. `blocksWork = false`.
 
 - [x] **Board Loading Hang / sehr langer Board-Ladevorgang**
