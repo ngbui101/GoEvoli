@@ -35,6 +35,7 @@ export const Board: React.FC = () => {
   const [selectedStory, setSelectedStory] = useState<UserStory | null>(null);
   const [selectedBug, setSelectedBug] = useState<Bug | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isBugBoardOpen, setIsBugBoardOpen] = useState(false);
   const [isBugModalOpen, setIsBugModalOpen] = useState(false);
   const [isSubmittingBug, setIsSubmittingBug] = useState(false);
@@ -242,36 +243,55 @@ export const Board: React.FC = () => {
       <PageHeader 
         title={project?.name || 'Spielfeld'}
         subtitle={project?.description}
-        icon={<LayoutDashboard className="w-6 h-6 sm:w-8 sm:h-8" />}
+        icon={<LayoutDashboard className="w-4 h-4" />}
+        compact
         actions={
           <>
-            <div className="relative flex-1 lg:w-80 lg:flex-none">
-              <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-evoli-text/30" />
-              <input 
-                placeholder="Suchen..." 
-                className="w-full pl-9 sm:pl-11 pr-3 sm:pr-4 py-2 sm:py-3 bg-white/60 border-2 border-evoli-card-border/10 rounded-evoli-card text-[10px] sm:text-xs focus:outline-none focus:border-evoli-primary/40 transition-all font-black uppercase tracking-widest placeholder:text-evoli-text/20"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
+            {isSearchOpen ? (
+              <div className="relative w-[min(52vw,220px)] sm:w-64">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-evoli-text/30" />
+                <input
+                  placeholder="Suchen..."
+                  className="h-8 w-full pl-8 pr-3 bg-white/60 border border-evoli-card-border/10 rounded-evoli-card text-[10px] focus:outline-none focus:border-evoli-primary/40 transition-all font-black uppercase tracking-widest placeholder:text-evoli-text/20"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onBlur={() => {
+                    if (!searchQuery.trim()) {
+                      setIsSearchOpen(false);
+                    }
+                  }}
+                  autoFocus
+                />
+              </div>
+            ) : (
+              <Button
+                variant={searchQuery ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => setIsSearchOpen(true)}
+                className="h-8 w-8 p-0"
+                title="Suche öffnen"
+              >
+                <Search className="w-4 h-4" />
+              </Button>
+            )}
             <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-              <Button variant="ghost" size="sm" onClick={() => navigate(`/projects/${projectId}/settings`)} className="p-2 sm:p-3">
-                <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Button variant="ghost" size="sm" onClick={() => navigate(`/projects/${projectId}/settings`)} className="h-8 w-8 p-0">
+                <Settings className="w-4 h-4" />
               </Button>
               <Button
                 variant={activeBugs.length > 0 ? 'danger' : 'ghost'}
                 size="sm"
                 onClick={() => setIsBugBoardOpen(prev => !prev)}
-                className="flex items-center justify-center p-2 sm:px-4 sm:py-3"
+                className="h-8 px-2"
               >
-                <BugIcon className="w-4 h-4 sm:mr-2" />
+                <BugIcon className="w-4 h-4 sm:mr-1.5" />
                 <span className="hidden sm:inline">Bug</span>
-                <Badge variant={activeBugs.length > 0 ? 'danger' : 'secondary'} size="sm" className="ml-1.5 text-[8px]">
+                <Badge variant={activeBugs.length > 0 ? 'danger' : 'secondary'} size="sm" className="ml-1 text-[8px]">
                   {activeBugs.length}
                 </Badge>
               </Button>
-              <Button size="sm" onClick={() => navigate(`/projects/${projectId}/stories/new`)} className="flex items-center justify-center p-2 sm:px-6 sm:py-3">
-                <Plus className="w-4 h-4 sm:mr-3" />
+              <Button size="sm" onClick={() => navigate(`/projects/${projectId}/stories/new`)} className="h-8 px-2 sm:px-3">
+                <Plus className="w-4 h-4 sm:mr-1.5" />
                 <span className="hidden sm:inline">Neue Karte</span>
               </Button>
             </div>
