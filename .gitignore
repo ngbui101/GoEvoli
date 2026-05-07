@@ -18,6 +18,7 @@
 # IDEs and OS
 .vscode/
 .idea/
+*.code-workspace
 .DS_Store
 *.suo
 *.ntvs*
