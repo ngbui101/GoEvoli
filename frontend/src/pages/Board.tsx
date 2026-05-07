@@ -30,6 +30,8 @@ export const Board: React.FC = () => {
   const [tasksByStory, setTasksByStory] = useState<Record<string, Task[]>>({});
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isTaskLoading, setIsTaskLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedStory, setSelectedStory] = useState<UserStory | null>(null);
   const [selectedBug, setSelectedBug] = useState<Bug | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,33 +47,62 @@ export const Board: React.FC = () => {
   });
   const navigate = useNavigate();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (showFullLoader = true) => {
     if (!projectId) return;
-    setIsLoading(true);
+    if (showFullLoader) {
+      setIsLoading(true);
+    } else {
+      setIsTaskLoading(true);
+    }
+    setLoadError(null);
     try {
-      const p = await projectsApi.getById(projectId);
+      const [p, fetchedStories, fetchedBugs] = await Promise.all([
+        projectsApi.getById(projectId),
+        boardApi.getStories(projectId).then(result => result || []),
+        boardApi.getBugs(projectId).then(result => result || []),
+      ]);
+
       setProject(p);
-
-      const fetchedStories = await boardApi.getStories(projectId) || [];
       setStories(fetchedStories);
+      setBugs(fetchedBugs);
+      setTasksByStory(prev => {
+        const nextMap: Record<string, Task[]> = {};
+        fetchedStories.forEach(story => {
+          nextMap[story.id] = prev[story.id] || [];
+        });
+        return nextMap;
+      });
+      setIsLoading(false);
+      setIsTaskLoading(true);
 
-      const tasksMap: Record<string, Task[]> = {};
-      const tasksResults = await Promise.all(
-        fetchedStories.map(story => boardApi.getTasks(story.id).then(t => t || []))
+      const tasksResults = await Promise.allSettled(
+        fetchedStories.map(story => boardApi.getTasks(story.id).then(tasks => ({ storyId: story.id, tasks: tasks || [] })))
       );
-      
-      fetchedStories.forEach((story, index) => {
-        tasksMap[story.id] = tasksResults[index];
+
+      const failedTaskLoads = tasksResults.filter(result => result.status === 'rejected').length;
+      const tasksMap: Record<string, Task[]> = {};
+      fetchedStories.forEach(story => {
+        tasksMap[story.id] = [];
+      });
+
+      tasksResults.forEach(result => {
+        if (result.status === 'fulfilled') {
+          tasksMap[result.value.storyId] = result.value.tasks;
+        }
       });
 
       setTasksByStory(tasksMap);
-      const fetchedBugs = await boardApi.getBugs(projectId) || [];
-      setBugs(fetchedBugs);
+      if (failedTaskLoads > 0) {
+        toast.error(`${failedTaskLoads} Task-Stapel konnten nicht geladen werden`);
+      }
     } catch (error: any) {
       console.error("Board fetch error:", error);
-      toast.error(error.message || 'Failed to load board data');
+      const message = error.message || 'Failed to load board data';
+      setLoadError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
+      setIsTaskLoading(false);
     }
   }, [projectId]);
 
@@ -94,10 +125,10 @@ export const Board: React.FC = () => {
 
       await boardApi.moveTask(taskId, targetStatus);
       toast.success('Task moved');
-      fetchData();
+      fetchData(false);
     } catch (error: any) {
       toast.error(error.message || 'Failed to move task');
-      fetchData();
+      fetchData(false);
     }
   };
 
@@ -146,7 +177,7 @@ export const Board: React.FC = () => {
       });
       toast.success('Bug gemeldet');
       setIsBugModalOpen(false);
-      fetchData();
+      fetchData(false);
     } catch (error: any) {
       toast.error(error.message || 'Bug konnte nicht gemeldet werden');
     } finally {
@@ -160,7 +191,7 @@ export const Board: React.FC = () => {
       await boardApi.closeBug(bugId);
       toast.success('Bug geschlossen');
       setSelectedBug(null);
-      fetchData();
+      fetchData(false);
     } catch (error: any) {
       toast.error(error.message || 'Bug konnte nicht geschlossen werden');
     } finally {
@@ -173,6 +204,21 @@ export const Board: React.FC = () => {
       <div className="min-h-screen bg-evoli-bg flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 text-evoli-primary animate-spin mb-4" />
         <p className="text-evoli-text/70 font-black animate-pulse uppercase tracking-widest">Lade Spielfeld...</p>
+      </div>
+    );
+  }
+
+  if (loadError && !project) {
+    return (
+      <div className="min-h-screen bg-evoli-bg flex flex-col items-center justify-center px-6 text-center">
+        <div className="max-w-md rounded-evoli-card border-2 border-red-200 bg-red-50/70 p-8 shadow-sm">
+          <ShieldAlert className="mx-auto mb-4 h-10 w-10 text-red-600" />
+          <h1 className="mb-3 text-lg font-black uppercase tracking-widest text-red-700">Spielfeld nicht geladen</h1>
+          <p className="mb-6 text-sm font-medium text-evoli-text/70">{loadError}</p>
+          <Button variant="danger" onClick={() => fetchData()}>
+            Erneut laden
+          </Button>
+        </div>
       </div>
     );
   }
@@ -223,6 +269,16 @@ export const Board: React.FC = () => {
           </>
         }
       />
+      {isTaskLoading && (
+        <div className="relative z-10 px-3 sm:px-10 pb-3">
+          <div className="mx-auto max-w-[1400px] rounded-evoli-card border border-evoli-primary/15 bg-white/50 px-3 py-2 shadow-sm">
+            <div className="flex items-center gap-2 text-evoli-primary">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-[10px] font-black uppercase tracking-widest">Task-Stapel werden synchronisiert</span>
+            </div>
+          </div>
+        </div>
+      )}
       {activeBugs.length > 0 && (
         <div className="relative z-10 px-3 sm:px-10 pb-3">
           <div className="mx-auto max-w-[1400px] rounded-evoli-card border-2 border-red-300/50 bg-red-50/70 px-3 py-3 shadow-sm">

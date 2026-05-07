@@ -15,8 +15,9 @@
   Live-QA 2026-04-30: Nach erfolgreichem Login auf `https://go-evoli.vercel.app` zeigt `/projects` zuerst drei grosse leere Platzhalterkarten. Es gibt keinen erklaerenden Lade-, Empty- oder Fehlerzustand. Nach Navigation zu "Neues Projekt" und Abbrechen erscheint das Demo-Projekt ploetzlich.  
   Severity: Mittel. `blocksWork = false`.
 
-- [ ] **Board Loading Hang / sehr langer Board-Ladevorgang**  
+- [x] **Board Loading Hang / sehr langer Board-Ladevorgang**
   Live-QA 2026-04-30 bestaetigt: Beim Oeffnen des Demo-Projekts bleibt die Ansicht lange bei "LADE SPIELFELD...". In einem Test war das Board erst nach ca. 30 Sekunden sichtbar. Bereits vorher war bekannt, dass das Board nach Refresh oder Navigation von Settings/Profil haengen kann.  
+  Behoben 2026-05-07: Das Board rendert Projekt, Stories und Bugs sobald diese verfuegbar sind. Task-Stapel laden danach im Hintergrund mit sichtbarem Synchronisationshinweis; einzelne Task-Fehler blockieren nicht mehr das gesamte Spielfeld.
   Severity: Mittel bis Hoch. `blocksWork = teilweise`.
 
 - [x] **Mobile Board Header schneidet Titel und Untertitel ab**
