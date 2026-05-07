@@ -127,7 +127,7 @@ export const Login: React.FC = () => {
       try {
         const parsed = JSON.parse(msg);
         if (parsed.message) msg = parsed.message;
-      } catch (e) {
+      } catch {
         // Not a JSON string, keep as is
       }
 

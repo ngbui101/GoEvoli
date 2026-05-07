@@ -132,6 +132,7 @@ Fullscreen-Overlay mit Backdrop-Blur. Schließbar per X-Button oben rechts.
 - **WIP-Limits**: Visuelles Warnsystem (rot) bei Überschreitung
 - **Suche**: Filtert Stories & Tasks live
 - **Header**: Suchfeld + Settings-Button + "Neue Karte"-Button
+- **Bug-Board**: Offene Bugs werden oberhalb des Spielfelds als rote Bug-Karten angezeigt. Ein "Bug melden"-Button erstellt Bugs fuer Story- oder Task-Ziele; Bug-Details erlauben das Schliessen offener Bugs.
 
 #### Swimlane (`Swimlane.tsx`)
 
@@ -276,7 +277,7 @@ Story- und Task-Löschung nutzt aktuell `window`-Callbacks:
 - [ ] **Dynamische Profildaten**: Projekte/Tasks/XP aus der Datenbank
 - [ ] **Drag & Drop / Touch Dragging**: Task-Verschiebung per Halten-und-Schieben robust fuer Desktop und Mobile absichern
 - [ ] **Bearbeiten-Funktion**: Stories/Tasks inline editieren
-- [ ] **Bug-Management UI**: Bug-Karten auf dem Board anzeigen
+- [x] **Bug-Management UI**: Bug-Karten auf dem Board anzeigen, Bugs melden und offene Bugs schliessen
 
 ---
 

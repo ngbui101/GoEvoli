@@ -12,12 +12,18 @@ interface BugCardProps {
   bug: Bug;
   className?: string;
   size?: CardSize;
+  onClick?: () => void;
+  onCloseBug?: (id: string) => void;
+  isClosing?: boolean;
 }
 
 export const BugCard: React.FC<BugCardProps> = ({ 
   bug, 
   className,
-  size = "board"
+  size = "board",
+  onClick,
+  onCloseBug,
+  isClosing = false
 }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: bug.id,
@@ -76,8 +82,10 @@ export const BugCard: React.FC<BugCardProps> = ({
           />
         }
         meta={meta}
+        onClick={onClick}
         className={cn(
           isDragging && "opacity-50 rotate-2 z-[100]",
+          onClick && "cursor-pointer",
           className
         )}
         footer={
@@ -135,8 +143,13 @@ export const BugCard: React.FC<BugCardProps> = ({
              </div>
 
              <div className="mt-auto pt-2 flex gap-2">
-                <button className="flex-1 py-2 bg-red-600 text-white text-[10px] font-black uppercase rounded shadow-lg border border-red-800">
-                   Fehler Beheben
+                <button
+                  type="button"
+                  disabled={isClosing || bug.status === 'CLOSED'}
+                  onClick={() => onCloseBug?.(bug.id)}
+                  className="flex-1 py-2 bg-red-600 text-white text-[10px] font-black uppercase rounded shadow-lg border border-red-800 disabled:opacity-50 disabled:grayscale"
+                >
+                   {bug.status === 'CLOSED' ? 'Fehler geschlossen' : isClosing ? 'Schliesse...' : 'Fehler schliessen'}
                 </button>
                 <div className="flex gap-1">
                    <button className="p-2 bg-red-100 rounded text-red-600 hover:bg-red-200 transition-colors border border-red-200">

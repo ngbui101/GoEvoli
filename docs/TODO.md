@@ -6,7 +6,7 @@
 - [ ] WebSocket integration
 - [ ] Drag & Drop
 - [ ] Inline editing
-- [ ] Bug management UI
+- [x] Bug management UI
 - [x] Mobile-optimierte Board-Ansicht fuer Touch-Nutzung
 
 ## Bugs
@@ -53,6 +53,9 @@
 - [x] **Profil-Statistiken wirken statisch**
   Live-QA 2026-04-30: Profilseite zeigt Projekte/Tasks/XP als feste Werte wirkend. Falls die Werte dynamisch sein sollen, sollte klar sein, wann sie aktualisiert werden. Falls sie Platzhalter sind, sollte das nicht wie echte Produktmetrik wirken.
   Behoben 2026-04-30: Profilwerte werden aus Projekten, Stories und Tasks geladen; XP wird aus erledigtem Workload abgeleitet.
+
+- [x] **Bug-Management UI auf dem Board**
+  Implementiert 2026-05-07: Das Board laedt Projekt-Bugs, zeigt offene Bugs in einem Bug-Board-Band, bietet ein Modal zum Melden von Bugs gegen Story-/Task-Ziele und erlaubt das Schliessen offener Bugs ueber die Bug-Detailkarte.
 
 
 ## Cyber Security
