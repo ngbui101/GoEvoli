@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LogOut, User as UserIcon, LayoutGrid } from 'lucide-react';
+import { AnimatedLogo } from './AnimatedLogo';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -14,9 +15,7 @@ export const Navbar: React.FC = () => {
       <div className="px-4 sm:px-10">
         <div className="flex items-center justify-between h-20">
           <Link to="/projects" className="flex-shrink-0 flex items-center gap-4 hover:scale-105 transition-transform duration-300">
-            <div className="w-11 h-11 rounded-evoli bg-evoli-primary flex items-center justify-center shadow-evoli ring-4 ring-evoli-primary/10">
-              <span className="text-evoli-bg font-black text-2xl">G</span>
-            </div>
+            <AnimatedLogo />
             <span className="text-2xl font-black text-evoli-primary tracking-tighter">GoEvoli</span>
           </Link>
           
