@@ -64,7 +64,7 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
     const targetStatus = parts[parts.length - 1] as TaskStatus;
 
     const task = tasks.find(t => t.id === taskId);
-    if (!task || task.status === targetStatus) return;
+    if (!task) return;
 
     onTaskMove(taskId, targetStatus);
   };

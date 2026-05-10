@@ -113,17 +113,28 @@ export const Board: React.FC = () => {
   }, [fetchData]);
 
   const handleTaskMove = async (storyId: string, taskId: string, targetStatus: TaskStatus) => {
+    const currentTask = (tasksByStory[storyId] || []).find(task => task.id === taskId);
+    if (!currentTask) return;
+    const previousStatus = currentTask.status;
+
     try {
       setTasksByStory(prev => {
         const newMap = { ...prev };
         const tasks = [...(newMap[storyId] || [])];
         const taskIdx = tasks.findIndex(t => t.id === taskId);
         if (taskIdx > -1) {
-          tasks[taskIdx] = { ...tasks[taskIdx], status: targetStatus };
+          const updatedTask = { ...tasks[taskIdx], status: targetStatus };
+          tasks.splice(taskIdx, 1);
+          tasks.push(updatedTask);
           newMap[storyId] = tasks;
         }
         return newMap;
       });
+
+      if (previousStatus === targetStatus) {
+        toast.success('Karte nach oben gelegt');
+        return;
+      }
 
       await boardApi.moveTask(taskId, targetStatus);
       toast.success('Task moved');
