@@ -2,7 +2,6 @@ import React from 'react';
 import { 
   DndContext, 
   closestCorners, 
-  PointerSensor, 
   MouseSensor,
   TouchSensor,
   useSensor, 
@@ -41,12 +40,11 @@ export const Swimlane: React.FC<SwimlaneProps> = ({
   
   const sensors = useSensors(
     useSensor(MouseSensor, {
-      activationConstraint: { distance: 10 },
+      activationConstraint: { distance: 6 },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: { delay: 200, tolerance: 10 },
-    }),
-    useSensor(PointerSensor)
+      activationConstraint: { delay: 250, tolerance: 8 },
+    })
   );
 
   const handleDragStart = (event: any) => {
