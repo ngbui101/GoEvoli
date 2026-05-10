@@ -19,24 +19,26 @@ export const Navbar: React.FC = () => {
             <span className="text-2xl font-black text-evoli-primary tracking-tighter">GoEvoli</span>
           </Link>
           
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 sm:gap-8">
             <Link 
               to="/projects" 
-              className="hidden md:flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-evoli-text/40 hover:text-evoli-primary transition-all group"
+              className="flex items-center gap-3 text-sm text-evoli-text font-black uppercase tracking-widest group"
             >
-              <LayoutGrid className="w-4 h-4 text-evoli-text/20 group-hover:text-evoli-primary/50" />
-              Projekte
+              <div className="w-10 h-10 rounded-full bg-evoli-secondary/30 flex items-center justify-center border border-evoli-primary/10 group-hover:bg-evoli-primary group-hover:text-white transition-all shadow-sm">
+                <img src="/img/nest.png" alt="Projekte" className="w-full h-full scale-[1.7] object-contain drop-shadow-sm" />
+              </div>
+              <span className="hidden sm:block group-hover:text-evoli-primary transition-colors">Projekte</span>
             </Link>
 
-            <div className="h-8 w-px bg-evoli-primary/10 hidden md:block" />
+            <div className="h-8 w-px bg-evoli-primary/10 hidden sm:block" />
 
             <div className="flex items-center gap-6">
               <button
                 onClick={() => navigate('/profile')}
-                className="flex items-center gap-3 text-xs text-evoli-text font-black uppercase tracking-widest group"
+                className="flex items-center gap-3 text-sm text-evoli-text font-black uppercase tracking-widest group"
               >
                 <div className="w-10 h-10 rounded-full bg-evoli-secondary/30 flex items-center justify-center border border-evoli-primary/10 group-hover:bg-evoli-primary group-hover:text-white transition-all shadow-sm">
-                  <UserIcon className="w-5 h-5" />
+                  <img src="/img/trainer_hat.png" alt="Profil" className="w-full h-full scale-[1.6] object-contain drop-shadow-sm" />
                 </div>
                 <span className="hidden sm:block group-hover:text-evoli-primary transition-colors">{user.name}</span>
               </button>
