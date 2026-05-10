@@ -62,6 +62,7 @@ export const AnimatedLogo: React.FC = () => {
             <path className="goevoli-crack-branch branch-two" d="M39 51 L31 55" fill="none" stroke="#925D3B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             <path className="goevoli-crack-branch branch-three" d="M58 50 L66 55" fill="none" stroke="#925D3B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             <path className="goevoli-crack-branch branch-four" d="M53 42 L47 36" fill="none" stroke="#925D3B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="goevoli-crack-huge" d="M22 45 L35 55 L48 48 L65 58 L78 45" fill="none" stroke="#925D3B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </g>
         </g>
 
