@@ -246,12 +246,12 @@
 
 .goevoli-logo-shadow {
   animation: logoShadow 1.8s ease-in-out infinite;
-  animation-delay: 3.2s;
+  animation-delay: 7s;
   transform-origin: 48px 82px;
 }
 
 .goevoli-egg {
-  animation: logoEggHatch 3.1s ease-in-out forwards;
+  animation: logoEggHatch 7s ease-in-out forwards;
   transform-origin: 48px 58px;
 }
 
@@ -259,100 +259,100 @@
   opacity: 0;
   stroke-dasharray: 36;
   stroke-dashoffset: 36;
-  animation: logoCrack 3.1s ease-in-out forwards;
+  animation: logoCrack 7s ease-in-out forwards;
 }
 
 .crack-two {
-  animation-delay: 0.14s;
+  animation-delay: 0.22s;
 }
 
 .goevoli-shell-top {
   opacity: 0;
-  animation: logoShellTop 3.1s ease-in-out forwards;
+  animation: logoShellTop 7s ease-in-out forwards;
   transform-origin: 48px 45px;
 }
 
 .goevoli-shell-bottom {
   opacity: 0;
-  animation: logoShellBottom 3.1s ease-in-out forwards;
+  animation: logoShellBottom 7s ease-in-out forwards;
   transform-origin: 48px 70px;
 }
 
 .goevoli-baby {
   opacity: 0;
-  animation: logoBabyHatch 3.1s ease-out forwards, logoBabyIdle 1.8s ease-in-out infinite;
-  animation-delay: 0s, 3.1s;
+  animation: logoBabyHatch 7s ease-out forwards, logoBabyIdle 1.8s ease-in-out infinite;
+  animation-delay: 0s, 7s;
   transform-origin: 48px 58px;
 }
 
 .goevoli-ear-left {
   animation: logoLeftEar 1.9s ease-in-out infinite;
-  animation-delay: 3.1s;
+  animation-delay: 7s;
   transform-origin: 40px 34px;
 }
 
 .goevoli-ear-right {
   animation: logoRightEar 1.9s ease-in-out infinite;
-  animation-delay: 3.35s;
+  animation-delay: 7.25s;
   transform-origin: 56px 34px;
 }
 
 .goevoli-logo-blink {
   animation: logoBlink 4s ease-in-out infinite;
-  animation-delay: 3.4s;
+  animation-delay: 7.3s;
   transform-origin: 48px 45px;
 }
 
 .goevoli-paw-left {
   animation: logoPawLeft 2.4s ease-in-out infinite;
-  animation-delay: 3.2s;
+  animation-delay: 7.1s;
   transform-origin: 32px 65px;
 }
 
 .goevoli-paw-right {
   animation: logoPawRight 2.4s ease-in-out infinite;
-  animation-delay: 3.35s;
+  animation-delay: 7.25s;
   transform-origin: 64px 65px;
 }
 
 .goevoli-sparkles {
   opacity: 0;
-  animation: logoSparkles 1.2s ease-out 2.25s 1 forwards, logoSparkleLoop 3.8s ease-in-out 3.4s infinite;
+  animation: logoSparkles 1.2s ease-out 5.7s 1 forwards, logoSparkleLoop 3.8s ease-in-out 7.2s infinite;
   transform-origin: 48px 48px;
 }
 
 @keyframes logoEggHatch {
-  0%, 18% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
-  24% { transform: translateY(-1px) rotate(-6deg) scale(1.02); }
-  31% { transform: translateY(1px) rotate(5deg) scale(1.02); }
-  38% { transform: translateY(-2px) rotate(-4deg) scale(1.03); }
-  48% { transform: translateY(1px) rotate(3deg) scale(1.03); }
-  58% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1.04); }
-  68%, 100% { opacity: 0; transform: translateY(8px) scale(0.84); }
+  0%, 10%, 20%, 30%, 40%, 50%, 60%, 70% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  6%, 26%, 46%, 66% { transform: translateY(-1px) rotate(-6deg) scale(1.02); }
+  13%, 33%, 53% { transform: translateY(1px) rotate(5deg) scale(1.02); }
+  73% { opacity: 1; transform: translateY(-2px) rotate(-7deg) scale(1.04); }
+  79% { opacity: 1; transform: translateY(1px) rotate(6deg) scale(1.04); }
+  86% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1.05); }
+  94%, 100% { opacity: 0; transform: translateY(8px) scale(0.84); }
 }
 
 @keyframes logoCrack {
-  0%, 34% { opacity: 0; stroke-dashoffset: 36; }
-  44% { opacity: 1; stroke-dashoffset: 16; }
-  56% { opacity: 1; stroke-dashoffset: 0; }
-  66%, 100% { opacity: 0; stroke-dashoffset: 0; }
+  0%, 71% { opacity: 0; stroke-dashoffset: 36; }
+  78% { opacity: 1; stroke-dashoffset: 16; }
+  86% { opacity: 1; stroke-dashoffset: 0; }
+  94%, 100% { opacity: 0; stroke-dashoffset: 0; }
 }
 
 @keyframes logoShellTop {
-  0%, 56% { opacity: 0; transform: translateY(0) rotate(0deg); }
-  62% { opacity: 1; transform: translateY(-3px) rotate(-4deg); }
-  78%, 100% { opacity: 0; transform: translate(-10px, -22px) rotate(-24deg); }
+  0%, 84% { opacity: 0; transform: translateY(0) rotate(0deg); }
+  89% { opacity: 1; transform: translateY(-3px) rotate(-4deg); }
+  100% { opacity: 0; transform: translate(-10px, -22px) rotate(-24deg); }
 }
 
 @keyframes logoShellBottom {
-  0%, 56% { opacity: 0; transform: translateY(6px) scale(0.96); }
-  62%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+  0%, 84% { opacity: 0; transform: translateY(6px) scale(0.96); }
+  89%, 100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes logoBabyHatch {
-  0%, 51% { opacity: 0; transform: translateY(20px) scale(0.62); }
-  66% { opacity: 1; transform: translateY(-5px) scale(1.08); }
-  78%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+  0%, 80% { opacity: 0; transform: translateY(20px) scale(0.62); }
+  92% { opacity: 1; transform: translateY(-5px) scale(1.08); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes logoBabyIdle {
@@ -411,30 +411,6 @@
   80% { opacity: 0.85; transform: translateY(-2px) scale(1) rotate(10deg); }
   88% { opacity: 0.35; transform: translateY(-4px) scale(1.2) rotate(-8deg); }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .goevoli-logo *,
-  .goevoli-logo-shadow {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    animation-delay: 0s !important;
-  }
-
-  .goevoli-egg,
-  .goevoli-crack,
-  .goevoli-shell-top,
-  .goevoli-sparkles {
-    opacity: 0;
-  }
-
-  .goevoli-baby,
-  .goevoli-shell-bottom {
-    opacity: 1;
-  }
-}
-
-
-
 
 @keyframes holoHue {
   from { filter: hue-rotate(0deg) brightness(1); }
