@@ -55,8 +55,14 @@ export const AnimatedLogo: React.FC = () => {
           <text x="48" y="62" textAnchor="middle" fill="#925D3B" fontSize="36" fontWeight="900" fontFamily="Outfit, Inter, sans-serif">
             G
           </text>
-          <path className="goevoli-crack crack-one" d="M35 35 L43 43 L38 51 L48 58" fill="none" stroke="#925D3B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          <path className="goevoli-crack crack-two" d="M61 32 L53 41 L59 49 L50 58" fill="none" stroke="#925D3B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          <g className="goevoli-crack-glow">
+            <path className="goevoli-crack crack-one" d="M34 34 L43 43 L38 51 L48 61" fill="none" stroke="#925D3B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="goevoli-crack crack-two" d="M62 32 L53 42 L59 50 L50 61" fill="none" stroke="#925D3B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="goevoli-crack-branch branch-one" d="M43 43 L51 40" fill="none" stroke="#925D3B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="goevoli-crack-branch branch-two" d="M39 51 L31 55" fill="none" stroke="#925D3B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="goevoli-crack-branch branch-three" d="M58 50 L66 55" fill="none" stroke="#925D3B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="goevoli-crack-branch branch-four" d="M53 42 L47 36" fill="none" stroke="#925D3B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
         </g>
 
         <g className="goevoli-shell-top" filter="url(#logoSoftShadow)">
