@@ -257,13 +257,38 @@
 
 .goevoli-crack {
   opacity: 0;
-  stroke-dasharray: 36;
-  stroke-dashoffset: 36;
+  stroke-dasharray: 44;
+  stroke-dashoffset: 44;
   animation: logoCrack 7s ease-in-out forwards;
+  transform-origin: 48px 48px;
 }
 
 .crack-two {
   animation-delay: 0.22s;
+}
+
+.goevoli-crack-branch {
+  opacity: 0;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  animation: logoCrackBranch 7s ease-in-out forwards;
+  transform-origin: 48px 48px;
+}
+
+.branch-two {
+  animation-delay: 0.12s;
+}
+
+.branch-three {
+  animation-delay: 0.24s;
+}
+
+.branch-four {
+  animation-delay: 0.34s;
+}
+
+.goevoli-crack-glow {
+  animation: logoCrackGlow 7s ease-in-out forwards;
 }
 
 .goevoli-shell-top {
@@ -332,10 +357,26 @@
 }
 
 @keyframes logoCrack {
-  0%, 71% { opacity: 0; stroke-dashoffset: 36; }
-  78% { opacity: 1; stroke-dashoffset: 16; }
-  86% { opacity: 1; stroke-dashoffset: 0; }
-  94%, 100% { opacity: 0; stroke-dashoffset: 0; }
+  0%, 68% { opacity: 0; stroke-dashoffset: 44; stroke-width: 1.5; }
+  72% { opacity: 0.45; stroke-dashoffset: 34; stroke-width: 1.8; }
+  78% { opacity: 0.78; stroke-dashoffset: 20; stroke-width: 2.3; }
+  86% { opacity: 1; stroke-dashoffset: 0; stroke-width: 3.1; }
+  92% { opacity: 1; stroke-dashoffset: 0; stroke-width: 3.5; }
+  97%, 100% { opacity: 0; stroke-dashoffset: 0; stroke-width: 3.5; }
+}
+
+@keyframes logoCrackBranch {
+  0%, 76% { opacity: 0; stroke-dashoffset: 16; stroke-width: 1.4; }
+  82% { opacity: 0.72; stroke-dashoffset: 8; stroke-width: 1.8; }
+  89% { opacity: 1; stroke-dashoffset: 0; stroke-width: 2.5; }
+  94% { opacity: 1; stroke-dashoffset: 0; stroke-width: 2.8; }
+  98%, 100% { opacity: 0; stroke-dashoffset: 0; stroke-width: 2.8; }
+}
+
+@keyframes logoCrackGlow {
+  0%, 77% { filter: drop-shadow(0 0 0 rgba(146, 93, 59, 0)); }
+  86%, 94% { filter: drop-shadow(0 0 3px rgba(146, 93, 59, 0.38)); }
+  100% { filter: drop-shadow(0 0 0 rgba(146, 93, 59, 0)); }
 }
 
 @keyframes logoShellTop {
