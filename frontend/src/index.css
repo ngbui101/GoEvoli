@@ -245,13 +245,13 @@
 }
 
 .goevoli-logo-shadow {
-  animation: logoShadow 1.8s ease-in-out infinite;
-  animation-delay: 7s;
+  animation: logoShadow 3.6s ease-in-out infinite;
+  animation-delay: 14s;
   transform-origin: 48px 82px;
 }
 
 .goevoli-egg {
-  animation: logoEggHatch 7s ease-in-out forwards;
+  animation: logoEggHatch 14s ease-in-out forwards;
   transform-origin: 48px 58px;
 }
 
@@ -259,90 +259,90 @@
   opacity: 0;
   stroke-dasharray: 44;
   stroke-dashoffset: 44;
-  animation: logoCrack 7s ease-in-out forwards;
+  animation: logoCrack 14s ease-in-out forwards;
   transform-origin: 48px 48px;
 }
 
 .crack-two {
-  animation-delay: 0.22s;
+  animation-delay: 0.44s;
 }
 
 .goevoli-crack-branch {
   opacity: 0;
   stroke-dasharray: 16;
   stroke-dashoffset: 16;
-  animation: logoCrackBranch 7s ease-in-out forwards;
+  animation: logoCrackBranch 14s ease-in-out forwards;
   transform-origin: 48px 48px;
 }
 
 .branch-two {
-  animation-delay: 0.12s;
-}
-
-.branch-three {
   animation-delay: 0.24s;
 }
 
+.branch-three {
+  animation-delay: 0.48s;
+}
+
 .branch-four {
-  animation-delay: 0.34s;
+  animation-delay: 0.68s;
 }
 
 .goevoli-crack-glow {
-  animation: logoCrackGlow 7s ease-in-out forwards;
+  animation: logoCrackGlow 14s ease-in-out forwards;
 }
 
 .goevoli-shell-top {
   opacity: 0;
-  animation: logoShellTop 7s ease-in-out forwards;
+  animation: logoShellTop 14s ease-in-out forwards;
   transform-origin: 48px 45px;
 }
 
 .goevoli-shell-bottom {
   opacity: 0;
-  animation: logoShellBottom 7s ease-in-out forwards;
+  animation: logoShellBottom 14s ease-in-out forwards;
   transform-origin: 48px 70px;
 }
 
 .goevoli-baby {
   opacity: 0;
-  animation: logoBabyHatch 7s ease-out forwards, logoBabyIdle 1.8s ease-in-out infinite;
-  animation-delay: 0s, 7s;
+  animation: logoBabyHatch 14s ease-out forwards, logoBabyIdle 3.6s ease-in-out infinite;
+  animation-delay: 0s, 14s;
   transform-origin: 48px 58px;
 }
 
 .goevoli-ear-left {
-  animation: logoLeftEar 1.9s ease-in-out infinite;
-  animation-delay: 7s;
+  animation: logoLeftEar 3.8s ease-in-out infinite;
+  animation-delay: 14s;
   transform-origin: 40px 34px;
 }
 
 .goevoli-ear-right {
-  animation: logoRightEar 1.9s ease-in-out infinite;
-  animation-delay: 7.25s;
+  animation: logoRightEar 3.8s ease-in-out infinite;
+  animation-delay: 14.5s;
   transform-origin: 56px 34px;
 }
 
 .goevoli-logo-blink {
-  animation: logoBlink 4s ease-in-out infinite;
-  animation-delay: 7.3s;
+  animation: logoBlink 8s ease-in-out infinite;
+  animation-delay: 14.6s;
   transform-origin: 48px 45px;
 }
 
 .goevoli-paw-left {
-  animation: logoPawLeft 2.4s ease-in-out infinite;
-  animation-delay: 7.1s;
+  animation: logoPawLeft 4.8s ease-in-out infinite;
+  animation-delay: 14.2s;
   transform-origin: 32px 65px;
 }
 
 .goevoli-paw-right {
-  animation: logoPawRight 2.4s ease-in-out infinite;
-  animation-delay: 7.25s;
+  animation: logoPawRight 4.8s ease-in-out infinite;
+  animation-delay: 14.5s;
   transform-origin: 64px 65px;
 }
 
 .goevoli-sparkles {
   opacity: 0;
-  animation: logoSparkles 1.2s ease-out 5.7s 1 forwards, logoSparkleLoop 3.8s ease-in-out 7.2s infinite;
+  animation: logoSparkles 2.4s ease-out 11.4s 1 forwards, logoSparkleLoop 7.6s ease-in-out 14.4s infinite;
   transform-origin: 48px 48px;
 }
 
