@@ -50,7 +50,6 @@ export const StoryCard: React.FC<StoryCardProps> = ({
   story, 
   tasks, 
   onClick,
-  onDelete,
   className,
   size = "board"
 }) => {
@@ -212,22 +211,14 @@ export const StoryCard: React.FC<StoryCardProps> = ({
               )}
 
               {activeTab === 'löschen' && (
-                <div className="h-full flex flex-col items-center justify-center p-4 text-center space-y-4">
-                   <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 border border-red-100 shadow-sm">
+                <div className="h-full flex flex-col items-center justify-center rounded border border-dashed border-evoli-primary/10 bg-white/20 p-4 text-center space-y-3">
+                   <div className="w-12 h-12 rounded-full bg-evoli-primary/10 flex items-center justify-center text-evoli-primary border border-evoli-primary/10 shadow-sm">
                       <Bug className="w-6 h-6" />
                    </div>
                    <div className="space-y-1">
-                      <h3 className="text-[10px] font-black uppercase text-evoli-text">Karte vernichten?</h3>
-                      <p className="text-[8px] text-evoli-text/40 leading-relaxed">
-                         Diese Aktion kann nicht rückgängig gemacht werden. Die Story wird permanent aus dem Spielfeld entfernt.
-                      </p>
+                      <h3 className="text-[9px] font-black uppercase tracking-widest text-evoli-primary">Coming Soon</h3>
+                      <p className="text-[8px] text-evoli-text/40 leading-relaxed">Story-Loeschen wird hier vorbereitet.</p>
                    </div>
-                   <button 
-                     onClick={() => onDelete?.(story.id)}
-                     className="w-full py-2 bg-red-500 hover:bg-red-600 text-white text-[9px] font-black uppercase rounded shadow-lg transition-colors border-b-4 border-red-800 active:border-b-0 active:translate-y-1"
-                   >
-                      Story löschen
-                   </button>
                 </div>
               )}
            </div>

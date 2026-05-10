@@ -36,7 +36,6 @@ const typeStoneStyles: Record<string, string> = {
 export const TaskCard: React.FC<TaskCardProps> = ({ 
   task, 
   projectId, 
-  onDelete,
   className,
   size = "board"
 }) => {
@@ -207,45 +206,23 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                 )}
 
                 {activeTab === 'assigned' && (
-                  <div className="space-y-2">
-                     <div className="text-[7px] font-black uppercase text-evoli-text/40 mb-1">Zugewiesene Trainer</div>
-                     {task.assigned && task.assigned.length > 0 ? (
-                        <div className="space-y-1.5">
-                           {task.assigned.slice(0, 5).map(user => (
-                             <div key={user.id} className="flex items-center gap-2 p-2 bg-white/30 rounded border border-evoli-primary/5">
-                                <div className="w-5 h-5 rounded-full bg-evoli-primary/10 flex items-center justify-center text-[8px] font-black text-evoli-primary border border-evoli-primary/20">
-                                   {user.name.charAt(0)}
-                                </div>
-                                <div className="flex flex-col">
-                                   <span className="text-[9px] font-black text-evoli-text leading-none">{user.name}</span>
-                                   <span className="text-[7px] opacity-40 leading-none">{user.email}</span>
-                                </div>
-                             </div>
-                           ))}
-                        </div>
-                     ) : (
-                        <div className="text-center py-4 text-[9px] opacity-20 uppercase font-black">Kein Trainer zugewiesen</div>
-                     )}
+                  <div className="h-full flex items-center justify-center rounded border border-dashed border-evoli-primary/10 bg-white/20 p-4 text-center">
+                     <div className="space-y-1">
+                        <div className="text-[9px] font-black uppercase tracking-widest text-evoli-primary">Coming Soon</div>
+                        <p className="text-[8px] leading-relaxed text-evoli-text/40">Trainer-Zuweisungen werden hier vorbereitet.</p>
+                     </div>
                   </div>
                 )}
 
                 {activeTab === 'löschen' && (
-                  <div className="h-full flex flex-col items-center justify-center p-4 text-center space-y-4">
-                     <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 border border-red-100 shadow-sm">
+                  <div className="h-full flex flex-col items-center justify-center rounded border border-dashed border-evoli-primary/10 bg-white/20 p-4 text-center space-y-3">
+                     <div className="w-12 h-12 rounded-full bg-evoli-primary/10 flex items-center justify-center text-evoli-primary border border-evoli-primary/10 shadow-sm">
                         <Bug className="w-6 h-6" />
                      </div>
                      <div className="space-y-1">
-                        <h3 className="text-[10px] font-black uppercase text-evoli-text">Karte vernichten?</h3>
-                        <p className="text-[8px] text-evoli-text/40 leading-relaxed">
-                           Diese Aktion kann nicht rückgängig gemacht werden. Der Task wird permanent aus der Story entfernt.
-                        </p>
+                        <h3 className="text-[9px] font-black uppercase tracking-widest text-evoli-primary">Coming Soon</h3>
+                        <p className="text-[8px] text-evoli-text/40 leading-relaxed">Karten-Loeschen wird hier vorbereitet.</p>
                      </div>
-                     <button 
-                       onClick={() => onDelete?.(task.id)}
-                       className="w-full py-2 bg-red-500 hover:bg-red-600 text-white text-[9px] font-black uppercase rounded shadow-lg transition-colors border-b-4 border-red-800 active:border-b-0 active:translate-y-1"
-                     >
-                        Task löschen
-                     </button>
                   </div>
                 )}
              </div>
