@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"os"
@@ -188,7 +189,40 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := h.addDemoProjectMembership(r.Context(), user.ID); err != nil {
+		response.Error(w, http.StatusInternalServerError, "Error adding demo project membership")
+		return
+	}
+
 	response.JSON(w, http.StatusCreated, user)
+}
+
+func (h *AuthHandler) addDemoProjectMembership(ctx context.Context, userID primitive.ObjectID) error {
+	project, err := h.repos.Projects.FindOne(ctx, bson.M{
+		"name": bson.M{
+			"$in": []string{
+				models.DefaultDemoProjectName,
+				"Pok\u00e9mon GoEvoli (Full Demo)",
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	if project == nil {
+		return nil
+	}
+
+	return h.repos.ProjectMemberships.Create(ctx, &models.ProjectMembership{
+		BaseModel: models.BaseModel{
+			ID:        primitive.NewObjectID(),
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+		ProjectId: project.ID,
+		UserId:    userID,
+		Role:      models.RoleDeveloper,
+	})
 }
 
 func (h *AuthHandler) CheckEmail(w http.ResponseWriter, r *http.Request) {

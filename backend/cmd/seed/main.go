@@ -94,15 +94,15 @@ func main() {
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
 		},
-		Name:        "Pokémon GoEvoli (Full Demo)",
-		Description: "A Kanban board for Pokémon management.",
+		Name:        models.DefaultDemoProjectName,
+		Description: "A focused demo board for the next GoEvoli product work.",
 		WipLimits: models.WipLimits{
 			Next:  3,
 			Doing: 2,
 		},
 	}
 	repos.Projects.Create(ctx, project)
-	fmt.Println("Created default project: Pokémon GoEvoli (Full Demo)")
+	fmt.Printf("Created default project: %s\n", models.DefaultDemoProjectName)
 	for _, u := range users {
 		membership := &models.ProjectMembership{
 			BaseModel: models.BaseModel{
@@ -116,122 +116,113 @@ func main() {
 		}
 		repos.ProjectMemberships.Create(ctx, membership)
 	}
-	s1 := &models.UserStory{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		ProjectId: project.ID,
-		Title:     "Pikachu Initial Design",
-		Status:    models.StoryStatusEgg,
-		Priority:  models.PriorityMedium,
+	type taskSeed struct {
+		title       string
+		description string
+		status      models.TaskStatus
+		taskType    models.TaskType
+		workload    float64
+		priority    models.Priority
+		createdBy   string
+		assigned    []string
 	}
-	repos.Stories.Create(ctx, s1)
 
-	repos.Tasks.Create(ctx, &models.Task{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		StoryId:   s1.ID,
-		ProjectId: project.ID,
-		Title:     "Sketching",
-		Status:    models.TaskStatusBacklog,
-		Type:      models.TaskTypeUIUX,
-		Workload:  2.0,
-		Priority:  models.PriorityMedium,
-		CreatedBy: userMap["admin@example.com"],
-		Assigned:  []primitive.ObjectID{userMap["dev@example.com"]},
-	})
-	s2 := &models.UserStory{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		ProjectId: project.ID,
-		Title:     "Charizard Fire Breath Implementation",
-		Status:    models.StoryStatusEvolving,
-		Priority:  models.PriorityHigh,
+	storySeeds := []struct {
+		title       string
+		description string
+		status      models.StoryStatus
+		priority    models.Priority
+		tasks       []taskSeed
+	}{
+		{
+			title:       "Trainer einem Task zuweisen",
+			description: "Als Teammitglied moechte ich Tasks anderen Trainern zuweisen koennen, damit Verantwortlichkeiten im Board sichtbar sind.",
+			status:      models.StoryStatusEgg,
+			priority:    models.PriorityHigh,
+			tasks: []taskSeed{
+				{"Backend Membership/User-Auswahl vorbereiten", "API-Daten bereitstellen, damit der Assigned-Tab Projektmitglieder anzeigen kann.", models.TaskStatusBacklog, models.TaskTypeFunctionality, 3, models.PriorityHigh, "po@example.com", []string{"dev@example.com"}},
+				{"Assigned-Tab im Editor implementieren", "Trainer auswaehlen, speichern und bestehende Zuweisungen anzeigen.", models.TaskStatusBacklog, models.TaskTypeUIUX, 4, models.PriorityHigh, "po@example.com", []string{"dev@example.com"}},
+				{"Zuweisung auf Task-Karten anzeigen", "Board- und Detailkarten sollen zugewiesene Trainer eindeutig darstellen.", models.TaskStatusNext, models.TaskTypeUIUX, 2, models.PriorityMedium, "scrum@example.com", []string{"dev@example.com", "tester@example.com"}},
+			},
+		},
+		{
+			title:       "Stories und Tasks direkt bearbeiten",
+			description: "Als Nutzer moechte ich Stories und Tasks nachtraeglich bearbeiten koennen, damit Fehler ohne Loeschen und Neuerstellen korrigiert werden.",
+			status:      models.StoryStatusEvolving,
+			priority:    models.PriorityHigh,
+			tasks: []taskSeed{
+				{"Update-Endpunkte fuer Stories und Tasks", "PATCH-Routen mit Validierung und Berechtigungspruefung ergaenzen.", models.TaskStatusDoing, models.TaskTypeFunctionality, 5, models.PriorityHigh, "admin@example.com", []string{"dev@example.com"}},
+				{"Edit-Modus in Detailansichten", "Titel, Beschreibung, Prioritaet, Typ und Workload bearbeitbar machen.", models.TaskStatusNext, models.TaskTypeUIUX, 4, models.PriorityHigh, "po@example.com", []string{"dev@example.com"}},
+				{"Regressionstests fuer Bearbeiten", "Backend- und Frontend-Flows fuer erfolgreiche und ungueltige Updates absichern.", models.TaskStatusBacklog, models.TaskTypeStability, 3, models.PriorityMedium, "tester@example.com", []string{"tester@example.com"}},
+			},
+		},
+		{
+			title:       "Board in Echtzeit aktualisieren",
+			description: "Als Team moechte ich Board-Aenderungen automatisch sehen, damit parallele Arbeit ohne manuelles Neuladen synchron bleibt.",
+			status:      models.StoryStatusEgg,
+			priority:    models.PriorityMedium,
+			tasks: []taskSeed{
+				{"Realtime-Strategie festlegen", "WebSocket oder Polling anhand Deployment-Grenzen und Aufwand entscheiden.", models.TaskStatusBacklog, models.TaskTypeStability, 2, models.PriorityMedium, "scrum@example.com", []string{"dev@example.com"}},
+				{"Board-Events im Backend veroeffentlichen", "Task-Moves, neue Bugs und Story-Aenderungen als Events bereitstellen.", models.TaskStatusBacklog, models.TaskTypeFunctionality, 5, models.PriorityMedium, "admin@example.com", []string{"dev@example.com"}},
+				{"Frontend-Subscription integrieren", "Board-State aktualisieren, ohne lokale Drag-Interaktionen zu stoeren.", models.TaskStatusBacklog, models.TaskTypeFunctionality, 4, models.PriorityMedium, "po@example.com", []string{"dev@example.com"}},
+			},
+		},
+		{
+			title:       "Drag-and-drop auf Mobile haerten",
+			description: "Als mobiler Nutzer moechte ich Karten zuverlaessig per Touch bewegen koennen, ohne versehentlich zu scrollen oder Details zu oeffnen.",
+			status:      models.StoryStatusEvolving,
+			priority:    models.PriorityCritical,
+			tasks: []taskSeed{
+				{"Touch-Sensoren und Scroll-Konflikte testen", "Mobile Gesten fuer Halten, Ziehen und horizontales Scrollen reproduzierbar pruefen.", models.TaskStatusDoing, models.TaskTypeStability, 3, models.PriorityCritical, "tester@example.com", []string{"tester@example.com"}},
+				{"Mobile Drop-Zonen robuster machen", "Drop-Ziele und Feedback fuer kleine Viewports verbessern.", models.TaskStatusNext, models.TaskTypeUIUX, 3, models.PriorityHigh, "po@example.com", []string{"dev@example.com"}},
+				{"E2E-Test fuer mobilen Kartenmove", "Automatisierten Touch-Flow fuer Task-Bewegung und Stapel-Reihenfolge ergaenzen.", models.TaskStatusBacklog, models.TaskTypeStability, 4, models.PriorityHigh, "tester@example.com", []string{"tester@example.com"}},
+			},
+		},
+		{
+			title:       "Board-Suchergebnisse klar hervorheben",
+			description: "Als Nutzer moechte ich sofort erkennen, welche Story oder Task zur Suche passt, damit ich Treffer im Board schneller finde.",
+			status:      models.StoryStatusEgg,
+			priority:    models.PriorityMedium,
+			tasks: []taskSeed{
+				{"Trefferlogik fuer Tasks und Stories ableiten", "Suchtreffer getrennt nach Story-Titel, Task-Titel und Beschreibung berechnen.", models.TaskStatusBacklog, models.TaskTypeFunctionality, 2, models.PriorityMedium, "po@example.com", []string{"dev@example.com"}},
+				{"Visuelle Highlight-Zustaende gestalten", "Passende Karten hervorheben und nicht passende Karten dezent reduzieren.", models.TaskStatusBacklog, models.TaskTypeUIUX, 3, models.PriorityMedium, "scrum@example.com", []string{"dev@example.com"}},
+				{"Suche per QA-Szenarien absichern", "Story-Treffer, Task-Treffer und leere Ergebnisse auf Desktop und Mobile testen.", models.TaskStatusBacklog, models.TaskTypeStability, 2, models.PriorityMedium, "tester@example.com", []string{"tester@example.com"}},
+			},
+		},
 	}
-	repos.Stories.Create(ctx, s2)
-	repos.Tasks.Create(ctx, &models.Task{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		StoryId:   s2.ID,
-		ProjectId: project.ID,
-		Title:     "Particle Effects",
-		Status:    models.TaskStatusDoing,
-		Type:      models.TaskTypeFunctionality,
-		Workload:  3.0,
-		Priority:  models.PriorityHigh,
-		CreatedBy: userMap["admin@example.com"],
-		Assigned:  []primitive.ObjectID{userMap["dev@example.com"], userMap["tester@example.com"]},
-	})
-	repos.Tasks.Create(ctx, &models.Task{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		StoryId:   s2.ID,
-		ProjectId: project.ID,
-		Title:     "Sound Effects",
-		Status:    models.TaskStatusNext,
-		Type:      models.TaskTypeUIUX,
-		Workload:  1.0,
-		Priority:  models.PriorityMedium,
-		CreatedBy: userMap["scrum@example.com"],
-		Assigned:  []primitive.ObjectID{userMap["dev@example.com"]},
-	})
-	s3 := &models.UserStory{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		ProjectId: project.ID,
-		Title:     "Bulbasaur Vine Whip Logic",
-		Status:    models.StoryStatusBlocked,
-		Priority:  models.PriorityCritical,
+
+	for _, storySeed := range storySeeds {
+		story := &models.UserStory{
+			BaseModel:   models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			ProjectId:   project.ID,
+			Title:       storySeed.title,
+			Description: storySeed.description,
+			Status:      storySeed.status,
+			Priority:    storySeed.priority,
+		}
+		repos.Stories.Create(ctx, story)
+
+		for _, taskSeed := range storySeed.tasks {
+			assigned := make([]primitive.ObjectID, 0, len(taskSeed.assigned))
+			for _, email := range taskSeed.assigned {
+				assigned = append(assigned, userMap[email])
+			}
+
+			repos.Tasks.Create(ctx, &models.Task{
+				BaseModel:   models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+				StoryId:     story.ID,
+				ProjectId:   project.ID,
+				Title:       taskSeed.title,
+				Description: taskSeed.description,
+				Status:      taskSeed.status,
+				Type:        taskSeed.taskType,
+				Workload:    taskSeed.workload,
+				Priority:    taskSeed.priority,
+				CreatedBy:   userMap[taskSeed.createdBy],
+				Assigned:    assigned,
+			})
+		}
 	}
-	repos.Stories.Create(ctx, s3)
-	t3 := &models.Task{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		StoryId:   s3.ID,
-		ProjectId: project.ID,
-		Title:     "Collision Detection",
-		Status:    models.TaskStatusDoing,
-		Type:      models.TaskTypeStability,
-		Workload:  5.0,
-		Priority:  models.PriorityHigh,
-		CreatedBy: userMap["po@example.com"],
-		Assigned:  []primitive.ObjectID{userMap["dev@example.com"]},
-	}
-	repos.Tasks.Create(ctx, t3)
-	repos.Bugs.Create(ctx, &models.Bug{
-		BaseModel:          models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		ProjectId:          project.ID,
-		Title:              "Vines clipping through terrain",
-		Severity:           models.SeverityHigh,
-		Status:             models.BugStatusOpen,
-		BlocksWork:         true,
-		AffectedEntityType: models.EntityTypeTask,
-		AffectedEntityId:   t3.ID,
-	})
-	s4 := &models.UserStory{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		ProjectId: project.ID,
-		Title:     "Squirtle Water Gun Mechanics",
-		Status:    models.StoryStatusReadyForTest,
-		Priority:  models.PriorityMedium,
-	}
-	repos.Stories.Create(ctx, s4)
-	repos.Tasks.Create(ctx, &models.Task{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		StoryId:   s4.ID,
-		ProjectId: project.ID,
-		Title:     "Water Particle Shader",
-		Status:    models.TaskStatusDone,
-		Type:      models.TaskTypeFunctionality,
-		Workload:  2.0,
-		Priority:  models.PriorityMedium,
-		CreatedBy: userMap["admin@example.com"],
-		Assigned:  []primitive.ObjectID{userMap["dev@example.com"]},
-	})
-	repos.Tasks.Create(ctx, &models.Task{
-		BaseModel: models.BaseModel{ID: primitive.NewObjectID(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		StoryId:   s4.ID,
-		ProjectId: project.ID,
-		Title:     "Damage Calculation",
-		Status:    models.TaskStatusDone,
-		Type:      models.TaskTypeStability,
-		Workload:  2.0,
-		Priority:  models.PriorityLow,
-		CreatedBy: userMap["tester@example.com"],
-		Assigned:  []primitive.ObjectID{userMap["dev@example.com"]},
-	})
 
 	fmt.Println("Seeding completed successfully!")
 }
