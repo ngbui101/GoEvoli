@@ -155,11 +155,12 @@ export const Login: React.FC = () => {
           }
           artwork={
             <CardArtwork
-              imageName={randomEvo.file}
-              imageLabel={randomEvo.label}
+              customSrc="/img/login_video.gif"
+              imageLabel="GoEvoli"
               holo={randomEvo.holo}
               status="FINAL_EVOLUTION"
               isBoard={false}
+              fullFrame={true}
             />
           }
            footer={

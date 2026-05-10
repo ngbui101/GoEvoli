@@ -100,11 +100,13 @@ const FloatingParticles: React.FC<{ colors: string[] }> = ({ colors }) => (
   </g>
 );
 interface CardArtworkProps {
-  imageName: string;
+  imageName?: string;
   imageLabel: string;
   holo: { from: string; via: string; to: string };
   status: StoryStatus | 'BUG' | 'TASK';
   isBoard?: boolean;
+  customSrc?: string;
+  fullFrame?: boolean;
 }
 
 export const CardArtwork: React.FC<CardArtworkProps> = ({
@@ -113,9 +115,13 @@ export const CardArtwork: React.FC<CardArtworkProps> = ({
   holo,
   status,
   isBoard = true,
+  customSrc,
+  fullFrame = false,
 }) => {
   const bg = (sceneBg as any)[status] ?? sceneBg['EGG'];
   const pColors = (particleColors as any)[status] ?? particleColors['EGG'];
+
+  const src = customSrc ? customSrc : `/img/${imageName}.png`;
 
   return (
     <div className="relative w-full h-full overflow-hidden card-artwork-root select-none">
@@ -134,10 +140,10 @@ export const CardArtwork: React.FC<CardArtworkProps> = ({
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         <img
-          src={`/img/${imageName}.png`}
+          src={src}
           alt={imageLabel}
-          className="card-artwork-img object-contain drop-shadow-2xl"
-          style={{
+          className={fullFrame ? "w-full h-full object-cover" : "card-artwork-img object-contain drop-shadow-2xl"}
+          style={fullFrame ? undefined : {
             width:  isBoard ? '72%' : '68%',
             height: isBoard ? '82%' : '80%',
           }}
