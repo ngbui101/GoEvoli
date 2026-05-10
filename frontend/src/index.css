@@ -229,6 +229,199 @@
 }
 .card-heart-beat { animation: heartBeat 1.6s ease-in-out infinite; }
 
+.goevoli-logo {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.goevoli-logo svg {
+  overflow: visible;
+}
+
+.goevoli-logo-shadow {
+  animation: logoShadow 3s ease-in-out infinite;
+  animation-delay: 3.2s;
+  transform-origin: 48px 82px;
+}
+
+.goevoli-egg {
+  animation: logoEggHatch 3.1s ease-in-out forwards;
+  transform-origin: 48px 58px;
+}
+
+.goevoli-crack {
+  opacity: 0;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: logoCrack 3.1s ease-in-out forwards;
+}
+
+.crack-two {
+  animation-delay: 0.14s;
+}
+
+.goevoli-shell-top {
+  opacity: 0;
+  animation: logoShellTop 3.1s ease-in-out forwards;
+  transform-origin: 48px 45px;
+}
+
+.goevoli-shell-bottom {
+  opacity: 0;
+  animation: logoShellBottom 3.1s ease-in-out forwards;
+  transform-origin: 48px 70px;
+}
+
+.goevoli-baby {
+  opacity: 0;
+  animation: logoBabyHatch 3.1s ease-out forwards, logoBabyIdle 3s ease-in-out infinite;
+  animation-delay: 0s, 3.1s;
+  transform-origin: 48px 58px;
+}
+
+.goevoli-ear-left {
+  animation: logoLeftEar 2.8s ease-in-out infinite;
+  animation-delay: 3.1s;
+  transform-origin: 40px 34px;
+}
+
+.goevoli-ear-right {
+  animation: logoRightEar 2.8s ease-in-out infinite;
+  animation-delay: 3.35s;
+  transform-origin: 56px 34px;
+}
+
+.goevoli-logo-blink {
+  animation: logoBlink 4s ease-in-out infinite;
+  animation-delay: 3.4s;
+  transform-origin: 48px 45px;
+}
+
+.goevoli-paw-left {
+  animation: logoPawLeft 3.5s ease-in-out infinite;
+  animation-delay: 3.2s;
+  transform-origin: 32px 65px;
+}
+
+.goevoli-paw-right {
+  animation: logoPawRight 3.5s ease-in-out infinite;
+  animation-delay: 3.35s;
+  transform-origin: 64px 65px;
+}
+
+.goevoli-sparkles {
+  opacity: 0;
+  animation: logoSparkles 1.2s ease-out forwards;
+  animation-delay: 2.25s;
+}
+
+@keyframes logoEggHatch {
+  0%, 18% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  24% { transform: translateY(-1px) rotate(-6deg) scale(1.02); }
+  31% { transform: translateY(1px) rotate(5deg) scale(1.02); }
+  38% { transform: translateY(-2px) rotate(-4deg) scale(1.03); }
+  48% { transform: translateY(1px) rotate(3deg) scale(1.03); }
+  58% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1.04); }
+  68%, 100% { opacity: 0; transform: translateY(8px) scale(0.84); }
+}
+
+@keyframes logoCrack {
+  0%, 34% { opacity: 0; stroke-dashoffset: 36; }
+  44% { opacity: 1; stroke-dashoffset: 16; }
+  56% { opacity: 1; stroke-dashoffset: 0; }
+  66%, 100% { opacity: 0; stroke-dashoffset: 0; }
+}
+
+@keyframes logoShellTop {
+  0%, 56% { opacity: 0; transform: translateY(0) rotate(0deg); }
+  62% { opacity: 1; transform: translateY(-3px) rotate(-4deg); }
+  78%, 100% { opacity: 0; transform: translate(-10px, -22px) rotate(-24deg); }
+}
+
+@keyframes logoShellBottom {
+  0%, 56% { opacity: 0; transform: translateY(6px) scale(0.96); }
+  62%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes logoBabyHatch {
+  0%, 51% { opacity: 0; transform: translateY(20px) scale(0.62); }
+  66% { opacity: 1; transform: translateY(-5px) scale(1.08); }
+  78%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes logoBabyIdle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.02); }
+}
+
+@keyframes logoShadow {
+  0%, 100% { transform: scaleX(1); opacity: 0.14; }
+  50% { transform: scaleX(0.85); opacity: 0.09; }
+}
+
+@keyframes logoLeftEar {
+  0%, 100% { transform: rotate(0deg); }
+  48% { transform: rotate(-3deg); }
+  56% { transform: rotate(4deg); }
+  64% { transform: rotate(0deg); }
+}
+
+@keyframes logoRightEar {
+  0%, 100% { transform: rotate(0deg); }
+  48% { transform: rotate(3deg); }
+  56% { transform: rotate(-4deg); }
+  64% { transform: rotate(0deg); }
+}
+
+@keyframes logoBlink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.12); }
+  97% { transform: scaleY(1); }
+}
+
+@keyframes logoPawLeft {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-8deg); }
+  26% { transform: rotate(5deg); }
+  37% { transform: rotate(0deg); }
+}
+
+@keyframes logoPawRight {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(8deg); }
+  26% { transform: rotate(-5deg); }
+  37% { transform: rotate(0deg); }
+}
+
+@keyframes logoSparkles {
+  0% { opacity: 0; transform: scale(0.5); }
+  45% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goevoli-logo *,
+  .goevoli-logo-shadow {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+  }
+
+  .goevoli-egg,
+  .goevoli-crack,
+  .goevoli-shell-top,
+  .goevoli-sparkles {
+    opacity: 0;
+  }
+
+  .goevoli-baby,
+  .goevoli-shell-bottom {
+    opacity: 1;
+  }
+}
+
 
 
 
