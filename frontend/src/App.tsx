@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
+import { AuthRedirect } from './routes/AuthRedirect';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { Login } from './pages/Login';
 import { Projects } from './pages/Projects';
@@ -34,8 +35,8 @@ function App() {
             <Route path="/design-system" element={<DesignSystem />} />
           </Route>
           
-          <Route path="/" element={<Navigate to="/projects" replace />} />
-          <Route path="*" element={<Navigate to="/projects" replace />} />
+          <Route path="/" element={<AuthRedirect />} />
+          <Route path="*" element={<AuthRedirect />} />
         </Routes>
         <Toaster position="top-right" toastOptions={{ className: '!bg-evoli-secondary !text-evoli-text !border !border-evoli-primary/20' }} />
         <Analytics />
