@@ -46,6 +46,13 @@ const categoryLabels: Record<string, string> = {
   STABILITY: "Stabilität",
 };
 
+const taskTypeLabels: Record<string, string> = {
+  BUG: 'BUG',
+  FUNCTIONALITY: 'FUNC',
+  UI_UX: 'UI/UX',
+  STABILITY: 'STAB',
+};
+
 export const StoryCard: React.FC<StoryCardProps> = ({ 
   story, 
   tasks, 
@@ -189,7 +196,7 @@ export const StoryCard: React.FC<StoryCardProps> = ({
                    {tasks.filter(t => t.type !== 'BUG').map(t => (
                      <div key={t.id} className="p-2 bg-white/30 border border-evoli-primary/5 rounded flex justify-between items-center">
                         <span className="text-[10px] font-bold truncate pr-2">{t.title}</span>
-                        <Badge size="sm" variant={t.status === 'DONE' ? 'success' : 'secondary'} className="text-[7px] h-3 px-1">{t.status.slice(0, 4)}</Badge>
+                        <Badge size="sm" variant="secondary" className="text-[7px] h-3 px-1">{taskTypeLabels[t.type] ?? t.type}</Badge>
                      </div>
                    ))}
                 </div>

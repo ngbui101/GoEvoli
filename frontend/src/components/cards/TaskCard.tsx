@@ -17,13 +17,11 @@ interface TaskCardProps {
   size?: CardSize;
 }
 
-const statusVariants: Record<string, any> = {
-  DONE: 'success',
-  DOING: 'primary',
-  NEXT: 'info',
-  BACKLOG: 'secondary',
-  TEST: 'warning',
-  BLOCKED: 'danger',
+const typeVariants: Record<string, any> = {
+  BUG: 'danger',
+  FUNCTIONALITY: 'info',
+  UI_UX: 'warning',
+  STABILITY: 'success',
 };
 
 const typeStoneStyles: Record<string, string> = {
@@ -31,6 +29,14 @@ const typeStoneStyles: Record<string, string> = {
   FUNCTIONALITY: "bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]",
   UI_UX: "bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.4)]",
   STABILITY: "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]",
+};
+
+const formatTypeLabel = (type: string, compact: boolean) => {
+  if (!compact) return type;
+  if (type === 'FUNCTIONALITY') return 'FUNC';
+  if (type === 'STABILITY') return 'STAB';
+  if (type === 'UI_UX') return 'UI/UX';
+  return type;
 };
 
 export const TaskCard: React.FC<TaskCardProps> = ({ 
@@ -90,8 +96,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({
          <div className={cn("rounded-full", isBoard ? "w-[3.75cqw] h-[3.75cqw]" : "w-2.5 h-2.5", task.priority === 'CRITICAL' ? 'bg-red-500' : 'bg-evoli-primary/40')} />
          <span className={cn("font-black uppercase text-evoli-text/40", isBoard ? "text-[4.3cqw]" : "text-[10px]")}>{task.priority}</span>
       </div>
-      <Badge variant={statusVariants[task.status] ?? 'secondary'} size="sm" className={cn("uppercase font-black px-1 py-0", isBoard ? "text-[4.3cqw] h-5" : "text-[10px] h-5")}>
-        {task.status}
+      <Badge variant={typeVariants[task.type] ?? 'secondary'} size="sm" className={cn("uppercase font-black px-1 py-0", isBoard ? "text-[3.5cqw] h-5" : "text-[10px] h-5")}>
+        {formatTypeLabel(task.type, isBoard)}
       </Badge>
     </div>
   );
