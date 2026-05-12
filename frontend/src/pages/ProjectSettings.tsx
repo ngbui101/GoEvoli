@@ -74,7 +74,7 @@ export const ProjectSettings: React.FC = () => {
         size="active"
         title={
           <input
-            className="bg-transparent border-none focus:ring-0 w-full text-[min(18px,4cqi)] font-black uppercase tracking-tight text-evoli-text placeholder:text-evoli-text/20 p-0"
+            className="bg-transparent border-none focus:ring-0 w-full text-[min(16px,3.5cqi)] font-black uppercase tracking-tight text-evoli-text placeholder:text-evoli-text/20 p-0"
             placeholder="Projekt Name..."
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -130,13 +130,13 @@ export const ProjectSettings: React.FC = () => {
             <p className="text-[7px] font-black uppercase tracking-widest text-evoli-text/20">Projekt Config Tool v2.0</p>
           </div>
         }
-        className="shadow-2xl"
+        className="shadow-2xl aspect-[63/96]"
       >
-        <form id="project-settings-form" onSubmit={handleSubmit} className="h-full flex flex-col gap-3">
-          <div className="relative flex-1 min-h-0 flex flex-col">
-            <label className="absolute -top-2.5 left-2 px-1 bg-[#FFF6DD] text-[8px] font-black uppercase tracking-widest text-evoli-primary/60 z-10">Beschreibung</label>
+        <form id="project-settings-form" onSubmit={handleSubmit} className="h-full min-h-0 overflow-y-auto custom-scrollbar pr-1 flex flex-col gap-2">
+          <div className="relative flex-none pt-2">
+            <label className="absolute top-0 left-2 px-1 bg-[#FFF6DD] text-[8px] font-black uppercase tracking-widest text-evoli-primary/60 z-10">Beschreibung</label>
             <textarea
-              className="w-full flex-1 min-h-[72px] bg-white/40 border border-evoli-primary/10 rounded-md p-3 text-xs font-medium text-evoli-text focus:ring-2 focus:ring-evoli-primary/20 focus:border-evoli-primary/40 transition-all outline-none resize-none"
+              className="w-full h-16 bg-white/40 border border-evoli-primary/10 rounded-md p-3 text-xs font-medium text-evoli-text focus:ring-2 focus:ring-evoli-primary/20 focus:border-evoli-primary/40 transition-all outline-none resize-none"
               placeholder="Beschreibe die Vision deines Projekts..."
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -144,7 +144,7 @@ export const ProjectSettings: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            <label className="bg-white/40 border border-evoli-primary/10 rounded-md p-2">
+            <label className="bg-white/40 border border-evoli-primary/10 rounded-md p-2 min-h-[58px]">
               <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest text-evoli-primary/60">
                 <Gauge className="w-3 h-3" />
                 Next
@@ -157,11 +157,11 @@ export const ProjectSettings: React.FC = () => {
                   ...formData,
                   wipLimits: { ...formData.wipLimits, next: parseInt(e.target.value) || 1 }
                 })}
-                className="mt-1 w-full bg-transparent text-lg font-black text-evoli-text outline-none"
+                className="mt-0.5 w-full bg-transparent text-base font-black text-evoli-text outline-none"
               />
             </label>
 
-            <label className="bg-white/40 border border-evoli-primary/10 rounded-md p-2">
+            <label className="bg-white/40 border border-evoli-primary/10 rounded-md p-2 min-h-[58px]">
               <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest text-evoli-primary/60">
                 <Gauge className="w-3 h-3" />
                 Doing
@@ -174,7 +174,7 @@ export const ProjectSettings: React.FC = () => {
                   ...formData,
                   wipLimits: { ...formData.wipLimits, doing: parseInt(e.target.value) || 1 }
                 })}
-                className="mt-1 w-full bg-transparent text-lg font-black text-evoli-text outline-none"
+                className="mt-0.5 w-full bg-transparent text-base font-black text-evoli-text outline-none"
               />
             </label>
           </div>
@@ -182,7 +182,7 @@ export const ProjectSettings: React.FC = () => {
           <button
             type="button"
             onClick={handleDeleteComingSoon}
-            className="flex items-center justify-between gap-3 rounded-md border border-red-200 bg-red-50/50 px-3 py-2 text-left transition hover:bg-red-50"
+            className="flex flex-none items-center justify-between gap-3 rounded-md border border-red-200 bg-red-50/50 px-3 py-2 text-left transition hover:bg-red-50"
           >
             <span className="flex items-center gap-2 min-w-0">
               <Trash2 className="w-4 h-4 text-red-500 flex-shrink-0" />
